@@ -11,17 +11,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class LoginView extends JFrame {
+
+    private static final Color ACCENT_BAR = new Color(30, 100, 200);
+    private static final Color LOGIN_BG = new Color(235, 238, 245);
 
     private final JTextField txtUsername;
     private final JPasswordField txtPassword;
@@ -30,85 +32,128 @@ public class LoginView extends JFrame {
     public LoginView() {
         userServices = new UserServices();
 
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {
-        }
-
-        setTitle("Login - Sistema de Seguros");
+        setTitle("Inicio de Sesión - Sistema de Seguros");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(420, 300);
-        setMinimumSize(new Dimension(420, 300));
+        setSize(440, 480);
         setLocationRelativeTo(null);
         setResizable(false);
 
-        JPanel rootPanel = new JPanel(new BorderLayout());
-        rootPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        rootPanel.setBackground(new Color(245, 247, 250));
+        JPanel root = new JPanel(new GridBagLayout());
+        root.setBackground(LOGIN_BG);
 
-        JLabel titleLabel = new JLabel("Acceso al sistema");
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 22));
+        JPanel card = new JPanel(new BorderLayout());
+        card.setBackground(UIStyles.CARD_BG);
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(210, 215, 225), 1),
+                BorderFactory.createEmptyBorder(0, 0, 0, 0)));
 
-        JLabel subtitleLabel = new JLabel("Ingresa con tu usuario y contraseña");
-        subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        JPanel accentBar = new JPanel();
+        accentBar.setBackground(ACCENT_BAR);
+        accentBar.setPreferredSize(new java.awt.Dimension(0, 4));
 
-        JPanel headerPanel = new JPanel(new GridBagLayout());
-        headerPanel.setOpaque(false);
-        GridBagConstraints headerConstraints = new GridBagConstraints();
-        headerConstraints.gridx = 0;
-        headerConstraints.gridy = 0;
-        headerConstraints.anchor = GridBagConstraints.WEST;
-        headerConstraints.insets = new Insets(0, 0, 4, 0);
-        headerPanel.add(titleLabel, headerConstraints);
+        JPanel inner = new JPanel(new BorderLayout(0, 18));
+        inner.setBackground(UIStyles.CARD_BG);
+        inner.setBorder(BorderFactory.createEmptyBorder(35, 40, 30, 40));
 
-        headerConstraints.gridy = 1;
-        headerConstraints.insets = new Insets(0, 0, 0, 0);
-        headerPanel.add(subtitleLabel, headerConstraints);
+        JPanel header = new JPanel(new GridBagLayout());
+        header.setOpaque(false);
 
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setOpaque(false);
-        formPanel.setBorder(BorderFactory.createEmptyBorder(25, 0, 20, 0));
+        JLabel brandIcon = new JLabel("\uD83D\uDEE1\uFE0F");
+        brandIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 36));
 
-        JLabel lblUsername = new JLabel("Usuario");
-        JLabel lblPassword = new JLabel("Contraseña");
+        JLabel title = new JLabel("Sistema de Seguros");
+        title.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        title.setForeground(UIStyles.TEXT_PRIMARY);
 
-        txtUsername = new JTextField(20);
-        txtPassword = new JPasswordField(20);
+        JLabel subtitle = new JLabel("Ingrese sus credenciales para acceder");
+        subtitle.setFont(UIStyles.FONT_SUBTITLE);
+        subtitle.setForeground(UIStyles.TEXT_SECONDARY);
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.insets = new Insets(6, 0, 6, 0);
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
-        formPanel.add(lblUsername, c);
+        GridBagConstraints hc = new GridBagConstraints();
+        hc.gridx = 0; hc.gridy = 0;
+        header.add(brandIcon, hc);
+        hc.gridy = 1;
+        hc.insets = new Insets(6, 0, 3, 0);
+        header.add(title, hc);
+        hc.gridy = 2;
+        hc.insets = new Insets(0, 0, 0, 0);
+        header.add(subtitle, hc);
 
-        c.gridy = 1;
-        formPanel.add(txtUsername, c);
+        JPanel form = new JPanel(new GridBagLayout());
+        form.setOpaque(false);
 
-        c.gridy = 2;
-        formPanel.add(lblPassword, c);
+        txtUsername = new JTextField(18);
+        txtPassword = new JPasswordField(18);
+        UIStyles.styleField(txtUsername);
+        UIStyles.styleField(txtPassword);
 
-        c.gridy = 3;
-        formPanel.add(txtPassword, c);
+        JLabel lblUser = UIStyles.createFieldLabel("Usuario");
+        JLabel lblPass = UIStyles.createFieldLabel("Contraseña");
 
-        JButton btnLogin = new JButton("Ingresar");
+        GridBagConstraints fc = new GridBagConstraints();
+        fc.gridx = 0; fc.gridy = 0;
+        fc.fill = GridBagConstraints.HORIZONTAL;
+        fc.anchor = GridBagConstraints.WEST;
+        fc.insets = new Insets(0, 0, 4, 0);
+        form.add(lblUser, fc);
+
+        fc.gridy = 1;
+        fc.insets = new Insets(0, 0, 16, 0);
+        form.add(txtUsername, fc);
+
+        fc.gridy = 2;
+        fc.insets = new Insets(0, 0, 4, 0);
+        form.add(lblPass, fc);
+
+        fc.gridy = 3;
+        fc.insets = new Insets(0, 0, 0, 0);
+        form.add(txtPassword, fc);
+
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+        buttonPanel.setOpaque(false);
+
+        JButton btnLogin = UIStyles.createPrimaryButton("Ingresar");
         btnLogin.addActionListener(e -> performLogin());
 
-        JButton btnClear = new JButton("Limpiar");
+        JButton btnClear = UIStyles.createSecondaryButton("Limpiar");
         btnClear.addActionListener(e -> clearFields());
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttonPanel.setOpaque(false);
-        buttonPanel.add(btnClear);
-        buttonPanel.add(btnLogin);
+        GridBagConstraints bc = new GridBagConstraints();
+        bc.gridx = 0; bc.gridy = 0;
+        bc.fill = GridBagConstraints.HORIZONTAL;
+        bc.insets = new Insets(0, 0, 8, 0);
+        buttonPanel.add(btnLogin, bc);
 
-        rootPanel.add(headerPanel, BorderLayout.NORTH);
-        rootPanel.add(formPanel, BorderLayout.CENTER);
-        rootPanel.add(buttonPanel, BorderLayout.SOUTH);
+        bc.gridy = 1;
+        bc.insets = new Insets(0, 0, 0, 0);
+        buttonPanel.add(btnClear, bc);
 
-        setContentPane(rootPanel);
+        JPanel versionPanel = new JPanel(new BorderLayout());
+        versionPanel.setOpaque(false);
+        JLabel version = new JLabel("v1.0.0", JLabel.CENTER);
+        version.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        version.setForeground(UIStyles.TEXT_MUTED);
+        versionPanel.add(version, BorderLayout.CENTER);
+
+        inner.add(header, BorderLayout.NORTH);
+        inner.add(form, BorderLayout.CENTER);
+        inner.add(buttonPanel, BorderLayout.SOUTH);
+
+        card.add(accentBar, BorderLayout.NORTH);
+        card.add(inner, BorderLayout.CENTER);
+
+        root.add(card);
+        setContentPane(root);
+
         getRootPane().setDefaultButton(btnLogin);
+        txtPassword.addActionListener(e -> performLogin());
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                txtUsername.requestFocusInWindow();
+            }
+        });
     }
 
     private void performLogin() {
@@ -116,38 +161,27 @@ public class LoginView extends JFrame {
         String password = new String(txtPassword.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Completa usuario y contraseña.",
-                    "Validación",
-                    JOptionPane.WARNING_MESSAGE
-            );
+            JOptionPane.showMessageDialog(this,
+                    "Complete todos los campos para iniciar sesión.",
+                    "Campos requeridos",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         User user = userServices.login(username, password);
 
         if (user == null) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Credenciales inválidas o usuario inactivo.",
-                    "Acceso denegado",
-                    JOptionPane.ERROR_MESSAGE
-            );
+            JOptionPane.showMessageDialog(this,
+                    "Usuario o contraseña incorrectos.",
+                    "Error de acceso",
+                    JOptionPane.ERROR_MESSAGE);
             txtPassword.setText("");
             txtPassword.requestFocusInWindow();
             return;
         }
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Bienvenido, " + user.getFullName(),
-                "Acceso correcto",
-                JOptionPane.INFORMATION_MESSAGE
-        );
-
-        HomeView homeView = new HomeView(user);
-        homeView.setVisible(true);
+        HomeView home = new HomeView(user);
+        home.setVisible(true);
         dispose();
     }
 
