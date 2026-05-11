@@ -6,7 +6,7 @@ public class Client {
     private int agencyId;
     private int genderId;
     private int countryId;
-    private String name;
+    private String firstName;
     private String lastName;
     private String identificationNumber;
     private int age;
@@ -20,7 +20,7 @@ public class Client {
                   int agencyId,
                   int genderId,
                   int countryId,
-                  String name,
+                  String firstName,
                   String lastName,
                   String identificationNumber,
                   int age,
@@ -32,7 +32,7 @@ public class Client {
         this.agencyId = agencyId;
         this.genderId = genderId;
         this.countryId = countryId;
-        this.name = name;
+        this.firstName= firstName;
         this.lastName = lastName;
         this.identificationNumber = identificationNumber;
         this.age = age;
@@ -73,12 +73,12 @@ public class Client {
         this.countryId = countryId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName ;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName ) {
+        this.firstName  = firstName ;
     }
 
     public String getLastName() {
@@ -131,6 +131,6 @@ public class Client {
 
     @Override
     public String toString() {
-        return name + " " + lastName;
+        return firstName  + " " + lastName;
     }
 }
