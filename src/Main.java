@@ -1,6 +1,7 @@
 import dataBase.DataBaseConnection;
 import models.User;
 import services.UserServices;
+import visual.Visual;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -8,7 +9,6 @@ import java.sql.SQLException;
 public class Main {
 
     public static void main(String[] args) {
-
         try (Connection connection =
                      DataBaseConnection.getConnection()) {
 
@@ -20,37 +20,10 @@ public class Main {
 
                 UserServices userServices = new UserServices();
 
-                // =====================================================
-                // CHECK IF ADMIN EXISTS
-                // =====================================================
-
-                if (!userServices.existsAdmin()) {
-
-                    System.out.println("No admin found. Creating default admin...");
-
-                    User admin = new User(
-                            0,
-                            1, // role_id = ADMIN
-                            "admin",
-                            "admin", // plain password (service will hash it)
-                            "System Administrator",
-                            true
-                    );
-
-                    userServices.saveUser(admin);
-
-                    System.out.println("Default admin created:");
-                    System.out.println("username: admin");
-                    System.out.println("password: admin");
-
-
-
-                } else {
-                    System.out.println("Admin already exists.");
-                    System.out.println(userServices.getAllUsers().get(0).getUsername() + "    " + userServices.getAllUsers().get(0).getPassword() );
-                }
+                ensureDefaultAdmin(userServices);
 
                 System.out.println("Connection closed successfully");
+                Visual.showLogin();
             }
 
         } catch (SQLException e) {
@@ -58,5 +31,29 @@ public class Main {
             System.out.println("DATABASE CONNECTION FAILED");
             e.printStackTrace();
         }
+    }
+
+    private static void ensureDefaultAdmin(UserServices userServices) {
+        if (userServices.existsAdmin()) {
+            System.out.println("Admin already exists.");
+            return;
+        }
+
+        System.out.println("No admin found. Creating default admin...");
+
+        User admin = new User(
+                0,
+                1,
+                "admin",
+                "admin",
+                "System Administrator",
+                true
+        );
+
+        userServices.saveUser(admin);
+
+        System.out.println("Default admin created:");
+        System.out.println("username: admin");
+        System.out.println("password: admin");
     }
 }
