@@ -10,7 +10,8 @@ public class Agency {
     private String generalDirector;
     private String insuranceManager;
     private String claimsManager;
-
+    //
+    //
     public Agency() {}
 
     // Full constructor
