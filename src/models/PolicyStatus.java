@@ -6,6 +6,7 @@ public class PolicyStatus {
     private int policyStatusId;
     private String description;
 
+    public PolicyStatus(){}
 
     public PolicyStatus(int policyStatusId,
                         String description) {

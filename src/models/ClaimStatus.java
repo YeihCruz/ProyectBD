@@ -5,6 +5,7 @@ public class ClaimStatus {
     private int claimStatusId;
     private String description;
 
+    public ClaimStatus(){}
 
     public ClaimStatus(int claimStatusId,
                        String description) {

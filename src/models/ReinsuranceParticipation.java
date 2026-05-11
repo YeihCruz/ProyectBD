@@ -7,6 +7,8 @@ public class ReinsuranceParticipation {
     private int insuranceTypeId;
     private double participationPercentage;
 
+    public ReinsuranceParticipation(){}
+
     // Full constructor
     public ReinsuranceParticipation(int participationId,
                                     int reinsurerId,
