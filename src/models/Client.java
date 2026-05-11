@@ -15,6 +15,9 @@ public class Client {
     private String email;
 
 
+    public Client(){}
+
+
     // Full constructor
     public Client(int clientId,
                   int agencyId,
@@ -101,7 +104,7 @@ public class Client {
         return age;
     }
 
-    public void setAge(short age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

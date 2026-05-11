@@ -12,6 +12,8 @@ public class Agency {
     private String claimsManager;
     //
     //
+    public Agency() {}
+
     // Full constructor
     public Agency(int agencyId,
                   String name,

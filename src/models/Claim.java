@@ -13,6 +13,10 @@ public class Claim {
     private double compensatedAmount;
     private String rejectionReason;
 
+    public Claim(){
+    }
+
+
     // Full constructor
     public Claim(int claimNumber,
                  int policyNumber,

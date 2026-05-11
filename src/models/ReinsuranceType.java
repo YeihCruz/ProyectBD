@@ -6,6 +6,7 @@ public class ReinsuranceType {
     private int reinsuranceTypeId;
     private String description;
 
+    public ReinsuranceType(){}
 
     public ReinsuranceType(int reinsuranceTypeId,
                            String description) {
