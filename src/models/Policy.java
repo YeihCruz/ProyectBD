@@ -14,6 +14,7 @@ public class Policy {
     private double insuredAmount;
     private String cancellationReason;
 
+    public Policy(){}
 
     // Full constructor
     public Policy(int policyNumber,

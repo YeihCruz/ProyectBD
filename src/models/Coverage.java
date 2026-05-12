@@ -8,6 +8,7 @@ public class Coverage {
     private String description;
     private double coverageAmount;
 
+   public Coverage(){}
 
     // Full constructor
     public Coverage(int coverageId,

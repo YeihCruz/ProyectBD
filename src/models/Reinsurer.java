@@ -8,6 +8,7 @@ public class Reinsurer {
     private int countryId;
     private String name;
 
+    public Reinsurer(){}
 
     // Full constructor
     public Reinsurer(int reinsurerId,

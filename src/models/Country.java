@@ -6,6 +6,7 @@ public class Country {
     private String name;
     private String isoCode;
 
+    public Country() {}
 
     public Country(int countryId,
                    String name,

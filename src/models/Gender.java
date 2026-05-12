@@ -5,6 +5,7 @@ public class Gender {
     private int genderId;
     private String description;
 
+    public Gender(){}
 
     public Gender(int genderId,
                   String description) {

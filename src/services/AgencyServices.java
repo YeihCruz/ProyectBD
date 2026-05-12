@@ -15,19 +15,16 @@ public class AgencyServices {
 
     public void saveAgency(Agency agency) {
 
-        String sql = """
-                INSERT INTO agency
-                (
-                    name,
-                    address,
-                    phone,
-                    email,
-                    general_director,
-                    insurance_manager,
-                    claims_manager
-                )
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-                """;
+                      String sql =
+        "INSERT INTO agency (" +
+        "name, " +
+        "address, " +
+        "phone, " +
+        "email, " +
+        "general_director, " +
+        "insurance_manager, " +
+        "claims_manager" +
+        ") VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection =
                      DataBaseConnection.getConnection();
@@ -184,18 +181,17 @@ public class AgencyServices {
 
     public void updateAgency(Agency agency) {
 
-        String sql = """
-                UPDATE agency
-                SET
-                    name = ?,
-                    address = ?,
-                    phone = ?,
-                    email = ?,
-                    general_director = ?,
-                    insurance_manager = ?,
-                    claims_manager = ?
-                WHERE agency_id = ?
-                """;
+        String sql =
+                "UPDATE agency " +
+                        "SET " +
+                        "name = ?, " +
+                        "address = ?, " +
+                        "phone = ?, " +
+                        "email = ?, " +
+                        "general_director = ?, " +
+                        "insurance_manager = ?, " +
+                        "claims_manager = ? " +
+                        "WHERE agency_id = ?";
 
         try (Connection connection =
                      DataBaseConnection.getConnection();

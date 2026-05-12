@@ -5,6 +5,7 @@ public class InsuranceType {
     private int insuranceTypeId;
     private String description;
 
+    public InsuranceType(){}
 
     public InsuranceType(int insuranceTypeId,
                          String description) {

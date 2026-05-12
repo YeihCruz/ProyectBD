@@ -5,6 +5,7 @@ public class ClaimType {
     private int claimTypeId;
     private String description;
 
+    public ClaimType() {}
 
     public ClaimType(int claimTypeId,
                      String description) {
