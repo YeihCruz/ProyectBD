@@ -31,3 +31,7 @@ bin/
 .config.properties
 /config.properties
 
+.idea/misc.xml
+/idea.misc.xml
+
+
