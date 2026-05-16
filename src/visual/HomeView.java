@@ -16,16 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.tools.Tool;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -46,16 +38,16 @@ public class HomeView extends JFrame {
     private CardLayout cardLayout;
     private JPanel contentPanel;
     private JButton selectedButton;
-
+    private Dimension screenSize;
     public HomeView(User user) {
         this.user = user;
         SessionManager.login(user);
 
-        setTitle("Sistema de Seguros - Inicio");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(1200, 750);
-        setMinimumSize(new Dimension(960, 600));
-        setLocationRelativeTo(null);
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setBounds(0, 0, screenSize.width, screenSize.height);
 
         JPanel root = new JPanel(new BorderLayout());
         root.setBackground(UIStyles.BG_LIGHT);

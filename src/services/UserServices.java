@@ -4,6 +4,7 @@ import dataBase.DataBaseConnection;
 import models.User;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class UserServices {
 
                 String hashedPassword =
                         rs.getString("password");
+
 
                 // 🔐 VALIDAR PASSWORD
                 if (BCrypt.checkpw(password, hashedPassword)) {
