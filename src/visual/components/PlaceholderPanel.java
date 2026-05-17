@@ -19,7 +19,6 @@ public class PlaceholderPanel extends JPanel {
 
         JPanel card = UIStyles.createCard();
         card.setLayout(new GridBagLayout());
-
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0; c.gridy = 0;
 

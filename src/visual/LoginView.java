@@ -164,7 +164,6 @@ public class LoginView extends JFrame {
         }
 
         User user = userServices.login(username, password);
-        JOptionPane.showMessageDialog(null, user);
 
         if (user == null) {
             MessagePanel mess = new MessagePanel(this, true, "Usuario o contraseña incorrectos");
@@ -174,7 +173,9 @@ public class LoginView extends JFrame {
             return;
         }
 
+        MessagePanel complete = new MessagePanel(this, true, "Ha iniciado sesion con exito");
         HomeView home = new HomeView(user);
+        complete.setVisible(true);
         home.setVisible(true);
         dispose();
     }

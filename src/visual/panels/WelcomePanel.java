@@ -3,17 +3,9 @@ package visual.panels;
 import models.User;
 import visual.UIStyles;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
+import java.util.concurrent.SubmissionPublisher;
 
 public class WelcomePanel extends JPanel {
 
@@ -27,62 +19,66 @@ public class WelcomePanel extends JPanel {
         {UIStyles.CARD_BLUE, new Color(235, 245, 255)},
         {UIStyles.CARD_GREEN, new Color(235, 250, 240)},
     };
+    private Dimension screenSize;
+    private JPanel metricas;
 
     public WelcomePanel(User user) {
+
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         setBackground(UIStyles.BG_LIGHT);
-        setLayout(new BorderLayout());
+        setLayout(null);
+        setBorder(BorderFactory.createEmptyBorder(28, 28, 28, 28));
+        setBounds(0, 0, screenSize.width, (int) (screenSize.height*0.94));
 
-        JPanel wrapper = new JPanel(new BorderLayout(0, 25));
-        wrapper.setBackground(UIStyles.BG_LIGHT);
-        wrapper.setBorder(BorderFactory.createEmptyBorder(28, 28, 28, 28));
+        add(createHeader(user));
+        metricas = createMetricsSection();
+        add(metricas);
+        add(createModulesSection());
 
-        wrapper.add(createHeader(user), BorderLayout.NORTH);
-        wrapper.add(createMetricsSection(), BorderLayout.CENTER);
-        wrapper.add(createModulesSection(), BorderLayout.SOUTH);
-
-        add(new JScrollPane(wrapper, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
     }
 
     private JPanel createHeader(User user) {
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new JPanel(null);
         panel.setOpaque(false);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
+        panel.setBounds((int) (screenSize.width*0.35), 0, (int) (screenSize.width*0.3), (int) (screenSize.height*0.17));
 
         JLabel icon = new JLabel("\uD83D\uDC4B");
-        icon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 32));
-        panel.add(icon, c);
+        icon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.04)));
+        icon.setBounds((int) (screenSize.width*0.11), (int) (screenSize.height*0.02), (int) (screenSize.width*0.08), (int) (screenSize.height*0.09));
+        panel.add(icon);
 
-        c.gridy = 1;
-        c.insets = new Insets(4, 0, 2, 0);
         JLabel welcome = new JLabel("Bienvenido, " + user.getFullName());
         welcome.setFont(UIStyles.FONT_TITLE);
         welcome.setForeground(UIStyles.TEXT_PRIMARY);
-        panel.add(welcome, c);
+        welcome.setHorizontalAlignment(SwingConstants.CENTER);
+        welcome.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.1), (int) (screenSize.width*0.28), (int) (screenSize.height*0.03));
+        panel.add(welcome);
 
-        c.gridy = 2;
-        c.insets = new Insets(0, 0, 0, 0);
         JLabel subtitle = new JLabel("Panel de control del Sistema de Seguros");
         subtitle.setFont(UIStyles.FONT_SUBTITLE);
         subtitle.setForeground(UIStyles.TEXT_SECONDARY);
-        panel.add(subtitle, c);
+        subtitle.setHorizontalAlignment(SwingConstants.CENTER);
+        subtitle.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.14), (int) (screenSize.width*0.28), (int) (screenSize.height*0.03));
+        panel.add(subtitle);
 
         return panel;
     }
 
     private JPanel createMetricsSection() {
-        JPanel section = new JPanel(new BorderLayout(0, 14));
+        JPanel section = new JPanel(null);
         section.setOpaque(false);
+        section.setBounds((int) (screenSize.width*0.03), (int) (screenSize.height*0.16), (int) (screenSize.width*0.94), (int) (screenSize.height*0.4));
 
         JLabel sectionTitle = new JLabel("Resumen general");
         sectionTitle.setFont(UIStyles.FONT_SECTION);
         sectionTitle.setForeground(UIStyles.TEXT_PRIMARY);
-        section.add(sectionTitle, BorderLayout.NORTH);
+        sectionTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        sectionTitle.setBounds((int) (screenSize.width*0.37), (int) (screenSize.height*0.0025), (int) (screenSize.width*0.2), (int) (screenSize.height*0.06));
+        section.add(sectionTitle);
 
-        JPanel grid = new JPanel(new GridLayout(2, 4, 14, 14));
+        JPanel grid = new JPanel(null);
+        grid.setBounds(0, (int) (screenSize.height*0.05), (int) (screenSize.width*0.94), (int) (screenSize.height*0.33));
         grid.setOpaque(false);
 
         String[][] metrics = {
@@ -96,54 +92,63 @@ public class WelcomePanel extends JPanel {
             {"Ingresos del mes", "—"},
         };
 
+        int j=0;int k=0;
         for (int i = 0; i < metrics.length; i++) {
             Color accent = METRIC_COLORS[i][0];
             Color bg = METRIC_COLORS[i][1];
-            grid.add(createMetricCard(metrics[i][0], metrics[i][1], accent, bg));
+            grid.add(createMetricCard(metrics[i][0], metrics[i][1], accent, bg, k, j ));
+            k++;
+            if(k>3){
+                j++; k=0;
+            }
         }
 
-        section.add(grid, BorderLayout.CENTER);
+        section.add(grid);
         return section;
     }
 
-    private JPanel createMetricCard(String label, String value, Color accent, Color bgLight) {
-        JPanel card = new JPanel(new GridBagLayout());
+    private JPanel createMetricCard(String label, String value, Color accent, Color bgLight, int k, int j) {
+
+        JPanel card = new JPanel(null);
         card.setBackground(UIStyles.CARD_BG);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(UIStyles.BORDER, 1),
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(3, 0, 0, 0, accent),
                         BorderFactory.createEmptyBorder(18, 20, 18, 20))));
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
+        card.setBounds((int) (screenSize.width*0.2375)*k, (int) (screenSize.height*0.174)*j, (int) (screenSize.width*0.2275), (int) (screenSize.height*0.156));
 
         JLabel valLabel = new JLabel(value);
-        valLabel.setFont(new Font("Segoe UI", Font.BOLD, 26));
+        valLabel.setBounds((int) (screenSize.width*0.085), (int) (screenSize.height*0.04), (int) (screenSize.width*0.0575), (int) (screenSize.height*0.06));
+        valLabel.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.016)));
+        valLabel.setHorizontalAlignment(SwingConstants.CENTER);
         valLabel.setForeground(accent);
-        card.add(valLabel, c);
+        card.add(valLabel);
 
-        c.gridy = 1;
-        c.insets = new Insets(6, 0, 0, 0);
         JLabel descLabel = new JLabel(label);
-        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+        descLabel.setBounds((int) (screenSize.width*0.065), (int) (screenSize.height*0.08), (int) (screenSize.width*0.0975), (int) (screenSize.height*0.06));
+        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
         descLabel.setForeground(UIStyles.TEXT_SECONDARY);
-        card.add(descLabel, c);
+        descLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        card.add(descLabel);
 
         return card;
     }
 
     private JPanel createModulesSection() {
-        JPanel section = new JPanel(new BorderLayout(0, 14));
+        JPanel section = new JPanel(null);
+        section.setBounds((int) (screenSize.width*0.03), (int) (screenSize.height*0.55), (int) (screenSize.width*0.94), (int) (screenSize.height*0.4));
         section.setOpaque(false);
 
         JLabel sectionTitle = new JLabel("M\u00F3dulos del sistema");
         sectionTitle.setFont(UIStyles.FONT_SECTION);
         sectionTitle.setForeground(UIStyles.TEXT_PRIMARY);
-        section.add(sectionTitle, BorderLayout.NORTH);
+        sectionTitle.setHorizontalAlignment(SwingConstants.CENTER);
+        sectionTitle.setBounds((int) (screenSize.width*0.37), (int) (screenSize.height*-0.0045), (int) (screenSize.width*0.2), (int) (screenSize.height*0.06));
+        section.add(sectionTitle);
 
-        JPanel grid = new JPanel(new GridLayout(2, 4, 14, 14));
+        JPanel grid = new JPanel(null);
+        grid.setBounds(0, (int) (screenSize.height*0.05), (int) (screenSize.width*0.94), (int) (screenSize.height*0.335));
         grid.setOpaque(false);
 
         String[][] modules = {
@@ -157,42 +162,47 @@ public class WelcomePanel extends JPanel {
             {"\u2699\uFE0F", "Configuraci\u00F3n", "Ajustes del sistema"},
         };
 
+        int i =0, j=0;
         for (String[] m : modules) {
-            grid.add(createModuleCard(m[0], m[1], m[2]));
+            JPanel carta = createModuleCard(m[0], m[1], m[2], i, j);
+            i++;
+            if(i>3){
+                i=0; j++;}
+            grid.add(carta);
         }
 
-        section.add(grid, BorderLayout.CENTER);
+        section.add(grid);
         return section;
     }
 
-    private JPanel createModuleCard(String icon, String title, String desc) {
-        JPanel card = new JPanel(new GridBagLayout());
+    private JPanel createModuleCard(String icon, String title, String desc, int largo, int ancho) {
+        JPanel card = new JPanel(null);
         card.setBackground(UIStyles.CARD_BG);
         card.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(UIStyles.BORDER, 1),
                 BorderFactory.createEmptyBorder(16, 18, 16, 18)));
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.gridy = 0;
-        c.anchor = GridBagConstraints.WEST;
+        card.setBounds((int) (screenSize.width*0.2375)*largo, (int) (screenSize.height*0.174)*ancho, (int) (screenSize.width*0.2275), (int) (screenSize.height*0.156));
+
 
         JLabel iconLabel = new JLabel(icon);
-        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 22));
-        card.add(iconLabel, c);
+        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.0225)));
+        iconLabel.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.04), (int) (screenSize.width*0.05), (int) (screenSize.height*0.09));
+        card.add(iconLabel);
 
-        c.gridy = 1;
-        c.insets = new Insets(8, 0, 2, 0);
         JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.011)));
         titleLabel.setForeground(UIStyles.TEXT_PRIMARY);
-        card.add(titleLabel, c);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        titleLabel.setBounds((int) (screenSize.width*0.05), (int) (screenSize.height*0.04), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
+        card.add(titleLabel);
 
-        c.gridy = 2;
-        c.insets = new Insets(0, 0, 0, 0);
         JLabel descLabel = new JLabel(desc);
-        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, 11));
+        descLabel.setFont(new Font("Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+        descLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        descLabel.setBounds((int) (screenSize.width*0.05), (int) (screenSize.height*0.08), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
         descLabel.setForeground(UIStyles.TEXT_SECONDARY);
-        card.add(descLabel, c);
+        card.add(descLabel);
 
         return card;
     }
