@@ -5,6 +5,9 @@ import visual.UIStyles;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.concurrent.SubmissionPublisher;
 
 public class WelcomePanel extends JPanel {
@@ -20,11 +23,12 @@ public class WelcomePanel extends JPanel {
         {UIStyles.CARD_GREEN, new Color(235, 250, 240)},
     };
     private Dimension screenSize;
-    private JPanel metricas;
+    private ArrayList<JButton> controllers;
 
     public WelcomePanel(User user) {
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
 
         setBackground(UIStyles.BG_LIGHT);
         setLayout(null);
@@ -32,9 +36,44 @@ public class WelcomePanel extends JPanel {
         setBounds(0, 0, screenSize.width, (int) (screenSize.height*0.94));
 
         add(createHeader(user));
-        metricas = createMetricsSection();
-        add(metricas);
+        add( createMetricsSection());
         add(createModulesSection());
+
+
+    }
+
+    private ArrayList<JButton> createControllers(JPanel modules) {
+        ArrayList<JButton> buttons = new ArrayList<>();
+
+        for(int i=0; i< 8; i++){
+            JButton btn = new JButton();
+
+            btn.setOpaque(false);
+            btn.setContentAreaFilled(false);
+            btn.setFocusPainted(false);
+            btn.setBorder(null);
+            btn.setBounds(modules.getComponent(i).getBounds());
+            btn.setBackground(new Color(220, 220, 220,100));
+            int finalI = i;
+            btn.setName(modules.getComponent(finalI).getName());
+            btn.addMouseListener(new MouseAdapter() {
+                public void mouseEntered(MouseEvent e) {
+                    changeColor(1, (JPanel) modules.getComponent(finalI));
+                }
+                public void mouseExited(MouseEvent e) {
+                   changeColor(0, (JPanel) modules.getComponent(finalI));
+                }
+            });
+            buttons.add(btn);
+        }
+
+        return buttons;
+    }
+
+    private void changeColor(int i, JPanel panel ){
+        if(i==1){
+            panel.getComponent(0).setForeground(Color.red);
+        }else panel.getComponent(0).setForeground(Color.black);
 
     }
 
@@ -164,11 +203,18 @@ public class WelcomePanel extends JPanel {
 
         int i =0, j=0;
         for (String[] m : modules) {
-            JPanel carta = createModuleCard(m[0], m[1], m[2], i, j);
+            JPanel card = createModuleCard(m[0], m[1], m[2], i, j);
+            card.setName(m[1]);
             i++;
             if(i>3){
                 i=0; j++;}
-            grid.add(carta);
+            grid.add(card);
+        }
+
+
+        controllers = createControllers(grid);
+        for(int h= 0; h<8; h++){
+            grid.add(controllers.get(h));
         }
 
         section.add(grid);
@@ -186,6 +232,7 @@ public class WelcomePanel extends JPanel {
 
 
         JLabel iconLabel = new JLabel(icon);
+        iconLabel.setForeground(Color.BLACK);
         iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.0225)));
         iconLabel.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.04), (int) (screenSize.width*0.05), (int) (screenSize.height*0.09));
         card.add(iconLabel);
@@ -204,6 +251,11 @@ public class WelcomePanel extends JPanel {
         descLabel.setForeground(UIStyles.TEXT_SECONDARY);
         card.add(descLabel);
 
+        card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         return card;
+    }
+
+    public ArrayList<JButton> getControllers() {
+        return controllers;
     }
 }

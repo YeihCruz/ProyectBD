@@ -174,6 +174,7 @@ public class LoginView extends JFrame {
         }
 
         MessagePanel complete = new MessagePanel(this, true, "Ha iniciado sesion con exito");
+
         HomeView home = new HomeView(user);
         complete.setVisible(true);
         home.setVisible(true);
