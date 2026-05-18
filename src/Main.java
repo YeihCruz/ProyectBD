@@ -3,13 +3,14 @@ import models.User;
 import services.UserServices;
 import visual.Visual;
 
+import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class Main {
 
     public static void main(String[] args) {
-        try (Connection connection =
+       try (Connection connection =
                      DataBaseConnection.getConnection()) {
 
             if (connection != null) {
@@ -19,10 +20,10 @@ public class Main {
                 System.out.println("=================================");
 
                 UserServices userServices = new UserServices();
-
                 ensureDefaultAdmin(userServices);
 
                 System.out.println("Connection closed successfully");
+
                 Visual.showLogin();
             }
 
@@ -34,11 +35,12 @@ public class Main {
     }
 
     private static void ensureDefaultAdmin(UserServices userServices) {
+
         if (userServices.existsAdmin()) {
             System.out.println("Admin already exists.");
             return;
         }
-
+        JOptionPane.showMessageDialog(null, userServices.existsAdmin());
         System.out.println("No admin found. Creating default admin...");
 
         User admin = new User(
@@ -50,6 +52,7 @@ public class Main {
                 true
         );
 
+        JOptionPane.showMessageDialog(null, admin.getUsername() + admin.getFullName() + admin.getPassword() + admin.getUserId());
         userServices.saveUser(admin);
 
         System.out.println("Default admin created:");

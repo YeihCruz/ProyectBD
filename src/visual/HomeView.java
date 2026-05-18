@@ -1,198 +1,134 @@
 package visual;
 
 import models.User;
-import visual.panels.ClientsPanel;
-import visual.panels.ClaimsPanel;
-import visual.panels.IncidentsPanel;
-import visual.panels.PoliciesPanel;
-import visual.panels.ReportsPanel;
-import visual.panels.UsersPanel;
-import visual.panels.WelcomePanel;
+import visual.panels.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.TimerTask;
+import java.util.Timer;
 
 public class HomeView extends JFrame {
-
-    private static final String[][] NAV_ITEMS = {
-        {"\uD83C\uDFE0", "Inicio", "welcome"},
-        {"\uD83D\uDC65", "Usuarios", "users"},
-        {"\uD83D\uDCCB", "Clientes", "clients"},
-        {"\uD83D\uDCC4", "P\u00F3lizas", "policies"},
-        {"\uD83D\uDCE9", "Reclamos", "claims"},
-        {"\u26A0\uFE0F", "Siniestros", "incidents"},
-        {"\uD83D\uDCCA", "Reportes", "reports"},
-    };
 
     private final User user;
     private JLabel headerTitle;
     private CardLayout cardLayout;
     private JPanel contentPanel;
-    private JButton selectedButton;
-
+    private JButton btnLogout;
+    private ArrayList<String> codes;
+    private Dimension screenSize;
+    private JButton retWelcom;
+    private Timer timer;
+    private TimerTask task;
+    private boolean backIsVisible;
+    private boolean changeVisible;
     public HomeView(User user) {
+
+        codes = new ArrayList<>();
+        backIsVisible = false;
+        changeVisible=false;
+        createCodes();
         this.user = user;
         SessionManager.login(user);
 
-        setTitle("Sistema de Seguros - Inicio");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setSize(1200, 750);
-        setMinimumSize(new Dimension(960, 600));
-        setLocationRelativeTo(null);
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        JPanel root = new JPanel(new BorderLayout());
-        root.setBackground(UIStyles.BG_LIGHT);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setUndecorated(true);
+        setBounds(0, 0, screenSize.width, screenSize.height);
+        setLayout(null);
 
-        root.add(createSidebar(), BorderLayout.WEST);
-        root.add(createMainPanel(), BorderLayout.CENTER);
-
-        setContentPane(root);
-    }
-
-    private JPanel createSidebar() {
-        JPanel sidebar = new JPanel(new GridBagLayout());
-        sidebar.setPreferredSize(new Dimension(240, 0));
-        sidebar.setBackground(UIStyles.SIDEBAR_BG);
-
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-
-        JPanel brandPanel = new JPanel(new GridBagLayout());
-        brandPanel.setBackground(UIStyles.SIDEBAR_BRAND_BG);
-        GridBagConstraints bc = new GridBagConstraints();
-        bc.gridx = 0; bc.gridy = 0;
-
+        add(createMainPanel());
+        /*
         JLabel brandIcon = new JLabel("\uD83D\uDEE1\uFE0F", SwingConstants.CENTER);
         brandIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 28));
         bc.insets = new Insets(22, 0, 2, 0);
-        brandPanel.add(brandIcon, bc);
+        brandPanel.add(brandIcon, bc);*/
 
-        bc.gridy = 1;
-        bc.insets = new Insets(0, 0, 0, 0);
-        JLabel brand = new JLabel("SEGUROS", SwingConstants.CENTER);
-        brand.setFont(new Font("Segoe UI", Font.BOLD, 15));
-        brand.setForeground(Color.WHITE);
-        brandPanel.add(brand, bc);
+        timer = new Timer();
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                revalidate();
+                repaint();
+                if(backIsVisible !=changeVisible){
+                    activateRetButn();
+                }
 
-        bc.gridy = 2;
-        bc.insets = new Insets(0, 0, 22, 0);
-        JLabel brandSub = new JLabel("Sistema de Gesti\u00F3n", SwingConstants.CENTER);
-        brandSub.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-        brandSub.setForeground(new Color(140, 155, 180));
-        brandPanel.add(brandSub, bc);
-
-        c.gridy = 0;
-        sidebar.add(brandPanel, c);
-
-        JPanel navPanel = new JPanel(new GridBagLayout());
-        navPanel.setOpaque(false);
-        GridBagConstraints nc = new GridBagConstraints();
-        nc.gridx = 0;
-        nc.fill = GridBagConstraints.HORIZONTAL;
-        nc.insets = new Insets(2, 12, 2, 12);
-
-        for (int i = 0; i < NAV_ITEMS.length; i++) {
-            String icon = NAV_ITEMS[i][0];
-            String label = NAV_ITEMS[i][1];
-            String panelId = NAV_ITEMS[i][2];
-            JButton btn = createSidebarButton(icon + "  " + label);
-            btn.addActionListener(e -> showPanel(panelId, label, btn));
-            nc.gridy = i;
-            navPanel.add(btn, nc);
-        }
-
-        c.gridy = 1;
-        c.weighty = 1;
-        sidebar.add(navPanel, c);
-
-        JPanel dividerPanel = new JPanel(new BorderLayout());
-        dividerPanel.setOpaque(false);
-        dividerPanel.setBorder(BorderFactory.createEmptyBorder(4, 16, 4, 16));
-        JPanel divider = new JPanel();
-        divider.setBackground(UIStyles.SIDEBAR_DIVIDER);
-        divider.setPreferredSize(new Dimension(1, 1));
-        dividerPanel.add(divider, BorderLayout.CENTER);
-
-        c.gridy = 2;
-        c.weighty = 0;
-        sidebar.add(dividerPanel, c);
-
-        JButton btnLogout = createSidebarButton("\uD83D\uDEAA  Cerrar Sesi\u00F3n");
-        btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        btnLogout.setForeground(new Color(200, 120, 120));
-        btnLogout.addActionListener(e -> logout());
-        btnLogout.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) {
-                btnLogout.setBackground(UIStyles.SIDEBAR_HOVER);
             }
-            public void mouseExited(MouseEvent e) {
-                btnLogout.setBackground(UIStyles.SIDEBAR_BG);
+        };
+
+        timer.scheduleAtFixedRate(task, 0, 10);
+
+        InputMap inputMap = retWelcom.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = retWelcom.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0);
+
+        inputMap.put(keyStroke, "activateBtn");
+        actionMap.put("activateBtn", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                retWelcom.doClick();
             }
         });
 
-        JPanel logoutPanel = new JPanel(new BorderLayout());
-        logoutPanel.setOpaque(false);
-        logoutPanel.setBorder(BorderFactory.createEmptyBorder(2, 12, 6, 12));
-        logoutPanel.add(btnLogout, BorderLayout.CENTER);
+        InputMap inputMap1 = btnLogout.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap1 = btnLogout.getActionMap();
 
-        c.gridy = 3;
-        sidebar.add(logoutPanel, c);
+        KeyStroke keyStroke1 = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
 
-        JPanel userCard = createSidebarUserCard();
-        c.gridy = 4;
-        sidebar.add(userCard, c);
-
-        return sidebar;
+        inputMap1.put(keyStroke1, "activateBtnLog");
+        actionMap1.put("activateBtnLog", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnLogout.doClick();
+            }
+        });
     }
 
-    private JPanel createSidebarUserCard() {
-        JPanel card = new JPanel(new GridBagLayout());
-        card.setBackground(UIStyles.SIDEBAR_BRAND_BG);
-        card.setBorder(BorderFactory.createEmptyBorder(12, 16, 14, 16));
+    private void activateRetButn() {
+        if(changeVisible){
+            retWelcom.setVisible(true);
+            retWelcom.setEnabled(true);
+            headerTitle.setBounds((int) (screenSize.width*0.08), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.gridy = 0;
-        c.gridheight = 2;
-        c.insets = new Insets(0, 0, 0, 10);
+        }else {
+            retWelcom.setVisible(false);
+            retWelcom.setEnabled(false);
+            headerTitle.setBounds((int) (screenSize.width*0.017), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
 
-        JLabel avatar = new JLabel("\uD83D\uDC64");
-        avatar.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 20));
-        card.add(avatar, c);
+        }
+        backIsVisible=changeVisible;
 
-        c.gridx = 1; c.gridy = 0;
-        c.gridheight = 1;
-        c.insets = new Insets(0, 0, 1, 0);
-        JLabel name = new JLabel(user.getFullName());
-        name.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        name.setForeground(new Color(220, 225, 235));
-        card.add(name, c);
+    }
 
-        c.gridy = 1;
-        c.insets = new Insets(0, 0, 0, 0);
-        JLabel role = new JLabel(user.getUsername());
-        role.setFont(new Font("Segoe UI", Font.PLAIN, 10));
-        role.setForeground(new Color(140, 155, 180));
-        card.add(role, c);
+    private void createBtnRet() {
+        retWelcom = new JButton();
+        retWelcom.addActionListener(e -> showPanel(codes.get(0), "Inicio"));
+        retWelcom.setBounds(0, 0, (int) (screenSize.width*0.05), (int) (screenSize.height*0.07));
+        retWelcom.setText("\u2190");
+        retWelcom.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.024)));
+        retWelcom.setContentAreaFilled(false);
+        retWelcom.setFocusPainted(false);
+        retWelcom.setBorderPainted(false);
+        retWelcom.setOpaque(false);
+        retWelcom.setEnabled(false);
+        retWelcom.setVisible(false);
+        retWelcom.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                retWelcom.setForeground(Color.red);
+            }
+            public void mouseExited(MouseEvent e) {
+                retWelcom.setForeground(Color.black);
+            }
+        });
 
-        return card;
     }
 
     private JButton createSidebarButton(String text) {
@@ -206,29 +142,41 @@ public class HomeView extends JFrame {
         btn.setFocusPainted(false);
         btn.setHorizontalAlignment(SwingConstants.LEFT);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btn.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) {
-                if (btn != selectedButton) btn.setBackground(UIStyles.SIDEBAR_HOVER);
-            }
-            public void mouseExited(MouseEvent e) {
-                if (btn != selectedButton) btn.setBackground(UIStyles.SIDEBAR_BG);
-            }
-        });
         return btn;
     }
 
+    private void crearLogOut(){
+
+        btnLogout = createSidebarButton("\uD83D\uDEAA  Cerrar Sesi\u00F3n");
+        btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnLogout.setForeground(new Color(200, 120, 120));
+        btnLogout.addActionListener(e -> logout());
+        btnLogout.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                btnLogout.setBackground(UIStyles.SIDEBAR_HOVER);
+            }
+            public void mouseExited(MouseEvent e) {
+                btnLogout.setBackground(UIStyles.SIDEBAR_BG);
+            }
+        });
+
+    }
     private JPanel createMainPanel() {
-        JPanel main = new JPanel(new BorderLayout());
-        main.setBackground(UIStyles.BG_LIGHT);
+
+        JPanel main = new JPanel(null);
+        main.setBounds(0, 0, screenSize.width, screenSize.height);
 
         JPanel header = createHeader();
-        main.add(header, BorderLayout.NORTH);
+        main.add(header);
 
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout);
         contentPanel.setBackground(UIStyles.BG_LIGHT);
+        contentPanel.setBounds(0, (int) (screenSize.height*0.061), screenSize.width, (int) (screenSize.height*0.94));
 
-        contentPanel.add(new WelcomePanel(user), "welcome");
+
+        WelcomePanel welcomePanel = new WelcomePanel(user);
+        contentPanel.add(welcomePanel, "welcome");
         contentPanel.add(new UsersPanel(), "users");
         contentPanel.add(new ClientsPanel(), "clients");
         contentPanel.add(new PoliciesPanel(), "policies");
@@ -236,78 +184,88 @@ public class HomeView extends JFrame {
         contentPanel.add(new IncidentsPanel(), "incidents");
         contentPanel.add(new ReportsPanel(), "reports");
 
-        main.add(contentPanel, BorderLayout.CENTER);
+        addMovement(welcomePanel.getControllers());
+        main.add(contentPanel);
 
         return main;
     }
 
+    private void addMovement(ArrayList<JButton> controllers) {
+        for(int i=0; i< controllers.size(); i++ ){
+            JButton button = controllers.get(i);
+            int finalI = i+1;
+            button.addActionListener(e -> showPanel(codes.get(finalI), button.getName()));
+        }
+    }
+
+    private void createCodes() {
+        codes.add("welcome");
+        codes.add("users");
+        codes.add("clients");
+        codes.add("policies");
+        codes.add("claims");
+        codes.add( "incidents");
+        codes.add( "reports");
+    }
+
     private JPanel createHeader() {
-        JPanel header = new JPanel(new BorderLayout());
+        JPanel header = new JPanel(null);
+
         header.setBackground(UIStyles.CARD_BG);
         header.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 0, UIStyles.BORDER),
                 BorderFactory.createEmptyBorder(12, 28, 12, 28)));
 
+        crearLogOut();
+        btnLogout.setBounds((int) (screenSize.width*0.86), (int) (screenSize.height*0.01), (int) (screenSize.width*0.12), (int) (screenSize.height*0.04));
+        header.add(btnLogout);
+
+        header.setBounds(0, 0, screenSize.width, (int) (screenSize.height*0.06));
+
         headerTitle = new JLabel("Inicio");
         headerTitle.setFont(UIStyles.FONT_HEADER);
         headerTitle.setForeground(UIStyles.TEXT_PRIMARY);
-        header.add(headerTitle, BorderLayout.WEST);
+        headerTitle.setHorizontalAlignment(SwingConstants.LEFT);
+        headerTitle.setBounds((int) (screenSize.width*0.017), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
+        header.add(headerTitle);
 
-        JPanel userInfo = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        JPanel userInfo = new JPanel(null);
+        userInfo.setBounds((int) (screenSize.width*0.7), (int) (screenSize.height*0.008), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
         userInfo.setOpaque(false);
 
         JLabel avatar = new JLabel("\uD83D\uDC64");
         avatar.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
+        avatar.setBounds((int) (screenSize.width*0.001), (int) (screenSize.height*0.004), (int) (screenSize.width*0.05), (int) (screenSize.height*0.05));
         userInfo.add(avatar);
 
-        JLabel userName = new JLabel(user.getFullName());
+        JLabel userName = new JLabel(user.getUsername());
         userName.setFont(UIStyles.FONT_BODY);
         userName.setForeground(UIStyles.TEXT_PRIMARY);
+        userName.setHorizontalAlignment(SwingConstants.LEFT);
+        userName.setBounds((int) (screenSize.width*0.06), (int) (screenSize.height*0.001), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
         userInfo.add(userName);
 
-        JLabel roleLabel = new JLabel(user.getUsername());
-        roleLabel.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        roleLabel.setForeground(UIStyles.TEXT_SECONDARY);
-        roleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 4));
-        userInfo.add(roleLabel);
+        createBtnRet();
+        header.add(retWelcom);
 
-        JPanel statusDot = new JPanel();
-        statusDot.setBackground(UIStyles.CARD_GREEN);
-        statusDot.setPreferredSize(new Dimension(8, 8));
-        statusDot.setMinimumSize(new Dimension(8, 8));
-        statusDot.setMaximumSize(new Dimension(8, 8));
-        userInfo.add(statusDot);
-
-        header.add(userInfo, BorderLayout.EAST);
+        header.add(userInfo);
 
         return header;
     }
 
-    private void showPanel(String panelId, String panelLabel, JButton btn) {
-        if (selectedButton != null) {
-            selectedButton.setBackground(UIStyles.SIDEBAR_BG);
-            selectedButton.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 3, 0, 0, UIStyles.SIDEBAR_BG),
-                    BorderFactory.createEmptyBorder(10, 14, 10, 14)));
-        }
-
-        btn.setBackground(UIStyles.SIDEBAR_SELECTED);
-        btn.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 3, 0, 0, UIStyles.PRIMARY),
-                BorderFactory.createEmptyBorder(10, 14, 10, 14)));
-        selectedButton = btn;
-
+    private void showPanel(String panelId, String panelLabel) {
         String id = "welcome".equals(panelId) ? "welcome" : panelId;
-        cardLayout.show(contentPanel, id);
 
+        cardLayout.show(contentPanel, id);
+        if(id.equals("welcome"))
+            changeVisible = false;
+        else changeVisible=true;
         headerTitle.setText(panelLabel);
-        setTitle("Sistema de Seguros - " + panelLabel);
+
     }
 
     private void logout() {
-        SessionManager.logout();
-        LoginView login = new LoginView();
-        login.setVisible(true);
-        dispose();
+        ConfirmationPanel exit = new ConfirmationPanel(this, true);
+        exit.setVisible(true);
     }
 }
