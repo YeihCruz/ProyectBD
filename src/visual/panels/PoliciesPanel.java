@@ -1,5 +1,7 @@
 package visual.panels;
 
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 import models.Client;
 import models.InsuranceType;
 import models.Policy;
@@ -25,15 +27,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 public class PoliciesPanel extends JPanel {
@@ -44,8 +41,11 @@ public class PoliciesPanel extends JPanel {
     private final PolicyStatusServices policyStatusServices = new PolicyStatusServices();
     private final JTable table;
     private final DefaultTableModel tableModel;
+    private Dimension screenSize;
+
 
     public PoliciesPanel() {
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -121,20 +121,37 @@ public class PoliciesPanel extends JPanel {
     private void showForm(Policy existing) {
         boolean isEdit = existing != null;
 
-        JDialog dialog = new JDialog((JFrame) null, isEdit ? "Editar P\u00F3liza" : "Nueva P\u00F3liza", true);
-        dialog.setSize(480, 480);
-        dialog.setLocationRelativeTo(null);
+        JDialog dialog = new JDialog((JFrame) null, true);
+        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.25), (int) (screenSize.width*0.36), (int) (screenSize.height*0.5));
+        dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JPanel form = new JPanel(new GridBagLayout());
-        form.setBackground(UIStyles.CARD_BG);
+        JLabel header = new JLabel(isEdit ? "Editar Poliza " : "Nueva Poliza");
+        header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
+        header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
+        header.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel form = new JPanel(null);
+        form.setBounds(0, 0  ,(int) (screenSize.width*0.4), (int) (screenSize.height*0.6));
+        form.setBackground(new Color(200, 200, 200 ));
         form.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
+
+        form.add(header);
+
+        JLabel lClient = new JLabel("Cliente");
+        JLabel lType = new JLabel("Tipo de Poliza");
+        JLabel lStatus = new JLabel("Estado de la Poliza");
+        JLabel lStart = new JLabel("Fecha de inicio");
+        JLabel lEnd = new JLabel("Fecha de Terminacion");
+        JLabel lPremium = new JLabel("Premium");
+        JLabel lInsured = new JLabel("Asegurado");
+        JLabel lCancelReason = new JLabel("Razon de la cancelacion");
 
         JComboBox<String> cmbClient = new JComboBox<>();
         JComboBox<String> cmbType = new JComboBox<>();
         JComboBox<String> cmbStatus = new JComboBox<>();
-        JTextField txtStart = new JTextField(12);
-        JTextField txtEnd = new JTextField(12);
+        JDateChooser calStart = new JDateChooser();
+        JDateChooser calEnd = new JDateChooser();
         JTextField txtPremium = new JTextField(12);
         JTextField txtInsured = new JTextField(12);
         JTextField txtCancelReason = new JTextField(12);
@@ -147,8 +164,56 @@ public class PoliciesPanel extends JPanel {
         for (InsuranceType t : types) cmbType.addItem(t.getDescription());
         for (PolicyStatus s : statuses) cmbStatus.addItem(s.getDescription());
 
-        JTextField[] fields = {txtStart, txtEnd, txtPremium, txtInsured, txtCancelReason};
-        for (JTextField f : fields) UIStyles.styleField(f);
+        lClient.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lClient.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lClient.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbClient.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbClient.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lType.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lType.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lType.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbType.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbType.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lStart.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lStart.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lStart.setHorizontalAlignment(SwingConstants.LEFT);
+        calStart.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        calStart.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lEnd.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lEnd.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lEnd.setHorizontalAlignment(SwingConstants.LEFT);
+        calEnd.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        calEnd.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+
+        //segunda fila
+        lStatus.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lStatus.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lStatus.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbStatus.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbStatus.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lPremium.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lPremium.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lPremium.setHorizontalAlignment(SwingConstants.LEFT);
+        txtPremium.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtPremium.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lInsured.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lInsured.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lInsured.setHorizontalAlignment(SwingConstants.LEFT);
+        txtInsured.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtInsured.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lCancelReason.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lCancelReason.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lCancelReason.setHorizontalAlignment(SwingConstants.LEFT);
+        txtCancelReason.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtCancelReason.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
 
         if (isEdit) {
             for (int i = 0; i < clients.size(); i++)
@@ -156,40 +221,46 @@ public class PoliciesPanel extends JPanel {
             for (int i = 0; i < types.size(); i++)
                 if (types.get(i).getInsuranceTypeId() == existing.getInsuranceTypeId()) cmbType.setSelectedIndex(i);
             for (int i = 0; i < statuses.size(); i++)
-                if (statuses.get(i).getPolicyStatusId() == existing.getPolicyStatusId()) cmbStatus.setSelectedIndex(i);
-            txtStart.setText(existing.getStartDate().toString());
-            txtEnd.setText(existing.getEndDate().toString());
+                if (statuses.get(i).getPolicyStatusId() == existing.getPolicyStatusId())
+                    cmbStatus.setSelectedIndex(i);
             txtPremium.setText(String.valueOf(existing.getMonthlyPremium()));
             txtInsured.setText(String.valueOf(existing.getInsuredAmount()));
             txtCancelReason.setText(existing.getCancellationReason());
+            calStart.setDate(Date.from(existing.getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            calEnd.setDate(Date.from(existing.getEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         } else {
-            txtStart.setText(LocalDate.now().toString());
-            txtEnd.setText(LocalDate.now().plusYears(1).toString());
+
         }
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.fill = GridBagConstraints.HORIZONTAL; c.anchor = GridBagConstraints.WEST;
+        form.add(cmbClient);
+        form.add(cmbType);
+        form.add(cmbStatus);
+        form.add(calStart);
+        form.add(calEnd);
+        form.add(txtPremium);
+        form.add(txtInsured);
+        form.add(txtCancelReason);
 
-        int row = 0;
-        addField(form, c, row++, "Cliente", cmbClient);
-        addField(form, c, row++, "Tipo de Seguro", cmbType);
-        addField(form, c, row++, "Estado", cmbStatus);
-        addField(form, c, row++, "Fecha Inicio (YYYY-MM-DD)", txtStart);
-        addField(form, c, row++, "Fecha Fin (YYYY-MM-DD)", txtEnd);
-        addField(form, c, row++, "Prima Mensual", txtPremium);
-        addField(form, c, row++, "Monto Asegurado", txtInsured);
-        addField(form, c, row, "Raz\u00F3n Cancelaci\u00F3n", txtCancelReason);
-
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttons.setOpaque(false);
+        form.add(lClient);
+        form.add(lType);
+        form.add(lStatus);
+        form.add(lStart);
+        form.add(lEnd);
+        form.add(lPremium);
+        form.add(lInsured);
+        form.add(lCancelReason);
 
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
+        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
         JButton btnCancel = UIStyles.createSecondaryButton("Cancelar");
+        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
 
         btnSave.addActionListener(e -> {
             try {
-                LocalDate start = LocalDate.parse(txtStart.getText().trim());
-                LocalDate end = LocalDate.parse(txtEnd.getText().trim());
+                Date dateStart= calStart.getDate();
+                LocalDate start = dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Date dateEnd = calStart.getDate();
+                LocalDate end = dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 double premium = Double.parseDouble(txtPremium.getText().trim());
                 double insured = Double.parseDouble(txtInsured.getText().trim());
 
@@ -198,9 +269,9 @@ public class PoliciesPanel extends JPanel {
                 int statusId = statuses.get(cmbStatus.getSelectedIndex()).getPolicyStatusId();
 
                 Policy p = new Policy(
-                    isEdit ? existing.getPolicyNumber() : 0,
-                    clientId, typeId, statusId, start, end,
-                    premium, insured, txtCancelReason.getText().trim()
+                        isEdit ? existing.getPolicyNumber() : 0,
+                        clientId, typeId, statusId, start, end,
+                        premium, insured, txtCancelReason.getText().trim()
                 );
 
                 if (isEdit) policyServices.updatePolicy(p);
@@ -215,18 +286,10 @@ public class PoliciesPanel extends JPanel {
 
         btnCancel.addActionListener(e -> dialog.dispose());
 
-        buttons.add(btnCancel);
-        buttons.add(btnSave);
+        form.add(btnCancel);
+        form.add(btnSave);
 
-        JPanel root = new JPanel(new BorderLayout());
-        root.setBackground(UIStyles.CARD_BG);
-        root.add(form, BorderLayout.CENTER);
-        root.add(buttons, BorderLayout.SOUTH);
-        root.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UIStyles.BORDER, 1),
-                BorderFactory.createEmptyBorder(0, 0, 15, 15)));
-
-        dialog.add(root);
+        dialog.add(form);
         dialog.setVisible(true);
     }
 

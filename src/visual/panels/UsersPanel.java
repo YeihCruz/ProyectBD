@@ -1,5 +1,6 @@
 package visual.panels;
 
+import models.Agency;
 import models.Role;
 import models.User;
 import services.RoleServices;
@@ -23,14 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.util.List;
 
 public class UsersPanel extends JPanel {
@@ -39,8 +33,10 @@ public class UsersPanel extends JPanel {
     private final RoleServices roleServices = new RoleServices();
     private final JTable table;
     private final DefaultTableModel tableModel;
+    private Dimension screenSize;
 
     public UsersPanel() {
+        screenSize= Toolkit.getDefaultToolkit().getScreenSize();
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -112,24 +108,34 @@ public class UsersPanel extends JPanel {
     private void showForm(User existing) {
         boolean isEdit = existing != null;
 
-        JDialog dialog = new JDialog((JFrame) null, isEdit ? "Editar Usuario" : "Nuevo Usuario", true);
-        dialog.setSize(420, 420);
-        dialog.setLocationRelativeTo(null);
+        JDialog dialog = new JDialog((JFrame) null, true);
+        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.29), (int) (screenSize.width*0.36), (int) (screenSize.height*0.42));
+        dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JPanel form = new JPanel(new GridBagLayout());
-        form.setBackground(UIStyles.CARD_BG);
-        form.setBorder(BorderFactory.createEmptyBorder(20, 25, 20, 25));
+        JLabel header = new JLabel(isEdit ? "Editar Usuario " : "Nuevo Usuario");
+        header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
+        header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
+        header.setHorizontalAlignment(SwingConstants.CENTER);
 
+        JPanel form = new JPanel(null);
+        form.setBounds(0, 0  ,(int) (screenSize.width*0.4), (int) (screenSize.height*0.6));
+        form.setBackground(new Color(200, 200, 200 ));
+        form.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
+
+        form.add(header);
+
+        JLabel lName = new JLabel("Nombre");
         JTextField txtUsername = new JTextField(15);
+        JLabel lPass = new JLabel("Contrasena");
         JPasswordField txtPassword = new JPasswordField(15);
+        JLabel lFullN = new JLabel("Nombre Completo");
         JTextField txtFullName = new JTextField(15);
+        JLabel lRole = new JLabel("Rol");
         JComboBox<String> cmbRole = new JComboBox<>();
+        JLabel lActive = new JLabel("Activo");
         JCheckBox chkActive = new JCheckBox("Usuario activo");
 
-        UIStyles.styleField(txtUsername);
-        UIStyles.styleField(txtPassword);
-        UIStyles.styleField(txtFullName);
 
         List<Role> roles = roleServices.getAllRoles();
         int selectedRoleIdx = 0;
@@ -150,41 +156,52 @@ public class UsersPanel extends JPanel {
             chkActive.setSelected(true);
         }
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.gridy = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.WEST;
-        c.insets = new Insets(0, 0, 4, 0);
+        lName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lName.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lName.setHorizontalAlignment(SwingConstants.LEFT);
+        txtUsername.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtUsername.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        form.add(UIStyles.createFieldLabel("Usuario"), c);
-        c.gridy = 1; c.insets = new Insets(0, 0, 10, 0);
-        form.add(txtUsername, c);
+        lPass.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lPass.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lPass.setHorizontalAlignment(SwingConstants.LEFT);
+        txtPassword.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtPassword.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        c.gridy = 2; c.insets = new Insets(0, 0, 4, 0);
-        form.add(UIStyles.createFieldLabel("Contrase\u00F1a"), c);
-        c.gridy = 3; c.insets = new Insets(0, 0, 10, 0);
-        form.add(txtPassword, c);
+        lFullN.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lFullN.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lFullN.setHorizontalAlignment(SwingConstants.LEFT);
+        txtFullName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtFullName.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        c.gridy = 4; c.insets = new Insets(0, 0, 4, 0);
-        form.add(UIStyles.createFieldLabel("Nombre Completo"), c);
-        c.gridy = 5; c.insets = new Insets(0, 0, 10, 0);
-        form.add(txtFullName, c);
+        lRole.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lRole.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lRole.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbRole.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbRole.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        c.gridy = 6; c.insets = new Insets(0, 0, 4, 0);
-        form.add(UIStyles.createFieldLabel("Rol"), c);
-        c.gridy = 7; c.insets = new Insets(0, 0, 10, 0);
-        form.add(cmbRole, c);
+        lActive.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lActive.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lActive.setHorizontalAlignment(SwingConstants.LEFT);
+        chkActive.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        chkActive.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        c.gridy = 8; c.insets = new Insets(0, 0, 0, 0);
-        chkActive.setFont(UIStyles.FONT_BODY);
-        chkActive.setBackground(UIStyles.CARD_BG);
-        form.add(chkActive, c);
+        form.add(lName);
+        form.add(lPass);
+        form.add(lFullN);
+        form.add(lRole);
+        form.add(lActive);
 
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttons.setOpaque(false);
+        form.add(txtUsername);
+        form.add(txtPassword);
+        form.add(txtFullName);
+        form.add(cmbRole);
+        form.add(chkActive);
 
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
+        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.32), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
         JButton btnCancel = UIStyles.createSecondaryButton("Cancelar");
+        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.32), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
 
         btnSave.addActionListener(e -> {
             String user = txtUsername.getText().trim();
@@ -192,7 +209,8 @@ public class UsersPanel extends JPanel {
             String full = txtFullName.getText().trim();
 
             if (user.isEmpty() || pass.isEmpty() || full.isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "Complete todos los campos.", "Validaci\u00F3n", JOptionPane.WARNING_MESSAGE);
+                MessagePanel mp = new MessagePanel( null, true, "Por favor llenar todos los campos antes de continuar");
+                mp.setVisible(true);
                 return;
             }
 
@@ -213,27 +231,18 @@ public class UsersPanel extends JPanel {
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
-
-        buttons.add(btnCancel);
-        buttons.add(btnSave);
-
-        JPanel root = new JPanel(new BorderLayout());
-        root.setBackground(UIStyles.CARD_BG);
-        root.add(form, BorderLayout.CENTER);
-        root.add(buttons, BorderLayout.SOUTH);
-        root.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UIStyles.BORDER, 1),
-                BorderFactory.createEmptyBorder(0, 0, 15, 15)));
-
-        dialog.add(root);
+        form.add(btnCancel);
+        form.add(btnSave);
+        dialog.add(form);
         dialog.setVisible(true);
     }
 
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un usuario de la tabla.", "Editar", JOptionPane.INFORMATION_MESSAGE);
-            return;
+            MessagePanel mp = new MessagePanel( null, true, "Seleccione un usuario de la tabla");
+            mp.setVisible(true);
+           return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
         List<User> users = userServices.getAllUsers();
@@ -248,7 +257,8 @@ public class UsersPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un usuario de la tabla.", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+            MessagePanel mp = new MessagePanel( null, true, "Seleccione un usuario de la tabla");
+            mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);

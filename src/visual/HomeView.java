@@ -182,6 +182,7 @@ public class HomeView extends JFrame {
         contentPanel.add(new PoliciesPanel(), "policies");
         contentPanel.add(new ClaimsPanel(), "claims");
         contentPanel.add(new IncidentsPanel(), "incidents");
+        contentPanel.add(new AgencyPanel(), "agencys");
         contentPanel.add(new ReportsPanel(), "reports");
 
         addMovement(welcomePanel.getControllers());
@@ -205,6 +206,7 @@ public class HomeView extends JFrame {
         codes.add("policies");
         codes.add("claims");
         codes.add( "incidents");
+        codes.add("agencys");
         codes.add( "reports");
     }
 

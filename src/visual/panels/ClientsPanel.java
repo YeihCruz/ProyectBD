@@ -25,14 +25,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.util.List;
 
 public class ClientsPanel extends JPanel {
@@ -43,9 +36,11 @@ public class ClientsPanel extends JPanel {
     private final CountryServices countryServices = new CountryServices();
     private final JTable table;
     private final DefaultTableModel tableModel;
+    private Dimension screenSize;
 
     public ClientsPanel() {
         setBackground(UIStyles.BG_LIGHT);
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -107,14 +102,33 @@ public class ClientsPanel extends JPanel {
     private void showForm(Client existing) {
         boolean isEdit = existing != null;
 
-        JDialog dialog = new JDialog((JFrame) null, isEdit ? "Editar Cliente" : "Nuevo Cliente", true);
-        dialog.setSize(480, 520);
-        dialog.setLocationRelativeTo(null);
+        JDialog dialog = new JDialog((JFrame) null, true);
+        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.21), (int) (screenSize.width*0.36), (int) (screenSize.height*0.58));
+        dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JPanel form = new JPanel(new GridBagLayout());
-        form.setBackground(UIStyles.CARD_BG);
+        JLabel header = new JLabel(isEdit ? "Editar Cliente " : "Nuevo Cliente");
+        header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
+        header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
+        header.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel form = new JPanel(null);
+        form.setBounds(0, 0  ,(int) (screenSize.width*0.4), (int) (screenSize.height*0.6));
+        form.setBackground(new Color(200, 200, 200 ));
         form.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
+
+        form.add(header);
+
+        JLabel lFirstNAme = new JLabel("Primer Nombre");
+        JLabel lLastName = new JLabel("Apellido");
+        JLabel lIdNumb = new JLabel("Numero de Id");
+        JLabel lAge = new JLabel("Edad");
+        JLabel lAddress = new JLabel("Direcci\u00F3n");
+        JLabel lPhone = new JLabel("Telefono");
+        JLabel lEmail = new JLabel("Email");
+        JLabel lAgency = new JLabel("Agencia");
+        JLabel lGender = new JLabel("Genero");
+        JLabel lCountry = new JLabel("Pais");
 
         JTextField txtFirstName = new JTextField(15);
         JTextField txtLastName = new JTextField(15);
@@ -132,12 +146,73 @@ public class ClientsPanel extends JPanel {
         List<Gender> genders = genderServices.getAllGenders();
         List<Country> countries = countryServices.getAllCountries();
 
+        lFirstNAme.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lFirstNAme.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lFirstNAme.setHorizontalAlignment(SwingConstants.LEFT);
+        txtFirstName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtFirstName.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lLastName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lLastName.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lLastName.setHorizontalAlignment(SwingConstants.LEFT);
+        txtLastName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtLastName.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lIdNumb.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lIdNumb.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lIdNumb.setHorizontalAlignment(SwingConstants.LEFT);
+        txtIdNumber.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtIdNumber.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lAge.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lAge.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lAge.setHorizontalAlignment(SwingConstants.LEFT);
+        txtAge.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtAge.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lAddress.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.375), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lAddress.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lAddress.setHorizontalAlignment(SwingConstants.LEFT);
+        txtAddress.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.41), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtAddress.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        //segunda fila
+        lPhone.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lPhone.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lPhone.setHorizontalAlignment(SwingConstants.LEFT);
+        txtPhone.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtPhone.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lEmail.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lEmail.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lEmail.setHorizontalAlignment(SwingConstants.LEFT);
+        txtEmail.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtEmail.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lAgency.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lAgency.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lAgency.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbAgency.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbAgency.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lGender.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lGender.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lGender.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbGender.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbGender.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lCountry.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.375), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lCountry.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lCountry.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbCountry.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.41), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbCountry.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+
         for (Agency a : agencies) cmbAgency.addItem(a.getName());
         for (Gender g : genders) cmbGender.addItem(g.getDescription());
         for (Country c : countries) cmbCountry.addItem(c.getName());
 
-        JTextField[] fields = {txtFirstName, txtLastName, txtIdNumber, txtAge, txtAddress, txtPhone, txtEmail};
-        for (JTextField f : fields) UIStyles.styleField(f);
+
 
         if (isEdit) {
             txtFirstName.setText(existing.getFirstName());
@@ -155,32 +230,40 @@ public class ClientsPanel extends JPanel {
             for (int i = 0; i < countries.size(); i++)
                 if (countries.get(i).getCountryId() == existing.getCountryId()) cmbCountry.setSelectedIndex(i);
         }
+        form.add(txtFirstName);
+        form.add(txtLastName);
+        form.add(txtIdNumber);
+        form.add(txtAge);
+        form.add(txtAddress);
+        form.add(txtPhone);
+        form.add(txtEmail);
+        form.add(cmbAgency);
+        form.add(cmbGender);
+        form.add(cmbCountry);
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.fill = GridBagConstraints.HORIZONTAL; c.anchor = GridBagConstraints.WEST;
 
-        int row = 0;
-        addField(form, c, row++, "Nombres", txtFirstName);
-        addField(form, c, row++, "Apellidos", txtLastName);
-        addField(form, c, row++, "Identificaci\u00F3n", txtIdNumber);
-        addField(form, c, row++, "Edad", txtAge);
-        addField(form, c, row++, "Direcci\u00F3n", txtAddress);
-        addField(form, c, row++, "Tel\u00E9fono", txtPhone);
-        addField(form, c, row++, "Email", txtEmail);
+        form.add(lFirstNAme);
+        form.add(lLastName);
+        form.add(lIdNumb);
+        form.add(lAge);
+        form.add(lAddress);
+        form.add(lPhone);
+        form.add(lEmail);
+        form.add(lAgency);
+        form.add(lGender);
+        form.add(lCountry);
 
-        addField(form, c, row++, "Agencia", cmbAgency);
-        addField(form, c, row++, "G\u00E9nero", cmbGender);
-        addField(form, c, row, "Pa\u00EDs", cmbCountry);
-
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttons.setOpaque(false);
 
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
+        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.48), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+
         JButton btnCancel = UIStyles.createSecondaryButton("Cancelar");
+        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.48), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
 
         btnSave.addActionListener(e -> {
             if (txtFirstName.getText().trim().isEmpty() || txtLastName.getText().trim().isEmpty()) {
-                JOptionPane.showMessageDialog(dialog, "Nombre y apellidos son obligatorios.", "Validaci\u00F3n", JOptionPane.WARNING_MESSAGE);
+                MessagePanel mp = new MessagePanel( null, true, "Nombre y apellido son obligatorios");
+                mp.setVisible(true);
                 return;
             }
             int age;
@@ -208,34 +291,18 @@ public class ClientsPanel extends JPanel {
 
         btnCancel.addActionListener(e -> dialog.dispose());
 
-        buttons.add(btnCancel);
-        buttons.add(btnSave);
+        form.add(btnCancel);
+        form.add(btnSave);
 
-        JPanel root = new JPanel(new BorderLayout());
-        root.setBackground(UIStyles.CARD_BG);
-        root.add(form, BorderLayout.CENTER);
-        root.add(buttons, BorderLayout.SOUTH);
-        root.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UIStyles.BORDER, 1),
-                BorderFactory.createEmptyBorder(0, 0, 15, 15)));
-
-        dialog.add(root);
+        dialog.add(form);
         dialog.setVisible(true);
-    }
-
-    private void addField(JPanel panel, GridBagConstraints c, int row, String label, Object component) {
-        c.gridy = row * 2;
-        c.insets = new Insets(0, 0, 4, 0);
-        panel.add(UIStyles.createFieldLabel(label), c);
-        c.gridy = row * 2 + 1;
-        c.insets = new Insets(0, 0, 8, 0);
-        panel.add((java.awt.Component) component, c);
     }
 
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla.", "Editar", JOptionPane.INFORMATION_MESSAGE);
+            MessagePanel mp = new MessagePanel( null, true, "Seleccione un cliente de la tabla");
+            mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
@@ -246,7 +313,8 @@ public class ClientsPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un cliente de la tabla.", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+            MessagePanel mp = new MessagePanel( null, true, "Seleccione un cliente de la tabla");
+            mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
