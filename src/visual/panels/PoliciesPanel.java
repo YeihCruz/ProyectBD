@@ -139,7 +139,7 @@ public class PoliciesPanel extends JPanel {
         form.add(header);
 
         JLabel lClient = new JLabel("Cliente");
-        JLabel lType = new JLabel("Tipo de Poliza");
+        JLabel lType = new JLabel("Tipo de Seguro");
         JLabel lStatus = new JLabel("Estado de la Poliza");
         JLabel lStart = new JLabel("Fecha de inicio");
         JLabel lEnd = new JLabel("Fecha de Terminacion");
@@ -214,7 +214,6 @@ public class PoliciesPanel extends JPanel {
         txtCancelReason.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtCancelReason.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-
         if (isEdit) {
             for (int i = 0; i < clients.size(); i++)
                 if (clients.get(i).getClientId() == existing.getClientId()) cmbClient.setSelectedIndex(i);
@@ -229,6 +228,8 @@ public class PoliciesPanel extends JPanel {
             calStart.setDate(Date.from(existing.getStartDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             calEnd.setDate(Date.from(existing.getEndDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         } else {
+            calStart.setDate(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            calEnd.setDate(Date.from(LocalDate.now().plusMonths(1).atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         }
 
@@ -259,7 +260,7 @@ public class PoliciesPanel extends JPanel {
             try {
                 Date dateStart= calStart.getDate();
                 LocalDate start = dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                Date dateEnd = calStart.getDate();
+                Date dateEnd = calEnd.getDate();
                 LocalDate end = dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 double premium = Double.parseDouble(txtPremium.getText().trim());
                 double insured = Double.parseDouble(txtInsured.getText().trim());

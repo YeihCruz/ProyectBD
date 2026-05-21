@@ -20,10 +20,23 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ReportsPanel extends JPanel {
 
+    private Timer timer;
+    private TimerTask timerTask;
+    private  List<Client> clients;
+    private List<Policy> policies;
+    private  List<Claim> claims;
+    private  long activePolicies;
+    private long openClaims;
+    private  double totalClaimed;
+    private double totalCompensated;
+    private JPanel metricsGrid;
     public ReportsPanel() {
+
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -34,23 +47,10 @@ public class ReportsPanel extends JPanel {
         title.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         add(title, BorderLayout.NORTH);
 
-        JPanel metricsGrid = new JPanel(new GridLayout(2, 3, 15, 15));
+        metricsGrid = new JPanel(new GridLayout(2, 3, 15, 15));
         metricsGrid.setOpaque(false);
 
-        List<Client> clients = new ClientServices().getAllClients();
-        List<Policy> policies = new PolicyServices().getAllPolicies();
-        List<Claim> claims = new ClaimServices().getAllClaims();
-
-        long activePolicies = policies.stream().filter(p -> {
-            try { return p.getPolicyStatusId() == 1; } catch (Exception e) { return false; }
-        }).count();
-
-        long openClaims = claims.stream().filter(c -> {
-            try { return c.getClaimStatusId() == 1; } catch (Exception e) { return false; }
-        }).count();
-
-        double totalClaimed = claims.stream().mapToDouble(Claim::getClaimedAmount).sum();
-        double totalCompensated = claims.stream().mapToDouble(Claim::getCompensatedAmount).sum();
+        createMetrics();
 
         metricsGrid.add(createMetricCard("Total Clientes", String.valueOf(clients.size()), UIStyles.CARD_BLUE));
         metricsGrid.add(createMetricCard("Total P\u00F3lizas", String.valueOf(policies.size()), UIStyles.CARD_GREEN));
@@ -91,7 +91,39 @@ public class ReportsPanel extends JPanel {
 
         add(new JScrollPane(wrapper, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
+
+        timer = new Timer();
+        timerTask= new TimerTask() {
+            @Override
+            public void run() {
+                createMetrics();
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 5000);
     }
+
+    private void createMetrics() {
+
+
+        clients= new ClientServices().getAllClients();
+        policies  = new PolicyServices().getAllPolicies();
+        claims = new ClaimServices().getAllClaims();
+
+        activePolicies = policies.stream().filter(p -> {
+             try { return p.getPolicyStatusId() == 1; } catch (Exception e) { return false; }
+         }).count();
+
+        openClaims = claims.stream().filter(c -> {
+             try { return c.getClaimStatusId() == 1; } catch (Exception e) { return false; }
+         }).count();
+
+        totalClaimed= claims.stream().mapToDouble(Claim::getClaimedAmount).sum();
+        totalCompensated = claims.stream().mapToDouble(Claim::getCompensatedAmount).sum();
+
+        metricsGrid.revalidate();
+        metricsGrid.repaint();
+
+         }
 
     private JPanel createMetricCard(String label, String value, Color accent) {
         JPanel card = new JPanel(new GridBagLayout());

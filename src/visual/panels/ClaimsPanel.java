@@ -133,8 +133,8 @@ public class ClaimsPanel extends JPanel {
         form.add(header);
 
         JLabel lPolicy = new JLabel("Poliza");
-        JLabel lType = new JLabel("Tipo de Poliza");
-        JLabel lStatus = new JLabel("Estado de la Poliza");
+        JLabel lType = new JLabel("Tipo de Siniestro");
+        JLabel lStatus = new JLabel("Estado de la Reclamacion");
         JLabel lDate = new JLabel("Fecha");
         JLabel lClaimed = new JLabel("Reclamado");
         JLabel lCompensated = new JLabel("Compensado");

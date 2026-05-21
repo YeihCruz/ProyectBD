@@ -212,8 +212,9 @@ public class ClientsPanel extends JPanel {
         for (Gender g : genders) cmbGender.addItem(g.getDescription());
         for (Country c : countries) cmbCountry.addItem(c.getName());
 
-
-
+        JOptionPane.showMessageDialog(null, agencies);
+        JOptionPane.showMessageDialog(null, genders);
+        JOptionPane.showMessageDialog(null, countries);
         if (isEdit) {
             txtFirstName.setText(existing.getFirstName());
             txtLastName.setText(existing.getLastName());

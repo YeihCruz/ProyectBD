@@ -44,11 +44,7 @@ public class HomeView extends JFrame {
         setLayout(null);
 
         add(createMainPanel());
-        /*
-        JLabel brandIcon = new JLabel("\uD83D\uDEE1\uFE0F", SwingConstants.CENTER);
-        brandIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 28));
-        bc.insets = new Insets(22, 0, 2, 0);
-        brandPanel.add(brandIcon, bc);*/
+
 
         timer = new Timer();
         task = new TimerTask() {
@@ -205,9 +201,9 @@ public class HomeView extends JFrame {
         codes.add("clients");
         codes.add("policies");
         codes.add("claims");
-        codes.add( "incidents");
+        codes.add("incidents");
         codes.add("agencys");
-        codes.add( "reports");
+        codes.add("reports");
     }
 
     private JPanel createHeader() {
@@ -244,7 +240,7 @@ public class HomeView extends JFrame {
         userName.setFont(UIStyles.FONT_BODY);
         userName.setForeground(UIStyles.TEXT_PRIMARY);
         userName.setHorizontalAlignment(SwingConstants.LEFT);
-        userName.setBounds((int) (screenSize.width*0.06), (int) (screenSize.height*0.001), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+        userName.setBounds((int) (screenSize.width*0.02), (int) (screenSize.height*0.001), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
         userInfo.add(userName);
 
         createBtnRet();
