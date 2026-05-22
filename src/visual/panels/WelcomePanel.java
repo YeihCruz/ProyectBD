@@ -29,7 +29,6 @@ public class WelcomePanel extends JPanel {
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-
         setBackground(UIStyles.BG_LIGHT);
         setLayout(null);
         setBorder(BorderFactory.createEmptyBorder(28, 28, 28, 28));
