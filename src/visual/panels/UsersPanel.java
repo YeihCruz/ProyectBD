@@ -7,24 +7,12 @@ import services.RoleServices;
 import services.UserServices;
 import visual.UIStyles;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class UsersPanel extends JPanel {
@@ -231,23 +219,44 @@ public class UsersPanel extends JPanel {
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
+
+        InputMap inputMap = btnSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSave.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+        inputMap.put(keyStroke, "activateBut");
+        actionMap.put("activateBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSave.doClick();
+            }
+        });
+
         form.add(btnCancel);
         form.add(btnSave);
+
         dialog.add(form);
         dialog.setVisible(true);
     }
 
     private void editSelected() {
         int row = table.getSelectedRow();
+        JOptionPane.showMessageDialog(null, row);
         if (row < 0) {
             MessagePanel mp = new MessagePanel( null, true, "Seleccione un usuario de la tabla");
             mp.setVisible(true);
            return;
         }
+
         int id = (int) tableModel.getValueAt(row, 0);
+        JOptionPane.showMessageDialog(null, id);
+
         List<User> users = userServices.getAllUsers();
+        JOptionPane.showMessageDialog(null, users.size());
         for (User u : users) {
             if (u.getUserId() == id) {
+                JOptionPane.showMessageDialog(null, u.getFullName());
                 showForm(u);
                 return;
             }

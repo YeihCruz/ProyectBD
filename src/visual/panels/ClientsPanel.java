@@ -10,22 +10,13 @@ import services.CountryServices;
 import services.GenderServices;
 import visual.UIStyles;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class ClientsPanel extends JPanel {
@@ -138,6 +129,83 @@ public class ClientsPanel extends JPanel {
         JTextField txtPhone = new JTextField(15);
         JTextField txtEmail = new JTextField(15);
 
+        txtFirstName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtFirstName.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isLetter(c)  && c!=' ') {
+                    e.consume();
+                }else if(large>=80) {
+                    e.consume();
+                }
+            }
+        });
+
+        txtLastName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtLastName.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isLetter(c) &&  c!=' '){
+                    e.consume();
+                }else if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+        txtIdNumber.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtIdNumber.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c)){
+                    e.consume();
+                }else if(large>=30) {
+                    e.consume();
+                }
+            }
+        });
+        txtAge.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c= e.getKeyChar();
+                if(Character.isLetter(c)){
+                    e.consume();
+                }
+            }
+        });
+        txtPhone.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtPhone.getText().length();
+                char c= e.getKeyChar();
+                if(Character.isLetter(c)){
+                    e.consume();
+                }else if(large>=20) {
+                    e.consume();
+                }
+            }
+        });
+        txtAddress.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtPhone.getText().length();
+                if(large>=200) {
+                    e.consume();
+                }
+            }
+        });
+        txtEmail.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtPhone.getText().length();
+                if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+
         JComboBox<String> cmbAgency = new JComboBox<>();
         JComboBox<String> cmbGender = new JComboBox<>();
         JComboBox<String> cmbCountry = new JComboBox<>();
@@ -212,9 +280,7 @@ public class ClientsPanel extends JPanel {
         for (Gender g : genders) cmbGender.addItem(g.getDescription());
         for (Country c : countries) cmbCountry.addItem(c.getName());
 
-        JOptionPane.showMessageDialog(null, agencies);
-        JOptionPane.showMessageDialog(null, genders);
-        JOptionPane.showMessageDialog(null, countries);
+
         if (isEdit) {
             txtFirstName.setText(existing.getFirstName());
             txtLastName.setText(existing.getLastName());
@@ -270,27 +336,44 @@ public class ClientsPanel extends JPanel {
             int age;
             try { age = Integer.parseInt(txtAge.getText().trim().isEmpty() ? "0" : txtAge.getText().trim()); }
             catch (NumberFormatException ex) { age = 0; }
+            if(age<120) {
+                int agencyId = agencies.get(cmbAgency.getSelectedIndex()).getAgencyId();
+                int genderId = genders.get(cmbGender.getSelectedIndex()).getGenderId();
+                int countryId = countries.get(cmbCountry.getSelectedIndex()).getCountryId();
 
-            int agencyId = agencies.get(cmbAgency.getSelectedIndex()).getAgencyId();
-            int genderId = genders.get(cmbGender.getSelectedIndex()).getGenderId();
-            int countryId = countries.get(cmbCountry.getSelectedIndex()).getCountryId();
+                Client newClient = new Client(
+                        isEdit ? existing.getClientId() : 0,
+                        agencyId, genderId, countryId,
+                        txtFirstName.getText().trim(), txtLastName.getText().trim(),
+                        txtIdNumber.getText().trim(), age,
+                        txtAddress.getText().trim(), txtPhone.getText().trim(), txtEmail.getText().trim()
+                );
 
-            Client newClient = new Client(
-                isEdit ? existing.getClientId() : 0,
-                agencyId, genderId, countryId,
-                txtFirstName.getText().trim(), txtLastName.getText().trim(),
-                txtIdNumber.getText().trim(), age,
-                txtAddress.getText().trim(), txtPhone.getText().trim(), txtEmail.getText().trim()
-            );
+                if (isEdit) clientServices.updateClient(newClient);
+                else clientServices.saveClient(newClient);
 
-            if (isEdit) clientServices.updateClient(newClient);
-            else clientServices.saveClient(newClient);
-
-            dialog.dispose();
-            loadData();
+                dialog.dispose();
+                loadData();
+            }else{
+                MessagePanel messagePanel = new MessagePanel(null, true, "La edad no puede ser mayor a 120");
+                messagePanel.setVisible(true);
+            }
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
+
+        InputMap inputMap = btnSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSave.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+        inputMap.put(keyStroke, "activateBut");
+        actionMap.put("activateBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSave.doClick();
+            }
+        });
 
         form.add(btnCancel);
         form.add(btnSave);

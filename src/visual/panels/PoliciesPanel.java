@@ -12,22 +12,13 @@ import services.PolicyServices;
 import services.PolicyStatusServices;
 import visual.UIStyles;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -122,18 +113,18 @@ public class PoliciesPanel extends JPanel {
         boolean isEdit = existing != null;
 
         JDialog dialog = new JDialog((JFrame) null, true);
-        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.25), (int) (screenSize.width*0.36), (int) (screenSize.height*0.5));
+        dialog.setBounds((int) (screenSize.width * 0.32), (int) (screenSize.height * 0.25), (int) (screenSize.width * 0.36), (int) (screenSize.height * 0.5));
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
         JLabel header = new JLabel(isEdit ? "Editar Poliza " : "Nueva Poliza");
-        header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
-        header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
+        header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.014)));
+        header.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.001), (int) (screenSize.width * 0.16), (int) (screenSize.height * 0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel form = new JPanel(null);
-        form.setBounds(0, 0  ,(int) (screenSize.width*0.4), (int) (screenSize.height*0.6));
-        form.setBackground(new Color(200, 200, 200 ));
+        form.setBounds(0, 0, (int) (screenSize.width * 0.4), (int) (screenSize.height * 0.6));
+        form.setBackground(new Color(200, 200, 200));
         form.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
 
         form.add(header);
@@ -155,6 +146,40 @@ public class PoliciesPanel extends JPanel {
         JTextField txtPremium = new JTextField(12);
         JTextField txtInsured = new JTextField(12);
         JTextField txtCancelReason = new JTextField(12);
+
+        txtPremium.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtPremium.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c) && (c!='.')) {
+                    e.consume();
+                }else if(large>=11) {
+                    e.consume();
+                }
+            }
+        });
+        txtInsured.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtInsured.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c) && (c!='.')) {
+                    e.consume();
+                }else if(large>=11) {
+                    e.consume();
+                }
+            }
+        });
+        txtCancelReason.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtCancelReason.getText().length();
+                if(large>=300) {
+                    e.consume();
+                }
+            }
+        });
 
         List<Client> clients = clientServices.getAllClients();
         List<InsuranceType> types = insuranceTypeServices.getAllInsuranceTypes();
@@ -262,30 +287,50 @@ public class PoliciesPanel extends JPanel {
                 LocalDate start = dateStart.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 Date dateEnd = calEnd.getDate();
                 LocalDate end = dateEnd.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                double premium = Double.parseDouble(txtPremium.getText().trim());
-                double insured = Double.parseDouble(txtInsured.getText().trim());
+                if(end.isAfter(start)){
+                    double premium = Double.parseDouble(txtPremium.getText().trim());
+                    double insured = Double.parseDouble(txtInsured.getText().trim());
 
-                int clientId = clients.get(cmbClient.getSelectedIndex()).getClientId();
-                int typeId = types.get(cmbType.getSelectedIndex()).getInsuranceTypeId();
-                int statusId = statuses.get(cmbStatus.getSelectedIndex()).getPolicyStatusId();
+                    int clientId = clients.get(cmbClient.getSelectedIndex()).getClientId();
+                    int typeId = types.get(cmbType.getSelectedIndex()).getInsuranceTypeId();
+                    int statusId = statuses.get(cmbStatus.getSelectedIndex()).getPolicyStatusId();
 
-                Policy p = new Policy(
-                        isEdit ? existing.getPolicyNumber() : 0,
-                        clientId, typeId, statusId, start, end,
-                        premium, insured, txtCancelReason.getText().trim()
-                );
+                    Policy p = new Policy(
+                            isEdit ? existing.getPolicyNumber() : 0,
+                            clientId, typeId, statusId, start, end,
+                            premium, insured, txtCancelReason.getText().trim()
+                    );
 
-                if (isEdit) policyServices.updatePolicy(p);
-                else policyServices.savePolicy(p);
+                    if (isEdit) policyServices.updatePolicy(p);
+                    else policyServices.savePolicy(p);
 
-                dialog.dispose();
-                loadData();
+                    dialog.dispose();
+                    loadData();
+                }else {
+                    MessagePanel messagePanel = new MessagePanel(null, true, "La fecha de culminacion de la poliza no puede ser menor que la fecha de inicio");
+                    messagePanel.setVisible(true);
+                }
+
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(dialog, "Verifique los datos ingresados (fechas: YYYY-MM-DD, montos: num\u00E9ricos).", "Error", JOptionPane.ERROR_MESSAGE);
+               MessagePanel messagePanel = new MessagePanel(null, true, "Verifique nuevamente los datos ingresados");
+            messagePanel.setVisible(true);
             }
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
+
+        InputMap inputMap = btnSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSave.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+        inputMap.put(keyStroke, "activateBut");
+        actionMap.put("activateBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSave.doClick();
+            }
+        });
 
         form.add(btnCancel);
         form.add(btnSave);

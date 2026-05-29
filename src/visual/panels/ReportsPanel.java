@@ -10,8 +10,8 @@ import visual.UIStyles;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -34,9 +34,19 @@ public class ReportsPanel extends JPanel {
     private JDesktopPane jDesktopPane;
     private ArrayList<JLabel> metrics;
     private ArrayList<JLabel> calculations;
+    private JButton next;
+    private JButton previus;
+    private int currentPage;
+    private  ReportsPanel1 p1;
+    private  ReportsPanel2 p2;
+    private  ReportsPanel3 p3;
+    private  ReportsPanel4 p4;
+    private JPanel summaryCard;
     public ReportsPanel() {
         metrics = new ArrayList<>();
         calculations = new ArrayList<>();
+        next = new JButton(">");
+        previus = new JButton("<");
 
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -76,7 +86,7 @@ public class ReportsPanel extends JPanel {
         jDesktopPane.setOpaque(false);
         jDesktopPane.setBounds((int) (screenSize.width*0.03), (int) (screenSize.height*0.345),  (int) (screenSize.width*0.89), (int) (screenSize.height*0.425));
 
-        JPanel summaryCard = UIStyles.createCard();
+        summaryCard = UIStyles.createCard();
         summaryCard.setBounds(0, 0,  (int) (screenSize.width*0.89), (int) (screenSize.height*0.425));
         summaryCard.setLayout(null);
         summaryCard.setBorder(BorderFactory.createCompoundBorder(
@@ -95,7 +105,72 @@ public class ReportsPanel extends JPanel {
         summaryCard.add(createSummaryLine("Diferencia:            ", String.format("$%.2f", totalClaimed - totalCompensated), 2));
 
         jDesktopPane.add(summaryCard, 0);
+
+        p1 = new ReportsPanel1();
+        jDesktopPane.add(p1, 1);
+        p2= new ReportsPanel2();
+        jDesktopPane.add(p2, 2);
+        p3= new ReportsPanel3();
+        jDesktopPane.add(p3, 3);
+        p4= new ReportsPanel4();
+        jDesktopPane.add(p4, 4);
+        p1.setVisible(false);
+        p2.setVisible(false);
+        p3.setVisible(false);
+        p4.setVisible(false);
+
         summaryCard.setVisible(true);
+
+        next.setBounds((int) (screenSize.width * 0.895), (int) (screenSize.height * 0.53), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.08));
+        next.setFocusPainted(false);
+        next.setHorizontalAlignment(SwingConstants.RIGHT);
+        next.setBorderPainted(false);
+        next.setFocusPainted(false);
+        next.setContentAreaFilled(false);
+        next.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                nextMouseEntered(evt);
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                nextMouseExited(evt);
+            }
+        });
+        next.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                nextActionPerformed(evt);
+            }
+        });
+        next.setFont(new Font("Segoe UI Emoji", PLAIN, (int) (screenSize.width * 0.04)));
+
+        container.add(next);
+
+
+        previus.setBounds((int) (screenSize.width * -0.015), (int) (screenSize.height * 0.53), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.08));
+        previus.setFocusPainted(false);
+        previus.setHorizontalAlignment(SwingConstants.LEFT);
+        previus.setBorderPainted(false);
+        previus.setFocusPainted(false);
+        previus.setContentAreaFilled(false);
+        previus.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                previusMouseEntered(evt);
+            }
+
+            public void mouseExited(MouseEvent evt) {
+                previusMouseExited(evt);
+            }
+        });
+        previus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                previusActionPerformed(evt);
+            }
+        });
+        previus.setFont(new Font("Segoe UI Emoji", PLAIN, (int) (screenSize.width * 0.04)));
+
+        container.add(previus);
+
+
 
         container.add(metricsGrid);
         setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
@@ -107,12 +182,50 @@ public class ReportsPanel extends JPanel {
             public void run() {
                 createMetrics();
                 fixData();
+                if (currentPage == 0)
+                    previus.setEnabled(false);
+
+                else
+                    previus.setEnabled(true);
+                if (currentPage == jDesktopPane.getComponentCount() - 1)
+                    next.setEnabled(false);
+                else
+                    next.setEnabled(true);
             }
         };
-        timer.scheduleAtFixedRate(timerTask, 0, 5000);
+        timer.scheduleAtFixedRate(timerTask, 0, 500);
 
+        currentPage=0;
         container.add(jDesktopPane);
         add(container);
+
+        InputMap inputMapN = next.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMapN = next.getActionMap();
+
+        KeyStroke keyStrokeN = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0);
+
+        inputMapN.put(keyStrokeN, "activateNBut");
+        actionMapN.put("activateNBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                next.doClick();
+            }
+        });
+
+        InputMap inputMapP = previus.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap previusActionMap = previus.getActionMap();
+
+        KeyStroke keyStrokeP = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0);
+
+        inputMapP.put(keyStrokeP, "activatePBut");
+        previusActionMap.put("activatePBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                previus.doClick();
+            }
+        });
+
+
     }
 
     private void fixData() {
@@ -184,5 +297,85 @@ public class ReportsPanel extends JPanel {
         lbl.setBounds((int) (screenSize.width*0.25), (int) (((screenSize.height*0.05)*i)+ screenSize.height*0.15), (int) (screenSize.width*0.39), (int) (screenSize.height*0.05));
         calculations.add(lbl);
         return lbl;
+    }
+
+    public void changeJDesk(int i) {
+        switch (currentPage) {
+            case 0:
+                summaryCard.setVisible(false);
+                break;
+            case 1:
+                p1.setVisible(false);
+                break;
+            case 2:
+                p2.setVisible(false);
+                break;
+            case 3:
+                p3.setVisible(false);
+                break;
+            case 4:
+                p4.setVisible(false);
+                break;
+            default:
+                break;
+        }
+
+        switch (i) {
+            case 0:
+                summaryCard.setVisible(true);
+                break;
+            case 1:
+                p1.setVisible(true);
+                break;
+            case 2:
+                p2.setVisible(true);
+                break;
+            case 3:
+                p3.setVisible(true);
+                break;
+            case 4:
+                p4.setVisible(true);
+                break;
+            default:
+                break;
+        }
+        if ((i >= 0 && i <= jDesktopPane.getComponentCount()))
+            currentPage = i;
+
+    }
+
+    private void previusActionPerformed(ActionEvent evt) {
+        if (currentPage > 0)
+            changeJDesk(currentPage - 1);
+    }
+
+    private void previusMouseExited(MouseEvent evt) {
+        if (previus.isEnabled()) {
+           previus.setForeground(Color.black);
+        }
+    }
+
+    private void previusMouseEntered(MouseEvent evt) {
+        if(previus.isEnabled()) {
+            previus.setForeground(Color.RED);
+        }
+    }
+
+    private void nextActionPerformed(ActionEvent evt) {
+        if((currentPage<jDesktopPane.getComponentCount()-1)){
+            changeJDesk(currentPage+1);
+        }
+    }
+
+    private void nextMouseExited(MouseEvent evt) {
+        if(next.isEnabled()) {
+           next.setForeground(Color.BLACK);
+        }
+    }
+
+    private void nextMouseEntered(MouseEvent evt) {
+        if(next.isEnabled()) {
+           next.setForeground(Color.red);
+        }
     }
 }

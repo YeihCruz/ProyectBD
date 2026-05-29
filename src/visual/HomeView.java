@@ -141,7 +141,7 @@ public class HomeView extends JFrame {
         return btn;
     }
 
-    private void crearLogOut(){
+    private void createLogOut(){
 
         btnLogout = createSidebarButton("\uD83D\uDEAA  Cerrar Sesi\u00F3n");
         btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -214,7 +214,7 @@ public class HomeView extends JFrame {
                 BorderFactory.createMatteBorder(0, 0, 1, 0, UIStyles.BORDER),
                 BorderFactory.createEmptyBorder(12, 28, 12, 28)));
 
-        crearLogOut();
+        createLogOut();
         btnLogout.setBounds((int) (screenSize.width*0.86), (int) (screenSize.height*0.01), (int) (screenSize.width*0.12), (int) (screenSize.height*0.04));
         header.add(btnLogout);
 

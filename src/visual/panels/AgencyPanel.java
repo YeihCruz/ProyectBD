@@ -3,22 +3,15 @@ package visual.panels;
 import models.Agency;
 import services.AgencyServices;
 import visual.UIStyles;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.tools.Tool;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AgencyPanel extends JPanel {
 
@@ -108,8 +101,6 @@ public class AgencyPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lId = new JLabel("Id");
-        JTextField txtID = new JTextField(15);
         JLabel lName = new JLabel("Nombre");
         JTextField txtName = new JTextField(15);
         JLabel lAddress = new JLabel("Direccion");
@@ -125,59 +116,125 @@ public class AgencyPanel extends JPanel {
         JLabel lClaimMa = new JLabel("Manager de Reportes");
         JTextField txtClaimsMan = new JTextField(15);
 
-        lId.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
-        lId.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
-        lId.setHorizontalAlignment(SwingConstants.LEFT);
-        txtID.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
-        txtID.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        lName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtName.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtName.getText().length();
+                if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+        txtAddress.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtAddress.getText().length();
+                 if(large>=200) {
+                    e.consume();
+                }
+            }
+        });
+        txtPhone.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtPhone.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c) || large>=20) {
+                    e.consume();
+                }
+            }
+        });
+        txtEmail.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtEmail.getText().length();
+                if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+        txtGenDir.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtGenDir.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isLetter(c)  && c!=' ') {
+                    e.consume();
+                }else if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+        txtInsuranceMan.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtInsuranceMan.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isLetter(c)  && c!=' ') {
+                    e.consume();
+                }else if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+        txtClaimsMan.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtClaimsMan.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isLetter(c)  && c!=' ') {
+                    e.consume();
+                }else if(large>=100) {
+                    e.consume();
+                }
+            }
+        });
+        lName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         lName.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
         lName.setHorizontalAlignment(SwingConstants.LEFT);
-        txtName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtName.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtName.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        lAddress.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lAddress.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         lAddress.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
         lAddress.setHorizontalAlignment(SwingConstants.LEFT);
-        txtAddress.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtAddress.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtAddress.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        lPhone.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lPhone.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         lPhone.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
         lPhone.setHorizontalAlignment(SwingConstants.LEFT);
-        txtPhone.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtPhone.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtPhone.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lEmail.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lEmail.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lEmail.setHorizontalAlignment(SwingConstants.LEFT);
+        txtEmail.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtEmail.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
 
         //segunda fila
-        lEmail.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
-        lEmail.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
-        lEmail.setHorizontalAlignment(SwingConstants.LEFT);
-        txtEmail.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
-        txtEmail.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
-
-        lGenDi.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lGenDi.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         lGenDi.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
         lGenDi.setHorizontalAlignment(SwingConstants.LEFT);
-        txtGenDir.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtGenDir.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtGenDir.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        lInsMa.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lInsMa.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         lInsMa.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
         lInsMa.setHorizontalAlignment(SwingConstants.LEFT);
-        txtInsuranceMan.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtInsuranceMan.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtInsuranceMan.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        lClaimMa.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lClaimMa.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         lClaimMa.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
         lClaimMa.setHorizontalAlignment(SwingConstants.LEFT);
-        txtClaimsMan.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtClaimsMan.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
         txtClaimsMan.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-
         if(isEdit) {
-            txtID.setText(String.valueOf(existing.getAgencyId()));
             txtName.setText(existing.getName());
             txtAddress.setText(existing.getAddress());
             txtPhone.setText(String.valueOf(existing.getPhone()));
@@ -188,7 +245,6 @@ public class AgencyPanel extends JPanel {
 
         }
 
-        form.add(txtID);
         form.add(txtName);
         form.add(txtAddress);
         form.add(txtPhone);
@@ -197,7 +253,6 @@ public class AgencyPanel extends JPanel {
         form.add(txtInsuranceMan);
         form.add(txtClaimsMan);
 
-        form.add(lId);
         form.add(lName);
         form.add(lAddress);
         form.add(lPhone);
@@ -212,13 +267,13 @@ public class AgencyPanel extends JPanel {
         btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
 
         btnSave.addActionListener(e -> {
-            if (txtID.getText().trim().isEmpty() || txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtGenDir.getText().trim().isEmpty() || txtInsuranceMan.getText().trim().isEmpty() || txtClaimsMan.getText().trim().isEmpty()) {
+            if (txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtGenDir.getText().trim().isEmpty() || txtInsuranceMan.getText().trim().isEmpty() || txtClaimsMan.getText().trim().isEmpty()) {
                 MessagePanel mp = new MessagePanel( null, true, "Por favor llenar todos los campos antes de continuar");
                 mp.setVisible(true);
                 return;
             }
             Agency newAgency = new Agency((
-                   isEdit ? existing.getAgencyId() :  (Integer.parseInt(txtID.getText().trim()))),
+                   isEdit ? existing.getAgencyId() :  0),
                     txtName.getText(),
                     txtAddress.getText(), txtPhone.getText(),
                     txtEmail.getText(), txtGenDir.getText(), txtInsuranceMan.getText(),  txtClaimsMan.getText());
@@ -229,6 +284,19 @@ public class AgencyPanel extends JPanel {
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
+
+        InputMap inputMap = btnSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSave.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+        inputMap.put(keyStroke, "activateBut");
+        actionMap.put("activateBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSave.doClick();
+            }
+        });
 
         form.add(btnCancel);
         form.add(btnSave);

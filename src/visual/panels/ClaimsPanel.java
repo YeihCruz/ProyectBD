@@ -11,21 +11,12 @@ import services.ClaimTypeServices;
 import services.PolicyServices;
 import visual.UIStyles;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -148,6 +139,42 @@ public class ClaimsPanel extends JPanel {
         JTextField txtCompensated = new JTextField(12);
         JTextField txtReason = new JTextField(12);
 
+        txtClaimed.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtClaimed.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c)  && c!='.') {
+                    e.consume();
+                }else if(large>=12) {
+                    e.consume();
+                }
+            }
+        });
+
+        txtCompensated.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtCompensated.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c)  && c!='.') {
+                    e.consume();
+                }else if(large>=12) {
+                    e.consume();
+                }
+            }
+        });
+
+        txtReason.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtReason.getText().length();
+               if(large>=300) {
+                    e.consume();
+                }
+            }
+        });
+
         List<Policy> policies = policyServices.getAllPolicies();
         List<ClaimType> types = claimTypeServices.getAllClaimTypes();
         List<ClaimStatus> statuses = this.jDate.getAllClaimStatus();
@@ -266,6 +293,19 @@ public class ClaimsPanel extends JPanel {
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
+
+        InputMap inputMap = btnSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSave.getActionMap();
+
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
+
+        inputMap.put(keyStroke, "activateBut");
+        actionMap.put("activateBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSave.doClick();
+            }
+        });
 
         form.add(btnCancel);
         form.add(btnSave);
