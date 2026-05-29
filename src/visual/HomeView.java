@@ -44,11 +44,7 @@ public class HomeView extends JFrame {
         setLayout(null);
 
         add(createMainPanel());
-        /*
-        JLabel brandIcon = new JLabel("\uD83D\uDEE1\uFE0F", SwingConstants.CENTER);
-        brandIcon.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 28));
-        bc.insets = new Insets(22, 0, 2, 0);
-        brandPanel.add(brandIcon, bc);*/
+
 
         timer = new Timer();
         task = new TimerTask() {
@@ -145,7 +141,7 @@ public class HomeView extends JFrame {
         return btn;
     }
 
-    private void crearLogOut(){
+    private void createLogOut(){
 
         btnLogout = createSidebarButton("\uD83D\uDEAA  Cerrar Sesi\u00F3n");
         btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
@@ -182,6 +178,7 @@ public class HomeView extends JFrame {
         contentPanel.add(new PoliciesPanel(), "policies");
         contentPanel.add(new ClaimsPanel(), "claims");
         contentPanel.add(new IncidentsPanel(), "incidents");
+        contentPanel.add(new AgencyPanel(), "agencys");
         contentPanel.add(new ReportsPanel(), "reports");
 
         addMovement(welcomePanel.getControllers());
@@ -204,8 +201,9 @@ public class HomeView extends JFrame {
         codes.add("clients");
         codes.add("policies");
         codes.add("claims");
-        codes.add( "incidents");
-        codes.add( "reports");
+        codes.add("incidents");
+        codes.add("agencys");
+        codes.add("reports");
     }
 
     private JPanel createHeader() {
@@ -216,7 +214,7 @@ public class HomeView extends JFrame {
                 BorderFactory.createMatteBorder(0, 0, 1, 0, UIStyles.BORDER),
                 BorderFactory.createEmptyBorder(12, 28, 12, 28)));
 
-        crearLogOut();
+        createLogOut();
         btnLogout.setBounds((int) (screenSize.width*0.86), (int) (screenSize.height*0.01), (int) (screenSize.width*0.12), (int) (screenSize.height*0.04));
         header.add(btnLogout);
 
@@ -242,7 +240,7 @@ public class HomeView extends JFrame {
         userName.setFont(UIStyles.FONT_BODY);
         userName.setForeground(UIStyles.TEXT_PRIMARY);
         userName.setHorizontalAlignment(SwingConstants.LEFT);
-        userName.setBounds((int) (screenSize.width*0.06), (int) (screenSize.height*0.001), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+        userName.setBounds((int) (screenSize.width*0.02), (int) (screenSize.height*0.001), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
         userInfo.add(userName);
 
         createBtnRet();

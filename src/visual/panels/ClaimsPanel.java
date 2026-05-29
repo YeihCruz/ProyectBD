@@ -1,5 +1,6 @@
 package visual.panels;
 
+import com.toedter.calendar.JDateChooser;
 import models.Claim;
 import models.ClaimStatus;
 import models.ClaimType;
@@ -10,30 +11,15 @@ import services.ClaimTypeServices;
 import services.PolicyServices;
 import visual.UIStyles;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 public class ClaimsPanel extends JPanel {
@@ -41,11 +27,13 @@ public class ClaimsPanel extends JPanel {
     private final ClaimServices claimServices = new ClaimServices();
     private final PolicyServices policyServices = new PolicyServices();
     private final ClaimTypeServices claimTypeServices = new ClaimTypeServices();
-    private final ClaimStatusServices claimStatusServices = new ClaimStatusServices();
+    private final ClaimStatusServices jDate = new ClaimStatusServices();
     private final JTable table;
     private final DefaultTableModel tableModel;
+    private Dimension screenSize;
 
     public ClaimsPanel() {
+        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -98,7 +86,7 @@ public class ClaimsPanel extends JPanel {
         tableModel.setRowCount(0);
         List<Claim> claims = claimServices.getAllClaims();
         List<ClaimType> types = claimTypeServices.getAllClaimTypes();
-        List<ClaimStatus> statuses = claimStatusServices.getAllClaimStatus();
+        List<ClaimStatus> statuses = jDate.getAllClaimStatus();
 
         for (Claim cl : claims) {
             String typeName = "";
@@ -118,33 +106,82 @@ public class ClaimsPanel extends JPanel {
     private void showForm(Claim existing) {
         boolean isEdit = existing != null;
 
-        JDialog dialog = new JDialog((JFrame) null, isEdit ? "Editar Reclamo" : "Nuevo Reclamo", true);
-        dialog.setSize(480, 460);
-        dialog.setLocationRelativeTo(null);
+        JDialog dialog = new JDialog((JFrame) null, true);
+        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.25), (int) (screenSize.width*0.36), (int) (screenSize.height*0.5));
+        dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JPanel form = new JPanel(new GridBagLayout());
-        form.setBackground(UIStyles.CARD_BG);
+        JLabel header = new JLabel(isEdit ? "Editar Reclamo " : "Nuevo Reclamo");
+        header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
+        header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
+        header.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel form = new JPanel(null);
+        form.setBounds(0, 0  ,(int) (screenSize.width*0.4), (int) (screenSize.height*0.6));
+        form.setBackground(new Color(200, 200, 200 ));
         form.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
+
+        form.add(header);
+
+        JLabel lPolicy = new JLabel("Poliza");
+        JLabel lType = new JLabel("Tipo de Siniestro");
+        JLabel lStatus = new JLabel("Estado de la Reclamacion");
+        JLabel lDate = new JLabel("Fecha");
+        JLabel lClaimed = new JLabel("Reclamado");
+        JLabel lCompensated = new JLabel("Compensado");
+        JLabel lReason = new JLabel("Razon");
 
         JComboBox<String> cmbPolicy = new JComboBox<>();
         JComboBox<String> cmbType = new JComboBox<>();
         JComboBox<String> cmbStatus = new JComboBox<>();
-        JTextField txtDate = new JTextField(12);
+        JDateChooser jDCDate = new JDateChooser();
         JTextField txtClaimed = new JTextField(12);
         JTextField txtCompensated = new JTextField(12);
         JTextField txtReason = new JTextField(12);
 
+        txtClaimed.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtClaimed.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c)  && c!='.') {
+                    e.consume();
+                }else if(large>=12) {
+                    e.consume();
+                }
+            }
+        });
+
+        txtCompensated.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtCompensated.getText().length();
+                char c= e.getKeyChar();
+                if(!Character.isDigit(c)  && c!='.') {
+                    e.consume();
+                }else if(large>=12) {
+                    e.consume();
+                }
+            }
+        });
+
+        txtReason.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                int large = txtReason.getText().length();
+               if(large>=300) {
+                    e.consume();
+                }
+            }
+        });
+
         List<Policy> policies = policyServices.getAllPolicies();
         List<ClaimType> types = claimTypeServices.getAllClaimTypes();
-        List<ClaimStatus> statuses = claimStatusServices.getAllClaimStatus();
+        List<ClaimStatus> statuses = this.jDate.getAllClaimStatus();
 
         for (Policy p : policies) cmbPolicy.addItem("P\u00F3liza #" + p.getPolicyNumber());
         for (ClaimType t : types) cmbType.addItem(t.getDescription());
         for (ClaimStatus s : statuses) cmbStatus.addItem(s.getDescription());
-
-        JTextField[] fields = {txtDate, txtClaimed, txtCompensated, txtReason};
-        for (JTextField f : fields) UIStyles.styleField(f);
 
         if (isEdit) {
             for (int i = 0; i < policies.size(); i++)
@@ -153,35 +190,84 @@ public class ClaimsPanel extends JPanel {
                 if (types.get(i).getClaimTypeId() == existing.getClaimTypeId()) cmbType.setSelectedIndex(i);
             for (int i = 0; i < statuses.size(); i++)
                 if (statuses.get(i).getClaimStatusId() == existing.getClaimStatusId()) cmbStatus.setSelectedIndex(i);
-            txtDate.setText(existing.getIncidentDate().toString());
+            jDCDate.setDate(Date.from(existing.getIncidentDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
             txtClaimed.setText(String.valueOf(existing.getClaimedAmount()));
             txtCompensated.setText(String.valueOf(existing.getCompensatedAmount()));
             txtReason.setText(existing.getRejectionReason());
         } else {
-            txtDate.setText(LocalDate.now().toString());
+            jDCDate.setDate(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()));
         }
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0; c.fill = GridBagConstraints.HORIZONTAL; c.anchor = GridBagConstraints.WEST;
+        lPolicy.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lPolicy.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lPolicy.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbPolicy.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbPolicy.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        int row = 0;
-        addField(form, c, row++, "P\u00F3liza", cmbPolicy);
-        addField(form, c, row++, "Tipo de Reclamo", cmbType);
-        addField(form, c, row++, "Estado", cmbStatus);
-        addField(form, c, row++, "Fecha Incidente (YYYY-MM-DD)", txtDate);
-        addField(form, c, row++, "Monto Reclamado", txtClaimed);
-        addField(form, c, row++, "Monto Compensado", txtCompensated);
-        addField(form, c, row, "Raz\u00F3n Rechazo", txtReason);
+        lType.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lType.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lType.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbType.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbType.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
 
-        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttons.setOpaque(false);
+        lDate.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lDate.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lDate.setHorizontalAlignment(SwingConstants.LEFT);
+        jDCDate.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        jDCDate.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lClaimed.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.295), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lClaimed.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lClaimed.setHorizontalAlignment(SwingConstants.LEFT);
+        txtClaimed.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.33), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtClaimed.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+
+        lStatus.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.055), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lStatus.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lStatus.setHorizontalAlignment(SwingConstants.LEFT);
+        cmbStatus.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.09), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        cmbStatus.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lCompensated.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.135), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lCompensated.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lCompensated.setHorizontalAlignment(SwingConstants.LEFT);
+        txtCompensated.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.17), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtCompensated.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        lReason.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.215), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        lReason.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.0115)));
+        lReason.setHorizontalAlignment(SwingConstants.LEFT);
+        txtReason.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.25), (int) (screenSize.width*0.14), (int) (screenSize.height*0.04));
+        txtReason.setFont(new Font( "Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
+
+        form.add(lPolicy);
+        form.add(lType);
+        form.add(lStatus);
+        form.add(lDate);
+        form.add(lClaimed);
+        form.add(lCompensated);
+        form.add(lReason);
+
+        form.add(cmbPolicy);
+        form.add(cmbType);
+        form.add(cmbStatus);
+        form.add(jDCDate);
+        form.add(txtClaimed);
+        form.add(txtCompensated);
+        form.add(txtReason);
+
 
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
+        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+
         JButton btnCancel = UIStyles.createSecondaryButton("Cancelar");
+        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
 
         btnSave.addActionListener(e -> {
             try {
-                LocalDate date = LocalDate.parse(txtDate.getText().trim());
+                Date jdcdate = jDCDate.getDate();
+                LocalDate date = jdcdate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 double claimed = Double.parseDouble(txtClaimed.getText().trim());
                 double compensated = Double.parseDouble(txtCompensated.getText().trim().isEmpty() ? "0" : txtCompensated.getText().trim());
 
@@ -201,40 +287,39 @@ public class ClaimsPanel extends JPanel {
                 dialog.dispose();
                 loadData();
             } catch (Exception ex) {
-                JOptionPane.showMessageDialog(dialog, "Verifique los datos (fecha: YYYY-MM-DD, montos: num\u00E9ricos).", "Error", JOptionPane.ERROR_MESSAGE);
+                MessagePanel mp = new MessagePanel( null, true, "Error. Verifique nuevamente los campos antes de continuar");
+                mp.setVisible(true);
             }
         });
 
         btnCancel.addActionListener(e -> dialog.dispose());
 
-        buttons.add(btnCancel);
-        buttons.add(btnSave);
+        InputMap inputMap = btnSave.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = btnSave.getActionMap();
 
-        JPanel root = new JPanel(new BorderLayout());
-        root.setBackground(UIStyles.CARD_BG);
-        root.add(form, BorderLayout.CENTER);
-        root.add(buttons, BorderLayout.SOUTH);
-        root.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UIStyles.BORDER, 1),
-                BorderFactory.createEmptyBorder(0, 0, 15, 15)));
+        KeyStroke keyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0);
 
-        dialog.add(root);
+        inputMap.put(keyStroke, "activateBut");
+        actionMap.put("activateBut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnSave.doClick();
+            }
+        });
+
+        form.add(btnCancel);
+        form.add(btnSave);
+
+        dialog.add(form);
         dialog.setVisible(true);
-    }
 
-    private void addField(JPanel panel, GridBagConstraints c, int row, String label, Object component) {
-        c.gridy = row * 2;
-        c.insets = new Insets(0, 0, 4, 0);
-        panel.add(UIStyles.createFieldLabel(label), c);
-        c.gridy = row * 2 + 1;
-        c.insets = new Insets(0, 0, 8, 0);
-        panel.add((java.awt.Component) component, c);
     }
 
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un reclamo de la tabla.", "Editar", JOptionPane.INFORMATION_MESSAGE);
+            MessagePanel mp = new MessagePanel( null, true, "Seleccione un reclamo de la tabla");
+            mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
@@ -245,7 +330,8 @@ public class ClaimsPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione un reclamo de la tabla.", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+            MessagePanel mp = new MessagePanel( null, true, "Seleccione un reclamo de la tabla");
+            mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
