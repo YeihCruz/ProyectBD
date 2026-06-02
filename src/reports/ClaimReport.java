@@ -5,14 +5,14 @@ import java.time.LocalDate;
 public class ClaimReport {
 
         private String clientName;
-        private int policyId;
+        private int policyNumber;
         private String insuranceType;
-        private int claimId;
+        private int claimNumber;
         private String claimType;
         private LocalDate incidentDate;
         private double claimedAmount;
         private String claimStatus;
-        private double indemnifiedAmount;
+        private double compensatedAmount;
 
         public ClaimReport() {
         }
@@ -25,12 +25,12 @@ public class ClaimReport {
             this.clientName = clientName;
         }
 
-        public int getPolicyId() {
-            return policyId;
+        public int getPolicyNumber() {
+            return policyNumber;
         }
 
-        public void setPolicyId(int policyId) {
-            this.policyId = policyId;
+        public void setPolicyNumber(int policyNumber) {
+            this.policyNumber = policyNumber;
         }
 
         public String getInsuranceType() {
@@ -41,12 +41,12 @@ public class ClaimReport {
             this.insuranceType = insuranceType;
         }
 
-        public int getClaimId() {
-            return claimId;
+        public int getClaimNumber() {
+            return claimNumber;
         }
 
-        public void setClaimId(int claimId) {
-            this.claimId = claimId;
+        public void setClaimNumber(int claimNumber) {
+            this.claimNumber = claimNumber;
         }
 
         public String getClaimType() {
@@ -81,12 +81,12 @@ public class ClaimReport {
             this.claimStatus = claimStatus;
         }
 
-        public double getIndemnifiedAmount() {
-            return indemnifiedAmount;
+        public double getCompensatedAmount() {
+            return compensatedAmount;
         }
 
-        public void setIndemnifiedAmount(double indemnifiedAmount) {
-            this.indemnifiedAmount = indemnifiedAmount;
+        public void setCompensatedAmount(double compensatedAmount) {
+            this.compensatedAmount = compensatedAmount;
         }
     }
 
