@@ -1,20 +1,28 @@
 package reports;
 
-import java.time.LocalDate;
+import java.sql.Date;
 
-public class ClaimReport {
+public class ClaimStatusReport {
 
+        private int claimNumber;
         private String clientName;
         private int policyNumber;
         private String insuranceType;
-        private int claimNumber;
         private String claimType;
-        private LocalDate incidentDate;
-        private double claimedAmount;
+        private Date incidentDate;
         private String claimStatus;
+        private double claimedAmount;
         private double compensatedAmount;
 
-        public ClaimReport() {
+        public ClaimStatusReport() {
+        }
+
+        public int getClaimNumber() {
+            return claimNumber;
+        }
+
+        public void setClaimNumber(int claimNumber) {
+            this.claimNumber = claimNumber;
         }
 
         public String getClientName() {
@@ -41,14 +49,6 @@ public class ClaimReport {
             this.insuranceType = insuranceType;
         }
 
-        public int getClaimNumber() {
-            return claimNumber;
-        }
-
-        public void setClaimNumber(int claimNumber) {
-            this.claimNumber = claimNumber;
-        }
-
         public String getClaimType() {
             return claimType;
         }
@@ -57,20 +57,12 @@ public class ClaimReport {
             this.claimType = claimType;
         }
 
-        public LocalDate getIncidentDate() {
+        public Date getIncidentDate() {
             return incidentDate;
         }
 
-        public void setIncidentDate(LocalDate incidentDate) {
+        public void setIncidentDate(Date incidentDate) {
             this.incidentDate = incidentDate;
-        }
-
-        public double getClaimedAmount() {
-            return claimedAmount;
-        }
-
-        public void setClaimedAmount(double claimedAmount) {
-            this.claimedAmount = claimedAmount;
         }
 
         public String getClaimStatus() {
@@ -79,6 +71,14 @@ public class ClaimReport {
 
         public void setClaimStatus(String claimStatus) {
             this.claimStatus = claimStatus;
+        }
+
+        public double getClaimedAmount() {
+            return claimedAmount;
+        }
+
+        public void setClaimedAmount(double claimedAmount) {
+            this.claimedAmount = claimedAmount;
         }
 
         public double getCompensatedAmount() {

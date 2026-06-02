@@ -30,6 +30,10 @@ public class Main {
 
         reportsServicesClaim.printClaimsReport();
 
+        ReportsServices reportsServicesReinsurer = new ReportsServices();
+
+        reportsServicesReinsurer.printReinsurersReport();
+
 
 
         //prueba conexiom BD

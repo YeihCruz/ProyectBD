@@ -2,34 +2,19 @@ package reports;
 
 import java.time.LocalDate;
 
+
 public class PolicyReport {
 
-    private int policyId;
-    private String clientName;
     private String insuranceType;
-    private String policyStatus;
+    private int policyNumber;
+    private String clientName;
     private LocalDate startDate;
     private LocalDate endDate;
     private double monthlyPremium;
     private double insuredAmount;
+    private String policyStatus;
 
     public PolicyReport() {
-    }
-
-    public int getPolicyId() {
-        return policyId;
-    }
-
-    public void setPolicyId(int policyId) {
-        this.policyId = policyId;
-    }
-
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
     }
 
     public String getInsuranceType() {
@@ -40,12 +25,20 @@ public class PolicyReport {
         this.insuranceType = insuranceType;
     }
 
-    public String getPolicyStatus() {
-        return policyStatus;
+    public int getPolicyNumber() {
+        return policyNumber;
     }
 
-    public void setPolicyStatus(String policyStatus) {
-        this.policyStatus = policyStatus;
+    public void setPolicyNumber(int policyNumber) {
+        this.policyNumber = policyNumber;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public LocalDate getStartDate() {
@@ -79,4 +72,13 @@ public class PolicyReport {
     public void setInsuredAmount(double insuredAmount) {
         this.insuredAmount = insuredAmount;
     }
+
+    public String getPolicyStatus() {
+        return policyStatus;
+    }
+
+    public void setPolicyStatus(String policyStatus) {
+        this.policyStatus = policyStatus;
+    }
 }
+
