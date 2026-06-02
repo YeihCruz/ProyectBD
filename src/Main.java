@@ -7,10 +7,33 @@ import javax.swing.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import reports.ClientReport;
+import services.ReportsServices;
+
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) {
-       try (Connection connection =
+
+// pruebas de reportes
+
+        ReportsServices reportsServicesClient = new ReportsServices();
+
+        reportsServicesClient.printClientsReport();
+
+        ReportsServices reportsServicesPolicy = new ReportsServices();
+
+        reportsServicesPolicy.printPoliciesReport();
+
+        ReportsServices reportsServicesClaim = new ReportsServices();
+
+        reportsServicesClaim.printClaimsReport();
+
+
+
+        //prueba conexiom BD
+        try (Connection connection =
                      DataBaseConnection.getConnection()) {
 
             if (connection != null) {
