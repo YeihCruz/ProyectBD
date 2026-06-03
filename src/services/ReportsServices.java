@@ -2250,9 +2250,273 @@ public class ReportsServices {
     }
 
 
+    public List<ExpiringPolicyReport>
+    getExpiringPolicyReport() {
+
+        List<ExpiringPolicyReport> reports =
+                new ArrayList<>();
+
+        String sql =
+                "SELECT " +
+                        "p.policy_number, " +
+                        "c.first_name, " +
+                        "c.last_name, " +
+                        "it.description, " +
+                        "p.start_date, " +
+                        "p.end_date " +
+                        "FROM policy p " +
+                        "INNER JOIN client c " +
+                        "ON p.client_id = c.client_id " +
+                        "INNER JOIN insurance_type it " +
+                        "ON p.insurance_type_id = it.insurance_type_id " +
+                        "WHERE p.end_date BETWEEN CURRENT_DATE " +
+                        "AND CURRENT_DATE + INTERVAL '30 DAY' " +
+                        "ORDER BY p.end_date";
 
 
+        try (
+                Connection connection =
+                        DataBaseConnection.getConnection();
 
+                PreparedStatement statement =
+                        connection.prepareStatement(sql);
+
+                ResultSet resultSet =
+                        statement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+
+                ExpiringPolicyReport report =
+                        new ExpiringPolicyReport();
+
+                report.setPolicyNumber(
+                        resultSet.getInt(1));
+
+                report.setClientName(
+                        resultSet.getString(2)
+                                + " "
+                                + resultSet.getString(3));
+
+                report.setInsuranceType(
+                        resultSet.getString(4));
+
+                report.setStartDate(
+                        resultSet.getDate(5));
+
+                report.setEndDate(
+                        resultSet.getDate(6));
+
+                long remainingDays =
+                        java.time.temporal.ChronoUnit.DAYS.between(
+                                java.time.LocalDate.now(),
+                                resultSet.getDate(6).toLocalDate());
+
+                report.setRemainingDays(
+                        remainingDays);
+
+                reports.add(report);
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error generating expiring policies report");
+
+            e.printStackTrace();
+        }
+
+        return reports;
+    }
+
+
+    public void printExpiringPolicyReport() {
+
+        List<ExpiringPolicyReport> reports =
+                getExpiringPolicyReport();
+
+        System.out.println(
+                "\n========================================");
+
+        System.out.println(
+                "EXPIRING POLICIES REPORT");
+
+        System.out.println(
+                "Report Date: "
+                        + java.time.LocalDate.now());
+
+        System.out.println(
+                "========================================");
+
+        for (ExpiringPolicyReport report : reports) {
+
+            System.out.println();
+
+            System.out.println(
+                    "Policy Number: "
+                            + report.getPolicyNumber());
+
+            System.out.println(
+                    "Client Name: "
+                            + report.getClientName());
+
+            System.out.println(
+                    "Insurance Type: "
+                            + report.getInsuranceType());
+
+            System.out.println(
+                    "Start Date: "
+                            + report.getStartDate());
+
+            System.out.println(
+                    "End Date: "
+                            + report.getEndDate());
+
+            System.out.println(
+                    "Remaining Days: "
+                            + report.getRemainingDays());
+
+            System.out.println(
+                    "----------------------------------------");
+        }
+    }
+
+
+    public List<PendingClaimReport>
+    getPendingClaimReport() {
+
+        List<PendingClaimReport> reports =
+                new ArrayList<>();
+
+        String sql =
+                "SELECT " +
+                        "cl.claim_number, " +
+                        "c.first_name, " +
+                        "c.last_name, " +
+                        "p.policy_number, " +
+                        "ct.description, " +
+                        "cl.incident_date, " +
+                        "cl.claimed_amount, " +
+                        "cs.description " +
+                        "FROM claim cl " +
+                        "INNER JOIN policy p " +
+                        "ON cl.policy_number = p.policy_number " +
+                        "INNER JOIN client c " +
+                        "ON p.client_id = c.client_id " +
+                        "INNER JOIN claim_type ct " +
+                        "ON cl.claim_type_id = ct.claim_type_id " +
+                        "INNER JOIN claim_status cs " +
+                        "ON cl.claim_status_id = cs.claim_status_id " +
+                        "WHERE cs.description = 'In Progress' " +
+                        "ORDER BY cl.incident_date";
+
+        try (
+                Connection connection =
+                        DataBaseConnection.getConnection();
+
+                PreparedStatement statement =
+                        connection.prepareStatement(sql);
+
+                ResultSet resultSet =
+                        statement.executeQuery()
+        ) {
+
+            while (resultSet.next()) {
+
+                PendingClaimReport report =
+                        new PendingClaimReport();
+
+                report.setClaimNumber(
+                        resultSet.getInt(1));
+
+                report.setClientName(
+                        resultSet.getString(2)
+                                + " "
+                                + resultSet.getString(3));
+
+                report.setPolicyNumber(
+                        resultSet.getInt(4));
+
+                report.setClaimType(
+                        resultSet.getString(5));
+
+                report.setIncidentDate(
+                        resultSet.getDate(6));
+
+                report.setClaimedAmount(
+                        resultSet.getDouble(7));
+
+                report.setClaimStatus(
+                        resultSet.getString(8));
+
+                reports.add(report);
+            }
+
+        } catch (SQLException e) {
+
+            System.out.println(
+                    "Error generating pending claims report");
+
+            e.printStackTrace();
+        }
+
+        return reports;
+    }
+
+    public void printPendingClaimReport() {
+
+        List<PendingClaimReport> reports =
+                getPendingClaimReport();
+
+        System.out.println(
+                "\n========================================");
+
+        System.out.println(
+                "PENDING CLAIMS REPORT");
+
+        System.out.println(
+                "Report Date: "
+                        + java.time.LocalDate.now());
+
+        System.out.println(
+                "========================================");
+
+        for (PendingClaimReport report : reports) {
+
+            System.out.println();
+
+            System.out.println(
+                    "Claim Number: "
+                            + report.getClaimNumber());
+
+            System.out.println(
+                    "Client Name: "
+                            + report.getClientName());
+
+            System.out.println(
+                    "Policy Number: "
+                            + report.getPolicyNumber());
+
+            System.out.println(
+                    "Claim Type: "
+                            + report.getClaimType());
+
+            System.out.println(
+                    "Incident Date: "
+                            + report.getIncidentDate());
+
+            System.out.println(
+                    "Claimed Amount: $"
+                            + report.getClaimedAmount());
+
+            System.out.println(
+                    "Status: "
+                            + report.getClaimStatus());
+
+            System.out.println(
+                    "----------------------------------------");
+        }
+    }
 
     }
 
