@@ -32,6 +32,7 @@ public class ClientsPanel extends JPanel {
     public ClientsPanel() {
         setBackground(UIStyles.BG_LIGHT);
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -42,7 +43,7 @@ public class ClientsPanel extends JPanel {
         JLabel title = new JLabel("Gesti\u00F3n de Clientes");
         title.setFont(UIStyles.FONT_HEADER);
         title.setForeground(UIStyles.TEXT_PRIMARY);
-        header.add(title, BorderLayout.WEST);
+        header.add(title, BorderLayout.NORTH);
 
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
