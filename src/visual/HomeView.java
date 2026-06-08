@@ -177,7 +177,7 @@ public class HomeView extends JFrame {
         contentPanel.add(new ClientsPanel(), "clients");
         contentPanel.add(new PoliciesPanel(), "policies");
         contentPanel.add(new ClaimsPanel(), "claims");
-        contentPanel.add(new IncidentsPanel(), "incidents");
+        contentPanel.add(new ReinsurersPanel(), "incidents");
         contentPanel.add(new AgencyPanel(), "agencys");
         contentPanel.add(new ReportsPanel(), "reports");
 

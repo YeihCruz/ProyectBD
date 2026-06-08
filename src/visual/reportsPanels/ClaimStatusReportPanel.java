@@ -56,9 +56,9 @@ public class ClaimStatusReportPanel extends JPanel {
         tableModel.setRowCount(0);
         for (ClaimStatusReport c : claimStatusReports) {
             tableModel.addRow(new Object[]{
-                    c.getClientName(), c.getPolicyNumber(), c.getInsuranceType(),
-                    c.getClaimNumber(), c.getClaimType(), c.getIncidentDate(), c.getClaimedAmount(),
-                    c.getClaimStatus(), c.getCompensatedAmount()
+                    c.getClaimNumber(), c.getClientName(), c.getPolicyNumber(),
+                    c.getInsuranceType(), c.getClaimType(), c.getIncidentDate(), c.getClaimStatus(),
+                    c.getClaimedAmount(), c.getCompensatedAmount()
             });
         }
     }

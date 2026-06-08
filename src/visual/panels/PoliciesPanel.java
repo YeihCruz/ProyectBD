@@ -404,6 +404,5 @@ public class PoliciesPanel extends JPanel {
 
         DefaultTableCellRenderer right = new DefaultTableCellRenderer();
         right.setHorizontalAlignment(SwingConstants.RIGHT);
-        t.getColumnModel().getColumn(0).setMaxWidth(80);
     }
 }

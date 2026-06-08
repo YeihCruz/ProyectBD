@@ -194,7 +194,7 @@ public class WelcomePanel extends JPanel {
             {"\uD83D\uDCCB", "Clientes", "Registro y gesti\u00F3n de clientes"},
             {"\uD83D\uDCC4", "P\u00F3lizas", "Administraci\u00F3n de p\u00F3lizas"},
             {"\uD83D\uDCE9", "Reclamos", "Gesti\u00F3n de reclamos"},
-            {"\u26A0\uFE0F", "Siniestros", "Control de siniestros"},
+            {"\u26A0\uFE0F", "Reaseguradoras", "Control de reaseguradoras"},
             {"\uD83C\uDFE2", "Agencias", "Red de agencias"},
             {"\uD83D\uDCCA", "Reportes", "Informes del sistema"},
             {"\u2699\uFE0F", "Configuraci\u00F3n", "Ajustes del sistema"},

@@ -442,6 +442,5 @@ public class ClientsPanel extends JPanel {
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-        t.getColumnModel().getColumn(0).setMaxWidth(50);
     }
 }

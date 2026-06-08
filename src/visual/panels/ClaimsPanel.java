@@ -370,7 +370,5 @@ public class ClaimsPanel extends JPanel {
         t.setSelectionForeground(UIStyles.TEXT_PRIMARY);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         t.setIntercellSpacing(new Dimension(8, 0));
-
-        t.getColumnModel().getColumn(0).setMaxWidth(90);
     }
 }

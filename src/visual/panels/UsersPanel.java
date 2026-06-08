@@ -242,7 +242,6 @@ public class UsersPanel extends JPanel {
 
     private void editSelected() {
         int row = table.getSelectedRow();
-        JOptionPane.showMessageDialog(null, row);
         if (row < 0) {
             MessagePanel mp = new MessagePanel( null, true, "Seleccione un usuario de la tabla");
             mp.setVisible(true);
@@ -250,13 +249,9 @@ public class UsersPanel extends JPanel {
         }
 
         int id = (int) tableModel.getValueAt(row, 0);
-        JOptionPane.showMessageDialog(null, id);
-
         List<User> users = userServices.getAllUsers();
-        JOptionPane.showMessageDialog(null, users.size());
         for (User u : users) {
             if (u.getUserId() == id) {
-                JOptionPane.showMessageDialog(null, u.getFullName());
                 showForm(u);
                 return;
             }
@@ -310,8 +305,6 @@ public class UsersPanel extends JPanel {
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-        t.getColumnModel().getColumn(0).setMaxWidth(60);
-        t.getColumnModel().getColumn(1).setMinWidth(100);
-        t.getColumnModel().getColumn(4).setMaxWidth(70);
+
     }
 }
