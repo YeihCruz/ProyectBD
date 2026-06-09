@@ -12,5 +12,7 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="jcalendar1.4" level="project" />
     <orderEntry type="library" name="jcalendar-1.4" level="project" />
+    <orderEntry type="library" name="experimental" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
   </component>
 </module>

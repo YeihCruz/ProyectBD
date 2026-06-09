@@ -1,31 +1,38 @@
 package visual.reportsPanels;
 
+import models.Client;
 import reports.ClientProfileReport;
+import services.ClientServices;
 import services.ReportsServices;
 import visual.UIStyles;
+import visual.components.CustomComboBox;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.List;
 
+import static java.awt.Font.BOLD;
+import static java.awt.Font.PLAIN;
+
 public class ClientProfileReportPanel extends JPanel {
-    //Necesita Arreglo
+
 
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ClientProfileReport> clientProfileReports;
-
+    private List<ClientProfileReport> clientProfileReports;
+    private List<Client> clients;
+    private JComboBox comboBox;
     public ClientProfileReportPanel() {
-
-        clientProfileReports = new ReportsServices().getClientProfileReport(1);
+        clients = new ClientServices().getAllClients();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setVisible(false);
-        setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
+        setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
         setLayout(null);
-        setBackground(UIStyles.BG_LIGHT);
+        setBackground(UIStyles.BORDER);
 
         tableModel = new DefaultTableModel(
                 new String[]{"Nombre del Cliente", "Identificacion", "Telefono", "Direccion", "Email", "Cantidad de Polizas Activas","Total Premiuns Pagados", "Numero de Reclamo", "Dia del incidente", "Monto Reclamado", "Monto Compensado"}, 0
@@ -38,16 +45,52 @@ public class ClientProfileReportPanel extends JPanel {
         table = new JTable(tableModel);
         styleTable(table);
 
+        JLabel txtSearch = new JLabel("Buscar Cliente: ");
+        txtSearch.setBounds((int) (screenSize.width * 0.3175),(int) (screenSize.height * 0.03), (int) (screenSize.width * 0.1), (int) (screenSize.height * 0.04));
+        txtSearch.setFont(new Font("Segoe UI", PLAIN, (int) (screenSize.width * 0.011)));
+        add(txtSearch);
+
+        JLabel txtLupa = new JLabel("\uD83D\uDD0D ");
+        txtLupa.setBounds((int) (screenSize.width * 0.5825),(int) (screenSize.height * 0.0305), (int) (screenSize.width * 0.1), (int) (screenSize.height * 0.04));
+        txtLupa.setFont(new Font("Segoe UI Emoji", PLAIN, (int) (screenSize.width * 0.0115)));
+        add(txtLupa);
+
+        comboBox = new CustomComboBox().customComboBox();
+        for(Client c: clients) comboBox.addItem(c.toString());
+        comboBox.setBounds((int) (screenSize.width * 0.4025),(int) (screenSize.height * 0.03), (int) (screenSize.width * 0.2), (int) (screenSize.height * 0.04));
+        comboBox.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.011)));
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedClient = comboBox.getSelectedIndex();
+                Client client = clients.get(selectedClient);
+                int clientId = client.getClientId();
+                loadData(clientId);
+            }
+        });
+        comboBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                txtLupa.setForeground(Color.red);
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                txtLupa.setForeground(Color.BLACK);
+            }
+        });
+        add(comboBox);
+
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBorder(BorderFactory.createLineBorder(UIStyles.BORDER, 1));
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
-        scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
+        scroll.setBounds(0, (int) (screenSize.height * 0.09), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.675));
         add(scroll);
-        loadData();
+        loadData(1);
 
     }
 
-    private void loadData() {
+    private void loadData(int i) {
+        clientProfileReports = new ReportsServices().getClientProfileReport(i);
         tableModel.setRowCount(0);
         for (ClientProfileReport c : clientProfileReports) {
             tableModel.addRow(new Object[]{

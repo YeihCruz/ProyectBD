@@ -171,10 +171,7 @@ public class ReinsurersPanel extends JPanel {
             @Override
             public void keyTyped(KeyEvent e) {
                 int large = txtName.getText().length();
-                char c = e.getKeyChar();
-                if (!Character.isDigit(c) && (c != '.')) {
-                    e.consume();
-                } else if (large >= 11) {
+                 if (large >= 100) {
                     e.consume();
                 }
             }

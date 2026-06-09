@@ -406,7 +406,7 @@ public class ReportsPanel extends JPanel {
         listMovem.addItem("Resumen de Polizas");
         listMovem.addItem("Polizas Canceladas");
         listMovem.addItem("Polizas Caducadas");
-        listMovem.addItem("Polizas Issued");
+        listMovem.addItem("Buscar Polizas entre Fechas");
         listMovem.addItem("Polizas A Expirar");
         listMovem.addItem("Datos Reaseguradoras");
         listMovem.addItem("Perfil de Reaseguradoras");

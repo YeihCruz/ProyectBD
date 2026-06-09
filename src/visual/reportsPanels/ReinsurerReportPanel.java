@@ -1,13 +1,20 @@
 package visual.reportsPanels;
+import models.Client;
+import org.jfree.chart.JFreeChart;
 import reports.ReinsurerReport;
+import services.ClientServices;
 import services.ReportsServices;
 import visual.UIStyles;
+import visual.components.BarGraphics;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.geom.Arc2D;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ReinsurerReportPanel extends JPanel {
     private Dimension screenSize;
@@ -16,13 +23,12 @@ public class ReinsurerReportPanel extends JPanel {
     private final List<ReinsurerReport> reinsurerReports;
 
     public ReinsurerReportPanel() {
-        //Añadir grafico de porcentaje
         reinsurerReports = new ReportsServices().getReinsurersReport();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setVisible(false);
-        setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
+        setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
         setLayout(null);
-        setBackground(UIStyles.BG_LIGHT);
+        setBackground(  UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
                 new String[]{"Nombre", "Pais", "Tipo de Reaseguradora", "Tipo de Seguro", "Porcentaje de Participacion"}, 0
@@ -38,8 +44,23 @@ public class ReinsurerReportPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBorder(BorderFactory.createLineBorder(UIStyles.BORDER, 1));
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
-        scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
+        scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.425));
         add(scroll);
+
+        List<String> names = new ArrayList<>();
+        List<Double> numbers = new ArrayList<>();
+
+        for(Client c: new ClientServices().getAllClients()){
+            names.add(c.getFirstName());
+            double doble = c.getAge();
+            numbers.add(doble);
+
+        }
+
+        JPanel bar = new BarGraphics().creteGrapsFromList(names, numbers);
+        bar.setLayout(null);
+        bar.setBounds(0,  (int) (screenSize.height * 0.432), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.334));
+        add(bar);
         loadData();
 
     }
