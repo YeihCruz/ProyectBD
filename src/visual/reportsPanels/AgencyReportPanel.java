@@ -24,13 +24,6 @@ public class AgencyReportPanel extends JPanel {
         setLayout(null);
         setBackground(UIStyles.BG_LIGHT);
 
-        JLabel title = new JLabel("Reporte de Agencias");
-        title.setFont(UIStyles.FONT_HEADER);
-        title.setForeground(UIStyles.TEXT_PRIMARY);
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBounds((int) (screenSize.width * 0.36), 0, (int) (screenSize.width * 0.2), (int) (screenSize.height * 0.05));
-        add(title);
-
         tableModel = new DefaultTableModel(
                 new String[]{"Nombre", "Direccion", "Telefono", "Email", "Director General", "Manager de Seguros", "Manager de Reclamos"}, 0
         ) {
@@ -45,7 +38,7 @@ public class AgencyReportPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBorder(BorderFactory.createLineBorder(UIStyles.BORDER, 1));
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
-        scroll.setBounds(0, (int) (screenSize.height * 0.05), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.74));
+        scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
         add(scroll);
         loadData();
 

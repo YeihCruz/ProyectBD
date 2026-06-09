@@ -26,13 +26,6 @@ public class ReinsurerProfileReportPanel extends JPanel {
         setLayout(null);
         setBackground(UIStyles.BG_LIGHT);
 
-        JLabel title = new JLabel("Perfil de Reaseguradoras");
-        title.setFont(UIStyles.FONT_HEADER);
-        title.setForeground(UIStyles.TEXT_PRIMARY);
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBounds((int) (screenSize.width * 0.31), 0, (int) (screenSize.width * 0.3), (int) (screenSize.height * 0.05));
-        add(title);
-
         tableModel = new DefaultTableModel(
                 new String[]{"Nombre de Reaseguradora", "Pais", "Tipo de Reaseguros", "Tipos de Seguro", "Porcentaje de Participacion"}, 0
         ) {
@@ -47,7 +40,7 @@ public class ReinsurerProfileReportPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBorder(BorderFactory.createLineBorder(UIStyles.BORDER, 1));
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
-        scroll.setBounds(0, (int) (screenSize.height * 0.05), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.74));
+        scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
         add(scroll);
         loadData();
 

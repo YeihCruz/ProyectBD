@@ -25,13 +25,6 @@ public class RejectedClaimsReportPanel extends JPanel {
         setLayout(null);
         setBackground(UIStyles.BG_LIGHT);
 
-        JLabel title = new JLabel("Reporte de Reclamos Rechazados");
-        title.setFont(UIStyles.FONT_HEADER);
-        title.setForeground(UIStyles.TEXT_PRIMARY);
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBounds((int) (screenSize.width * 0.31), 0, (int) (screenSize.width * 0.3), (int) (screenSize.height * 0.05));
-        add(title);
-
         tableModel = new DefaultTableModel(
                 new String[]{"Nombre del Cliente", "Identificacion", "Cantidad de Reclamos Rechazados", "Razones de Cancelamiento"}, 0
         ) {
@@ -46,7 +39,7 @@ public class RejectedClaimsReportPanel extends JPanel {
         JScrollPane scroll = new JScrollPane(table);
         scroll.setBorder(BorderFactory.createLineBorder(UIStyles.BORDER, 1));
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
-        scroll.setBounds(0, (int) (screenSize.height * 0.05), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.74));
+        scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
         add(scroll);
         loadData();
 

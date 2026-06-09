@@ -1,7 +1,7 @@
 package visual.reportsPanels;
 
-
 import reports.ApprovedClaimsReport;
+import reports.PendingClaimReport;
 import services.ReportsServices;
 import visual.UIStyles;
 
@@ -11,15 +11,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ApprovedClaimsReportPanel extends JPanel {
+public class PendingClaimsReportPanel extends JPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ApprovedClaimsReport> approvedClaimsReports;
+    private final List<PendingClaimReport> pendingClaimReports;
 
-    public ApprovedClaimsReportPanel() {
+    public PendingClaimsReportPanel() {
 
-        approvedClaimsReports = new ReportsServices().getApprovedClaimsReport();
+        pendingClaimReports = new ReportsServices().getPendingClaimReport();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -27,7 +27,7 @@ public class ApprovedClaimsReportPanel extends JPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre del Cliente","Identificaci\u00F3n", "Cantidad de Reclamos Aprobados", "Total Compensado"}, 0
+                new String[]{"Numero de Reclamacion","Nombre del Cliente", "Numero de Poliza", "Tipo de Reclamacion", "Fecha del incidente", "Monto Reclamado", "Estado de Reclamacion"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;
@@ -48,10 +48,11 @@ public class ApprovedClaimsReportPanel extends JPanel {
 
     private void loadData() {
         tableModel.setRowCount(0);
-        for (ApprovedClaimsReport c : approvedClaimsReports) {
+        for (PendingClaimReport c : pendingClaimReports) {
             tableModel.addRow(new Object[]{
-                    c.getClientName(), c.getIdentificationNumber(),
-                    c.getApprovedClaims(), c.getTotalCompensatedAmount()
+                    c.getClaimNumber(), c.getClientName(),
+                    c.getPolicyNumber(), c.getClaimType(), c.getIncidentDate(),
+                    c.getClaimedAmount(), c.getClaimStatus()
             });
         }
     }

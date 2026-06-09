@@ -249,6 +249,7 @@ public class UsersPanel extends JPanel {
         }
 
         int id = (int) tableModel.getValueAt(row, 0);
+
         List<User> users = userServices.getAllUsers();
         for (User u : users) {
             if (u.getUserId() == id) {
@@ -305,6 +306,5 @@ public class UsersPanel extends JPanel {
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
-
     }
 }

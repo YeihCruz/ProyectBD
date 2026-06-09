@@ -7,6 +7,7 @@ import services.ClaimServices;
 import services.ClientServices;
 import services.PolicyServices;
 import visual.UIStyles;
+import visual.components.CustomComboBox;
 import visual.reportsPanels.*;
 
 import javax.swing.*;
@@ -68,10 +69,10 @@ public class ReportsPanel extends JPanel {
 
         jDesktopPane = new JDesktopPane();
         jDesktopPane.setOpaque(false);
-        jDesktopPane.setBounds((int) (screenSize.width * 0.04), (int) (screenSize.height * 0.1), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
+        jDesktopPane.setBounds((int) (screenSize.width * 0.04), (int) (screenSize.height * 0.13), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
 
         container = new JPanel(null);
-        container.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
+        container.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
         container.setOpaque(false);
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -125,16 +126,18 @@ public class ReportsPanel extends JPanel {
         JPanel p5 = new ClaimStatusSummaryReportPanel();
         JPanel p6 = new ApprovedClaimsReportPanel();
         JPanel p7 = new RejectedClaimsReportPanel();
-        JPanel p8 = new PolicyReportPanel();
-        JPanel p9 = new PolicySummaryReportPanel();
-        JPanel p10 = new CancelledPolicyReportPanel();
-        JPanel p11 = new ExpiredPolicyReportPanel();
-        JPanel p12 = new IssuedPolicyReportPanel();
-        JPanel p13 = new ReinsurerReportPanel();
-        JPanel p14 = new ReinsurerProfileReportPanel();
-        JPanel p15 = new AgencyReportPanel();
-        JPanel p16 = new MonthlyIncomeReportPanel();
-        JPanel p17 = new MonthlyPremiumIncomeReportPanel();
+        JPanel p8 = new PendingClaimsReportPanel();
+        JPanel p9 = new PolicyReportPanel();
+        JPanel p10 = new PolicySummaryReportPanel();
+        JPanel p11 = new CancelledPolicyReportPanel();
+        JPanel p12 = new ExpiredPolicyReportPanel();
+        JPanel p13 = new IssuedPolicyReportPanel();
+        JPanel p14 = new ExpiringPolicyReportPanel();
+        JPanel p15 = new ReinsurerReportPanel();
+        JPanel p16 = new ReinsurerProfileReportPanel();
+        JPanel p17 = new AgencyReportPanel();
+        JPanel p18 = new MonthlyIncomeReportPanel();
+        JPanel p19 = new MonthlyPremiumIncomeReportPanel();
 
         panels.add(p1);
         panels.add(p2);
@@ -153,7 +156,9 @@ public class ReportsPanel extends JPanel {
         panels.add(p15);
         panels.add(p16);
         panels.add(p17);
-        for(int i=0; i<=17; i++)
+        panels.add(p18);
+        panels.add(p19);
+        for(int i=0; i<=19; i++)
             jDesktopPane.add(panels.get(i), i);
 
         summaryCard.setVisible(true);
@@ -178,7 +183,7 @@ public class ReportsPanel extends JPanel {
                 nextActionPerformed(evt);
             }
         });
-        next.setFont(new Font("Segoe UI Emoji", PLAIN, (int) (screenSize.width * 0.045)));
+        next.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.045)));
 
         add(next);
 
@@ -190,19 +195,19 @@ public class ReportsPanel extends JPanel {
         previus.setContentAreaFilled(false);
         previus.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
-                previusMouseEntered(evt);
+                previousMouseEntered(evt);
             }
 
             public void mouseExited(MouseEvent evt) {
-                previusMouseExited(evt);
+                previousMouseExited(evt);
             }
         });
         previus.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                previusActionPerformed(evt);
+                previousActionPerformed(evt);
             }
         });
-        previus.setFont(new Font("Segoe UI Emoji", PLAIN, (int) (screenSize.width * 0.045)));
+        previus.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.045)));
 
         add(previus);
 
@@ -350,18 +355,18 @@ public class ReportsPanel extends JPanel {
 
     }
 
-    private void previusActionPerformed(ActionEvent evt) {
+    private void previousActionPerformed(ActionEvent evt) {
         if (currentPage > 0)
             changeJDesk(currentPage - 1);
     }
 
-    private void previusMouseExited(MouseEvent evt) {
+    private void previousMouseExited(MouseEvent evt) {
         if (previus.isEnabled()) {
            previus.setForeground(Color.black);
         }
     }
 
-    private void previusMouseEntered(MouseEvent evt) {
+    private void previousMouseEntered(MouseEvent evt) {
         if(previus.isEnabled()) {
             previus.setForeground(Color.RED);
         }
@@ -385,21 +390,24 @@ public class ReportsPanel extends JPanel {
         }
     }
     private void createSlideBut() {
-        listMovem = new JComboBox<>();
-        listMovem.setBounds((int) (screenSize.width * 0.41), (int) (screenSize.height * 0.04), (int) (screenSize.width * 0.18), (int) (screenSize.height * 0.04));
+        listMovem = new CustomComboBox().customComboBox();
+        listMovem.setBounds((int) (screenSize.width * 0.38), (int) (screenSize.height * 0.085), (int) (screenSize.width * 0.24), (int) (screenSize.height * 0.04));
+        listMovem.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.013)));
         listMovem.addItem("Datos generales");
         listMovem.addItem("Datos de Clientes");
         listMovem.addItem("Perfiles de los Clientes");
         listMovem.addItem("Datos de Reclamaciones");
         listMovem.addItem("Datos de Estado de Reclamaciones");
         listMovem.addItem("Resumen de Reclamaciones");
-        listMovem.addItem("Datos de Reclamos Aprobados");
-        listMovem.addItem("Datos de Reclamos Rechazados");
+        listMovem.addItem("Reclamos Aprobados");
+        listMovem.addItem("Reclamos Rechazados");
+        listMovem.addItem("Reclamos Pendientes");
         listMovem.addItem("Datos de Polizas");
         listMovem.addItem("Resumen de Polizas");
         listMovem.addItem("Polizas Canceladas");
         listMovem.addItem("Polizas Caducadas");
         listMovem.addItem("Polizas Issued");
+        listMovem.addItem("Polizas A Expirar");
         listMovem.addItem("Datos Reaseguradoras");
         listMovem.addItem("Perfil de Reaseguradoras");
         listMovem.addItem("Datos de Agencias");

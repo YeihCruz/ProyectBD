@@ -1,7 +1,7 @@
 package visual.reportsPanels;
 
-
-import reports.ApprovedClaimsReport;
+import reports.ExpiredPolicyReport;
+import reports.ExpiringPolicyReport;
 import services.ReportsServices;
 import visual.UIStyles;
 
@@ -11,15 +11,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ApprovedClaimsReportPanel extends JPanel {
+public class ExpiringPolicyReportPanel extends JPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ApprovedClaimsReport> approvedClaimsReports;
+    private final List<ExpiringPolicyReport> expiringPolicyReports;
 
-    public ApprovedClaimsReportPanel() {
-
-        approvedClaimsReports = new ReportsServices().getApprovedClaimsReport();
+    public ExpiringPolicyReportPanel() {
+        expiringPolicyReports = new ReportsServices().getExpiringPolicyReport();
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -27,7 +26,7 @@ public class ApprovedClaimsReportPanel extends JPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre del Cliente","Identificaci\u00F3n", "Cantidad de Reclamos Aprobados", "Total Compensado"}, 0
+                new String[]{"Numero de Poliza", "Nombre del Cilente", "Tipo de Seguro", "Fecha de Inicio", "Fecha de Culminacion", "Dias Hasta Vencimiento"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;
@@ -48,10 +47,10 @@ public class ApprovedClaimsReportPanel extends JPanel {
 
     private void loadData() {
         tableModel.setRowCount(0);
-        for (ApprovedClaimsReport c : approvedClaimsReports) {
+        for (ExpiringPolicyReport c : expiringPolicyReports) {
             tableModel.addRow(new Object[]{
-                    c.getClientName(), c.getIdentificationNumber(),
-                    c.getApprovedClaims(), c.getTotalCompensatedAmount()
+                    c.getPolicyNumber(), c.getClientName(), c.getInsuranceType(),
+                    c.getStartDate(), c.getEndDate(), c.getRemainingDays()
             });
         }
     }
@@ -73,4 +72,5 @@ public class ApprovedClaimsReportPanel extends JPanel {
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);
     }
+
 }
