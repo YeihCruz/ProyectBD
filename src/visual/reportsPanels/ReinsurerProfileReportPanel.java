@@ -6,6 +6,7 @@ import reports.AgencyReport;
 import reports.ReinsurerProfileReport;
 import services.ReinsuranceServices;
 import services.ReportsServices;
+import utils.Options;
 import visual.UIStyles;
 import visual.components.CustomComboBox;
 
@@ -31,8 +32,7 @@ public class ReinsurerProfileReportPanel extends JPanel {
     private JComboBox comboBox;
 
     public ReinsurerProfileReportPanel() {
-        //Agregar Barra de Porcentaje
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
         reinsurers = new ReinsuranceServices().getAllReinsurers();
 
         setVisible(false);
@@ -64,7 +64,7 @@ public class ReinsurerProfileReportPanel extends JPanel {
         comboBox = new CustomComboBox().customComboBox();
         for(Reinsurer c: reinsurers) comboBox.addItem(c.toString());
         comboBox.setBounds((int) (screenSize.width * 0.42),(int) (screenSize.height * 0.03), (int) (screenSize.width * 0.2), (int) (screenSize.height * 0.04));
-        comboBox.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.011)));
+        comboBox.setFont(UIStyles.FONT_TITLE);
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,18 +107,18 @@ public class ReinsurerProfileReportPanel extends JPanel {
     }
 
     private void styleTable(JTable t) {
-        t.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        t.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
+        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, ((int) (screenSize.width * 0.0088))));
         t.getTableHeader().setBackground(new Color(240, 242, 245));
         t.getTableHeader().setForeground(UIStyles.TEXT_PRIMARY);
         t.getTableHeader().setBorder(BorderFactory.createLineBorder(UIStyles.BORDER));
-        t.setRowHeight(32);
+        t.setRowHeight(((int) (screenSize.width * 0.022)));
         t.setShowGrid(true);
         t.setGridColor(UIStyles.BORDER_LIGHT);
         t.setSelectionBackground(UIStyles.PRIMARY_LIGHT);
         t.setSelectionForeground(UIStyles.TEXT_PRIMARY);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        t.setIntercellSpacing(new Dimension(10, 0));
+        t.setIntercellSpacing(new Dimension(((int) (screenSize.width * 0.0006)), 0));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);

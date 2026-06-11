@@ -5,6 +5,7 @@ import models.Role;
 import models.User;
 import services.RoleServices;
 import services.UserServices;
+import utils.Options;
 import visual.UIStyles;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class UsersPanel extends JPanel {
     private Dimension screenSize;
 
     public UsersPanel() {
-        screenSize= Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -34,7 +35,7 @@ public class UsersPanel extends JPanel {
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         JLabel title = new JLabel("Gesti\u00F3n de Usuarios");
-        title.setFont(UIStyles.FONT_HEADER);
+        title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
 
@@ -186,10 +187,17 @@ public class UsersPanel extends JPanel {
         form.add(cmbRole);
         form.add(chkActive);
 
+        dialog.setLocationRelativeTo(null);
+
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.32), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar");
-        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.32), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
+            btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.32), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+            btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.32), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+        }else {
+            btnSave.setBounds((int) (screenSize.width * 0.2), (int) (screenSize.height * 0.32), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
+            btnCancel.setBounds((int) (screenSize.width * 0.08), (int) (screenSize.height * 0.32), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
+        }
 
         btnSave.addActionListener(e -> {
             String user = txtUsername.getText().trim();
@@ -286,23 +294,23 @@ public class UsersPanel extends JPanel {
         btn.setBackground(bg);
         btn.setBorder(BorderFactory.createEmptyBorder(8, 14, 8, 14));
         btn.setFocusPainted(false);
-        btn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         return btn;
     }
 
     private void styleTable(JTable t) {
-        t.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        t.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
+        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, ((int) (screenSize.width * 0.0088))));
         t.getTableHeader().setBackground(new Color(240, 242, 245));
         t.getTableHeader().setForeground(UIStyles.TEXT_PRIMARY);
         t.getTableHeader().setBorder(BorderFactory.createLineBorder(UIStyles.BORDER));
-        t.setRowHeight(32);
+        t.setRowHeight(((int) (screenSize.width * 0.022)));
         t.setShowGrid(true);
         t.setGridColor(UIStyles.BORDER_LIGHT);
         t.setSelectionBackground(UIStyles.PRIMARY_LIGHT);
         t.setSelectionForeground(UIStyles.TEXT_PRIMARY);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        t.setIntercellSpacing(new Dimension(10, 0));
+        t.setIntercellSpacing(new Dimension(((int) (screenSize.width * 0.0006)), 0));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);

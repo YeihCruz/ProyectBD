@@ -1,5 +1,6 @@
 package visual.panels;
 
+import utils.Options;
 import visual.LoginView;
 import visual.SessionManager;
 
@@ -19,7 +20,8 @@ public class ConfirmationPanel extends JDialog {
     public ConfirmationPanel(Frame parent, boolean modal) {
         super(parent, modal);
         this.parent= parent;
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
+
         initComponents();
     }
 
@@ -35,9 +37,11 @@ public class ConfirmationPanel extends JDialog {
 
         setBounds((int) (screenSize.width * 0.3), (int) (screenSize.height * 0.3), (int) (screenSize.width * 0.4), (int) (screenSize.height * 0.33));
         text.setBounds((int) (screenSize.width * 0.03), (int) (screenSize.height * 0.04), (int) (screenSize.width * 0.34), (int) (screenSize.height * 0.18));
-        yes.setBounds((int) (screenSize.width * 0.07), (int) (screenSize.getHeight() * 0.23), (int) (screenSize.width * 0.05), (int) (screenSize.height * 0.05));
-        no.setBounds((int) (screenSize.width * 0.27), (int) (screenSize.getHeight() * 0.23), (int) (screenSize.width * 0.05), (int) (screenSize.height * 0.05));
+        yes.setBounds((int) (screenSize.width * 0.07), (int) (screenSize.getHeight() * 0.23), (int) (screenSize.width * 0.06), (int) (screenSize.height * 0.053));
+        no.setBounds((int) (screenSize.width * 0.27), (int) (screenSize.getHeight() * 0.23), (int) (screenSize.width * 0.06), (int) (screenSize.height * 0.053));
         label.setBounds(0, 0, (int) (screenSize.width * 0.4), (int) (screenSize.height * 0.33));
+
+        setLocationRelativeTo(null);
 
         setBackground(new Color(45, 45, 45, 250));
 
@@ -48,7 +52,6 @@ public class ConfirmationPanel extends JDialog {
 
         getContentPane().add(text);
 
-        yes.setFont(new Font("Segoe UI", 0, (int) (screenSize.width * 0.017)));
         yes.setForeground(new Color(255, 255, 255));
         yes.setOpaque(false);
         yes.setBorderPainted(false);
@@ -70,13 +73,19 @@ public class ConfirmationPanel extends JDialog {
         });
         getContentPane().add(yes);
 
-        no.setFont(new Font("Segoe UI", 0, (int) (screenSize.width * 0.017)));
         no.setForeground(new Color(255, 255, 255));
         no.setOpaque(false);
         no.setBorderPainted(false);
         no.setContentAreaFilled(false);
         no.setFocusPainted(false);
 
+        if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width){
+            no.setFont(new Font("Segoe UI", 0, (int) (screenSize.width * 0.017)));
+            yes.setFont(new Font("Segoe UI", 0, (int) (screenSize.width * 0.017)));
+        }else {
+            no.setFont(new Font("Segoe UI", 0, (int) (screenSize.width * 0.015)));
+            yes.setFont(new Font("Segoe UI", 0, (int) (screenSize.width * 0.015)));
+        }
         no.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
                 noMouseEntered(evt);

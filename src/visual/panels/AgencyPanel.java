@@ -2,6 +2,7 @@ package visual.panels;
 
 import models.Agency;
 import services.AgencyServices;
+import utils.Options;
 import visual.UIStyles;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ public class AgencyPanel extends JPanel {
     private Dimension screenSize;
 
     public AgencyPanel() {
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -31,7 +32,7 @@ public class AgencyPanel extends JPanel {
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         JLabel title = new JLabel("Gesti\u00F3n de Agencias");
-        title.setFont(UIStyles.FONT_HEADER);
+        title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
 
@@ -262,9 +263,14 @@ public class AgencyPanel extends JPanel {
         form.add(lClaimMa);
 
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
         JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
-        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.4), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+        if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
+            btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+            btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+        }else {
+            btnSave.setBounds((int) (screenSize.width * 0.2), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
+            btnCancel.setBounds((int) (screenSize.width * 0.08), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
+        }
 
         btnSave.addActionListener(e -> {
             if (txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtGenDir.getText().trim().isEmpty() || txtInsuranceMan.getText().trim().isEmpty() || txtClaimsMan.getText().trim().isEmpty()) {
@@ -302,6 +308,7 @@ public class AgencyPanel extends JPanel {
         form.add(btnSave);
 
         dialog.add(form);
+        dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
     }
 
@@ -349,18 +356,18 @@ public class AgencyPanel extends JPanel {
     }
 
     private void styleTable(JTable t) {
-        t.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        t.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
+        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, ((int) (screenSize.width * 0.0088))));
         t.getTableHeader().setBackground(new Color(240, 242, 245));
         t.getTableHeader().setForeground(UIStyles.TEXT_PRIMARY);
         t.getTableHeader().setBorder(BorderFactory.createLineBorder(UIStyles.BORDER));
-        t.setRowHeight(32);
+        t.setRowHeight(((int) (screenSize.width * 0.022)));
         t.setShowGrid(true);
         t.setGridColor(UIStyles.BORDER_LIGHT);
         t.setSelectionBackground(UIStyles.PRIMARY_LIGHT);
         t.setSelectionForeground(UIStyles.TEXT_PRIMARY);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        t.setIntercellSpacing(new Dimension(10, 0));
+        t.setIntercellSpacing(new Dimension(((int) (screenSize.width * 0.0006)), 0));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);

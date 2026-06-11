@@ -1,6 +1,7 @@
 package visual.panels;
 
 import models.User;
+import utils.Options;
 import visual.UIStyles;
 
 import javax.swing.*;
@@ -27,7 +28,7 @@ public class WelcomePanel extends JPanel {
 
     public WelcomePanel(User user) {
 
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
 
         setBackground(UIStyles.BG_LIGHT);
         setLayout(null);
@@ -87,14 +88,14 @@ public class WelcomePanel extends JPanel {
         panel.add(icon);
 
         JLabel welcome = new JLabel("Bienvenido, " + user.getFullName());
-        welcome.setFont(UIStyles.FONT_TITLE);
+        welcome.setFont(UIStyles.getCurrentFont(UIStyles.FONT_TITLE));
         welcome.setForeground(UIStyles.TEXT_PRIMARY);
         welcome.setHorizontalAlignment(SwingConstants.CENTER);
         welcome.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.1), (int) (screenSize.width*0.28), (int) (screenSize.height*0.03));
         panel.add(welcome);
 
         JLabel subtitle = new JLabel("Panel de control del Sistema de Seguros");
-        subtitle.setFont(UIStyles.FONT_SUBTITLE);
+        subtitle.setFont(UIStyles.getCurrentFont(UIStyles.getCurrentFont(UIStyles.FONT_SUBTITLE)));
         subtitle.setForeground(UIStyles.TEXT_SECONDARY);
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
         subtitle.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.14), (int) (screenSize.width*0.28), (int) (screenSize.height*0.03));
@@ -109,7 +110,7 @@ public class WelcomePanel extends JPanel {
         section.setBounds((int) (screenSize.width*0.03), (int) (screenSize.height*0.16), (int) (screenSize.width*0.94), (int) (screenSize.height*0.4));
 
         JLabel sectionTitle = new JLabel("Resumen general");
-        sectionTitle.setFont(UIStyles.FONT_SECTION);
+        sectionTitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SECTION));
         sectionTitle.setForeground(UIStyles.TEXT_PRIMARY);
         sectionTitle.setHorizontalAlignment(SwingConstants.CENTER);
         sectionTitle.setBounds((int) (screenSize.width*0.37), (int) (screenSize.height*0.0025), (int) (screenSize.width*0.2), (int) (screenSize.height*0.06));
@@ -179,7 +180,7 @@ public class WelcomePanel extends JPanel {
         section.setOpaque(false);
 
         JLabel sectionTitle = new JLabel("M\u00F3dulos del sistema");
-        sectionTitle.setFont(UIStyles.FONT_SECTION);
+        sectionTitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SECTION));
         sectionTitle.setForeground(UIStyles.TEXT_PRIMARY);
         sectionTitle.setHorizontalAlignment(SwingConstants.CENTER);
         sectionTitle.setBounds((int) (screenSize.width*0.37), (int) (screenSize.height*-0.0045), (int) (screenSize.width*0.2), (int) (screenSize.height*0.06));
@@ -212,7 +213,7 @@ public class WelcomePanel extends JPanel {
 
 
         controllers = createControllers(grid);
-        for(int h= 0; h<8; h++){
+        for(int h = 0; h<8; h++){
             grid.add(controllers.get(h));
         }
 

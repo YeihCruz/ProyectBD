@@ -6,6 +6,7 @@ import models.Policy;
 import services.ClaimServices;
 import services.ClientServices;
 import services.PolicyServices;
+import utils.Options;
 import visual.UIStyles;
 import visual.components.CustomComboBox;
 import visual.reportsPanels.*;
@@ -54,7 +55,7 @@ public class ReportsPanel extends JPanel {
         previus = new JButton("<");
         showCurrentPage = new JLabel();
 
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
 
         showCurrentPage.setBounds((int) (screenSize.width * 0.47), (int) (screenSize.height * 0.888), (int) (screenSize.width * 0.06), (int) (screenSize.height * 0.05));
         showCurrentPage.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.013)));
@@ -77,7 +78,7 @@ public class ReportsPanel extends JPanel {
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         JLabel title = new JLabel("Reportes del Sistema");
-        title.setFont(UIStyles.FONT_HEADER);
+        title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         title.setBounds((int) (screenSize.width * 0.02), (int) (screenSize.height * 0.04), (int) (screenSize.width * 0.15), (int) (screenSize.height * 0.06));
         title.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
@@ -95,8 +96,6 @@ public class ReportsPanel extends JPanel {
         metricsGrid.add(createMetricCard("P\u00F3lizas Vigentes", String.valueOf(activePolicies), UIStyles.CARD_TEAL, 0, 1));
         metricsGrid.add(createMetricCard("Reclamos Abiertos", String.valueOf(openClaims), UIStyles.CARD_RED, 1, 1));
         metricsGrid.add(createMetricCard("Monto Total Compensado", String.format("$%.2f", totalCompensated), UIStyles.CARD_PURPLE, 2, 1));
-
-        //JDesktopPane creacion
 
         summaryCard = UIStyles.createCard();
         summaryCard.setBounds(0, (int) (screenSize.height * 0.37), (int) (screenSize.width * 0.95), (int) (screenSize.height * 0.425));
@@ -183,7 +182,6 @@ public class ReportsPanel extends JPanel {
                 nextActionPerformed(evt);
             }
         });
-        next.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.045)));
 
         add(next);
 
@@ -207,8 +205,14 @@ public class ReportsPanel extends JPanel {
                 previousActionPerformed(evt);
             }
         });
-        previus.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.045)));
+        if(screenSize.width== 1366) {
+            next.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.045)));
+            previus.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.045)));
+        }else {
+            previus.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.038)));
+            next.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.038)));
 
+        }
         add(previus);
 
         container.add(metricsGrid);

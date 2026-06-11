@@ -1,6 +1,8 @@
 package visual;
 
 import models.User;
+import utils.Options;
+import visual.components.LoadingScreen;
 import visual.panels.*;
 
 import javax.swing.*;
@@ -27,6 +29,8 @@ public class HomeView extends JFrame {
     private TimerTask task;
     private boolean backIsVisible;
     private boolean changeVisible;
+    private WelcomePanel welcomePanel;
+
     public HomeView(User user) {
 
         codes = new ArrayList<>();
@@ -36,11 +40,13 @@ public class HomeView extends JFrame {
         this.user = user;
         SessionManager.login(user);
 
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setUndecorated(true);
         setBounds(0, 0, screenSize.width, screenSize.height);
+        setResizable(false);
+        setLocationRelativeTo(null);
         setLayout(null);
 
         add(createMainPanel());
@@ -54,6 +60,10 @@ public class HomeView extends JFrame {
                 repaint();
                 if(backIsVisible !=changeVisible){
                     activateRetButn();
+                }
+                if(Options.getOptions().getScreenSize().width!= screenSize.width){
+                    screenSize = Options.getOptions().getScreenSize();
+                    createNewWindow();
                 }
 
             }
@@ -88,11 +98,25 @@ public class HomeView extends JFrame {
         });
     }
 
+    private void createNewWindow() {
+        LoadingScreen ls = new LoadingScreen(this);
+        ls.showLoading();
+        HomeView nuevo = new HomeView(user);
+        nuevo.showPanel(codes.get(8), nuevo.welcomePanel.getControllers().get(7).getName());
+        nuevo.setVisible(true);
+        ls.hideLoading();
+        timer.cancel();
+        this.dispose();
+    }
+
     private void activateRetButn() {
         if(changeVisible){
             retWelcom.setVisible(true);
             retWelcom.setEnabled(true);
-            headerTitle.setBounds((int) (screenSize.width*0.08), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
+            if(screenSize.width == Toolkit.getDefaultToolkit().getScreenSize().width)
+                headerTitle.setBounds((int) (screenSize.width*0.08), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
+            else
+                headerTitle.setBounds((int) (screenSize.width*0.055), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
 
         }else {
             retWelcom.setVisible(false);
@@ -109,7 +133,11 @@ public class HomeView extends JFrame {
         retWelcom.addActionListener(e -> showPanel(codes.get(0), "Inicio"));
         retWelcom.setBounds(0, 0, (int) (screenSize.width*0.05), (int) (screenSize.height*0.07));
         retWelcom.setText("\u2190");
-        retWelcom.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.024)));
+        if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width)
+            retWelcom.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.024)));
+        else
+            retWelcom.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.02)));
+
         retWelcom.setContentAreaFilled(false);
         retWelcom.setFocusPainted(false);
         retWelcom.setBorderPainted(false);
@@ -129,7 +157,7 @@ public class HomeView extends JFrame {
 
     private JButton createSidebarButton(String text) {
         JButton btn = new JButton(text);
-        btn.setFont(UIStyles.FONT_SIDEBAR);
+        btn.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SIDEBAR));
         btn.setForeground(UIStyles.SIDEBAR_TEXT);
         btn.setBackground(UIStyles.SIDEBAR_BG);
         btn.setBorder(BorderFactory.createCompoundBorder(
@@ -144,7 +172,7 @@ public class HomeView extends JFrame {
     private void createLogOut(){
 
         btnLogout = createSidebarButton("\uD83D\uDEAA  Cerrar Sesi\u00F3n");
-        btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
         btnLogout.setForeground(new Color(200, 120, 120));
         btnLogout.addActionListener(e -> logout());
         btnLogout.addMouseListener(new MouseAdapter() {
@@ -171,7 +199,7 @@ public class HomeView extends JFrame {
         contentPanel.setBounds(0, (int) (screenSize.height*0.061), screenSize.width, (int) (screenSize.height*0.94));
 
 
-        WelcomePanel welcomePanel = new WelcomePanel(user);
+         welcomePanel = new WelcomePanel(user);
         contentPanel.add(welcomePanel, "welcome");
         contentPanel.add(new UsersPanel(), "users");
         contentPanel.add(new ClientsPanel(), "clients");
@@ -180,6 +208,7 @@ public class HomeView extends JFrame {
         contentPanel.add(new ReinsurersPanel(), "incidents");
         contentPanel.add(new AgencyPanel(), "agencys");
         contentPanel.add(new ReportsPanel(), "reports");
+        contentPanel.add(new OptionsPanel(), "options");
 
         addMovement(welcomePanel.getControllers());
         main.add(contentPanel);
@@ -204,6 +233,7 @@ public class HomeView extends JFrame {
         codes.add("incidents");
         codes.add("agencys");
         codes.add("reports");
+        codes.add("options");
     }
 
     private JPanel createHeader() {
@@ -221,7 +251,7 @@ public class HomeView extends JFrame {
         header.setBounds(0, 0, screenSize.width, (int) (screenSize.height*0.06));
 
         headerTitle = new JLabel("Inicio");
-        headerTitle.setFont(UIStyles.FONT_HEADER);
+        headerTitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         headerTitle.setForeground(UIStyles.TEXT_PRIMARY);
         headerTitle.setHorizontalAlignment(SwingConstants.LEFT);
         headerTitle.setBounds((int) (screenSize.width*0.017), (int) (screenSize.height*0.01), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
@@ -232,12 +262,12 @@ public class HomeView extends JFrame {
         userInfo.setOpaque(false);
 
         JLabel avatar = new JLabel("\uD83D\uDC64");
-        avatar.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 16));
+        avatar.setFont(new Font("Segoe UI Emoji", Font.PLAIN, ((int) (screenSize.width * 0.0118))));
         avatar.setBounds((int) (screenSize.width*0.001), (int) (screenSize.height*0.004), (int) (screenSize.width*0.05), (int) (screenSize.height*0.05));
         userInfo.add(avatar);
 
         JLabel userName = new JLabel(user.getUsername());
-        userName.setFont(UIStyles.FONT_BODY);
+        userName.setFont(UIStyles.getCurrentFont(UIStyles.FONT_BODY));
         userName.setForeground(UIStyles.TEXT_PRIMARY);
         userName.setHorizontalAlignment(SwingConstants.LEFT);
         userName.setBounds((int) (screenSize.width*0.02), (int) (screenSize.height*0.001), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
@@ -253,7 +283,6 @@ public class HomeView extends JFrame {
 
     private void showPanel(String panelId, String panelLabel) {
         String id = "welcome".equals(panelId) ? "welcome" : panelId;
-
         cardLayout.show(contentPanel, id);
         if(id.equals("welcome"))
             changeVisible = false;

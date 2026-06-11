@@ -1,5 +1,7 @@
 package visual.panels;
 
+import utils.Options;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +16,8 @@ public class MessagePanel extends JDialog {
     public MessagePanel(Frame parent, boolean modal, String message) {
         super(parent, modal);
         this.message = message;
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
+        setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -31,6 +34,7 @@ public class MessagePanel extends JDialog {
         ok.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height* 0.1), (int) (screenSize.width * 0.05), (int) (screenSize.height * 0.05));
 
         setBackground(new Color(160, 160, 160,240));
+        setLocationRelativeTo(null);
 
         text.setForeground(Color.black);
         text.setFont(new Font("Segoe UI", 1, (int) (screenSize.width * 0.012)));

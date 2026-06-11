@@ -2,6 +2,8 @@ package visual;
 
 import models.User;
 import services.UserServices;
+import utils.Options;
+import visual.components.LoadingScreen;
 import visual.panels.MessagePanel;
 
 import javax.swing.*;
@@ -12,7 +14,8 @@ public class LoginView extends JFrame {
 
     private static final Color ACCENT_BAR = new Color(30, 100, 200);
     private static final Color LOGIN_BG = new Color(235, 238, 245);
-    private static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private static final Dimension screenSize = Options.getOptions().getScreenSize();
+
     private final JTextField txtUsername;
     private final JPasswordField txtPassword;
     private final UserServices userServices;
@@ -24,6 +27,7 @@ public class LoginView extends JFrame {
         setUndecorated(true);
         setBounds((int) (screenSize.width * 0.36), (int) (screenSize.height * 0.21), (int) (screenSize.width * 0.28), (int) (screenSize.height * 0.58));
         setResizable(false);
+        setLocationRelativeTo(null);
         setBackground(LOGIN_BG);
         setLayout(null);
 
@@ -45,14 +49,16 @@ public class LoginView extends JFrame {
         card.add(brandIcon);
 
         JLabel title = new JLabel("Sistema de Seguros");
-        title.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.016)));
+
+        title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_TITLE));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         title.setHorizontalAlignment(SwingConstants.CENTER);
-        title.setBounds((int) (screenSize.width * 0.07), (int) (screenSize.height * 0.145), (int) (screenSize.width * 0.14), (int) (screenSize.height * 0.06));
+        title.setBounds((int) (screenSize.width * 0.06), (int) (screenSize.height * 0.145), (int) (screenSize.width * 0.16), (int) (screenSize.height * 0.06));
+
         card.add(title);
 
         JLabel subtitle = new JLabel("Ingrese sus credenciales para acceder");
-        subtitle.setFont(UIStyles.FONT_SUBTITLE);
+        subtitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SUBTITLE));
         subtitle.setForeground(UIStyles.TEXT_SECONDARY);
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
         subtitle.setBounds((int) (screenSize.width * 0.05), (int) (screenSize.height * 0.185), (int) (screenSize.width * 0.18), (int) (screenSize.height * 0.06));
@@ -93,12 +99,17 @@ public class LoginView extends JFrame {
         card.add(btnClear);
 
         JButton close = new JButton("x");
-        close.setBounds((int) (screenSize.width * 0.25), 0, (int) (screenSize.width * 0.036), (int) (screenSize.height * 0.032));
         close.setForeground(Color.black);
         close.setFocusPainted(false);
         close.setBorderPainted(false);
         close.setContentAreaFilled(false);
         close.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.017)));
+
+        if (screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width)
+            close.setBounds((int) (screenSize.width * 0.25), 0, (int) (screenSize.width * 0.036), (int) (screenSize.height * 0.032));
+         else
+            close.setBounds((int) (screenSize.width * 0.24), 0, (int) (screenSize.width * 0.05), (int) (screenSize.height * 0.045));
+
         close.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
                 close.setForeground(Color.red);
@@ -116,13 +127,18 @@ public class LoginView extends JFrame {
         card.add(close);
 
         JButton reduce = new JButton("-");
-        reduce.setBounds((int) (screenSize.width * 0.23), 0, (int) (screenSize.width * 0.036), (int) (screenSize.height * 0.032));
+
         reduce.setForeground(Color.black);
         reduce.setHorizontalAlignment(SwingConstants.CENTER);
         reduce.setFocusPainted(false);
         reduce.setBorderPainted(false);
         reduce.setContentAreaFilled(false);
         reduce.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.017)));
+        if (screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width)
+            reduce.setBounds((int) (screenSize.width * 0.23), 0, (int) (screenSize.width * 0.036), (int) (screenSize.height * 0.032));
+        else
+            reduce.setBounds((int) (screenSize.width * 0.22), 0, (int) (screenSize.width * 0.05), (int) (screenSize.height * 0.045));
+
         reduce.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
                 reduce.setForeground(Color.red);
@@ -173,9 +189,8 @@ public class LoginView extends JFrame {
             return;
         }
 
-        MessagePanel complete = new MessagePanel(this, true, "Ha iniciado sesion con exito");
-
         HomeView home = new HomeView(user);
+        MessagePanel complete = new MessagePanel(this, true, "Ha iniciado sesion con exito");
         complete.setVisible(true);
         home.setVisible(true);
         dispose();

@@ -2,6 +2,7 @@ package visual.reportsPanels;
 
 import reports.ClaimStatusSummaryReport;
 import services.ReportsServices;
+import utils.Options;
 import visual.UIStyles;
 
 import javax.swing.*;
@@ -19,7 +20,7 @@ public class ClaimStatusSummaryReportPanel extends JPanel {
     public ClaimStatusSummaryReportPanel() {
 
         claimStatusSummaryReports = new ReportsServices().getClaimStatusSummaryReport();
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
         setLayout(null);
@@ -56,18 +57,18 @@ public class ClaimStatusSummaryReportPanel extends JPanel {
     }
 
     private void styleTable(JTable t) {
-        t.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        t.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
+        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, ((int) (screenSize.width * 0.0088))));
         t.getTableHeader().setBackground(new Color(240, 242, 245));
         t.getTableHeader().setForeground(UIStyles.TEXT_PRIMARY);
         t.getTableHeader().setBorder(BorderFactory.createLineBorder(UIStyles.BORDER));
-        t.setRowHeight(32);
+        t.setRowHeight(((int) (screenSize.width * 0.022)));
         t.setShowGrid(true);
         t.setGridColor(UIStyles.BORDER_LIGHT);
         t.setSelectionBackground(UIStyles.PRIMARY_LIGHT);
         t.setSelectionForeground(UIStyles.TEXT_PRIMARY);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        t.setIntercellSpacing(new Dimension(10, 0));
+        t.setIntercellSpacing(new Dimension(((int) (screenSize.width * 0.0006)), 0));
 
         DefaultTableCellRenderer center = new DefaultTableCellRenderer();
         center.setHorizontalAlignment(SwingConstants.CENTER);

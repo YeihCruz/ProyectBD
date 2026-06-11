@@ -1,15 +1,14 @@
 package visual;
 
+import utils.Options;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -40,22 +39,22 @@ public class UIStyles {
     public static final Color CARD_PURPLE = new Color(130, 70, 190);
     public static final Color CARD_TEAL = new Color(20, 150, 150);
 
-    public static final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, 22);
-    public static final Font FONT_SUBTITLE = new Font("Segoe UI", Font.PLAIN, 13);
-    public static final Font FONT_BODY = new Font("Segoe UI", Font.PLAIN, 14);
-    public static final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, 12);
-    public static final Font FONT_BUTTON = new Font("Segoe UI", Font.BOLD, 14);
-    public static final Font FONT_SIDEBAR = new Font("Segoe UI", Font.PLAIN, 14);
-    public static final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, 18);
-    public static final Font FONT_SECTION = new Font("Segoe UI", Font.BOLD, 16);
+    public static final Font FONT_TITLE = new Font("Segoe UI", Font.BOLD, ((int) (Options.getOptions().getScreenSize().width*0.0162)));
+    public static final Font FONT_SUBTITLE = new Font("Segoe UI", Font.PLAIN, (int) (Options.getOptions().getScreenSize().width*0.0096));
+    public static final Font FONT_BODY = new Font("Segoe UI", Font.PLAIN, (int) (Options.getOptions().getScreenSize().width*0.0103));
+    public static final Font FONT_LABEL = new Font("Segoe UI", Font.BOLD, (int) (Options.getOptions().getScreenSize().width*0.0088));
+    public static final Font FONT_BUTTON = new Font("Segoe UI", Font.BOLD, (int) (Options.getOptions().getScreenSize().width*0.0103));
+    public static final Font FONT_SIDEBAR = new Font("Segoe UI", Font.PLAIN, (int) (Options.getOptions().getScreenSize().width*0.0103));
+    public static final Font FONT_HEADER = new Font("Segoe UI", Font.BOLD, (int) (Options.getOptions().getScreenSize().width*0.0132));
+    public static final Font FONT_SECTION = new Font("Segoe UI", Font.BOLD, (int) (Options.getOptions().getScreenSize().width*0.0118));
 
     public static JButton createPrimaryButton(String text) {
-        return createButton(text, PRIMARY, PRIMARY_DARK, Color.WHITE, FONT_BUTTON);
+        return createButton(text, PRIMARY, PRIMARY_DARK, Color.WHITE, UIStyles.getCurrentFont(UIStyles.FONT_BUTTON));
     }
 
     public static JButton createSecondaryButton(String text) {
         JButton btn = createButton(text, CARD_BG, new Color(245, 245, 247), TEXT_SECONDARY,
-                new Font("Segoe UI", Font.PLAIN, 13));
+                new Font("Segoe UI", Font.PLAIN, (int) (Options.getOptions().getScreenSize().width*0.0105)));
         btn.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(BORDER, 1),
                 BorderFactory.createEmptyBorder(8, 20, 8, 20)));
@@ -78,7 +77,7 @@ public class UIStyles {
     }
 
     public static void styleField(JTextField field) {
-        field.setFont(FONT_BODY);
+        field.setFont(UIStyles.getCurrentFont(UIStyles.FONT_BODY));
         field.setForeground(TEXT_PRIMARY);
         field.setBackground(CARD_BG);
         field.setBorder(BorderFactory.createCompoundBorder(
@@ -87,9 +86,31 @@ public class UIStyles {
         field.setCaretColor(PRIMARY);
     }
 
+    public static Font getCurrentFont(Font font){
+        Font currentFont = font;
+        if(font == FONT_TITLE) {
+            currentFont = FONT_TITLE.deriveFont(( float) (Options.getOptions().getScreenSize().width * 0.0162));
+        } else if (font == FONT_SUBTITLE){
+            currentFont = FONT_SUBTITLE.deriveFont((float) (Options.getOptions().getScreenSize().width*0.0096));
+        }else if (font ==FONT_BODY){
+            currentFont = FONT_BODY.deriveFont( (float) (Options.getOptions().getScreenSize().width*0.0103));
+        } else if (font == FONT_LABEL) {
+            currentFont = FONT_LABEL.deriveFont((float) (Options.getOptions().getScreenSize().width*0.0088));
+        } else if (font == FONT_BUTTON) {
+            currentFont = FONT_BUTTON.deriveFont((float) (Options.getOptions().getScreenSize().width*0.0103));
+        } else if (font == FONT_SIDEBAR) {
+            currentFont = FONT_SIDEBAR.deriveFont((float)(Options.getOptions().getScreenSize().width*0.0103));
+        } else if (font == FONT_HEADER) {
+            currentFont = FONT_HEADER.deriveFont((float) (Options.getOptions().getScreenSize().width*0.0132));
+        } else if (font == FONT_SECTION) {
+            currentFont = FONT_SECTION.deriveFont((float)(Options.getOptions().getScreenSize().width*0.0118));
+        }
+        return currentFont;
+    }
+
     public static JLabel createFieldLabel(String text) {
         JLabel label = new JLabel(text);
-        label.setFont(FONT_LABEL);
+        label.setFont(FONT_LABEL.deriveFont(((int) (Options.getOptions().getScreenSize().width * 0.0105))));
         label.setForeground(TEXT_PRIMARY);
         return label;
     }

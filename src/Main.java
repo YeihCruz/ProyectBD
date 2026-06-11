@@ -1,9 +1,11 @@
 import dataBase.DataBaseConnection;
 import models.User;
 import services.UserServices;
+import utils.Options;
 import visual.Visual;
 
 import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -33,8 +35,6 @@ public class Main {
         ReportsServices reportsServicesReinsurer = new ReportsServices();
 
         reportsServicesReinsurer.printReinsurersReport();
-
-
 
         //prueba conexiom BD
         try (Connection connection =

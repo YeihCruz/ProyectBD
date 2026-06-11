@@ -2,6 +2,7 @@ package visual.panels;
 
 import models.*;
 import services.*;
+import utils.Options;
 import visual.UIStyles;
 
 import javax.swing.*;
@@ -24,7 +25,8 @@ public class ReinsurersPanel extends JPanel {
     private final DefaultTableModel tableModel;
 
     public ReinsurersPanel() {
-        screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        screenSize = Options.getOptions().getScreenSize();
+
         setBackground(UIStyles.BG_LIGHT);
         setLayout(new BorderLayout());
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -34,7 +36,7 @@ public class ReinsurersPanel extends JPanel {
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
         JLabel title = new JLabel("Gesti\u00F3n de Reaseguradoras");
-        title.setFont(UIStyles.FONT_HEADER);
+        title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
 
@@ -125,16 +127,19 @@ public class ReinsurersPanel extends JPanel {
     }
 
     private void styleTable(JTable t) {
-        t.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
+        t.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
+        t.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, ((int) (screenSize.width * 0.0088))));
         t.getTableHeader().setBackground(new Color(240, 242, 245));
         t.getTableHeader().setForeground(UIStyles.TEXT_PRIMARY);
-        t.setRowHeight(32);
+        t.getTableHeader().setBorder(BorderFactory.createLineBorder(UIStyles.BORDER));
+        t.setRowHeight(((int) (screenSize.width * 0.022)));
         t.setShowGrid(true);
         t.setGridColor(UIStyles.BORDER_LIGHT);
         t.setSelectionBackground(UIStyles.PRIMARY_LIGHT);
         t.setSelectionForeground(UIStyles.TEXT_PRIMARY);
         t.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        t.setIntercellSpacing(new Dimension(((int) (screenSize.width * 0.0006)), 0));
+
     }
     private void showForm(Reinsurer existing) {
         boolean isEdit = existing != null;
@@ -144,6 +149,7 @@ public class ReinsurersPanel extends JPanel {
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
+        dialog.setLocationRelativeTo(null);
         JLabel header = new JLabel(isEdit ? "Editar Reaseguradora " : "Nueva Reaseguradora");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.014)));
         header.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.001), (int) (screenSize.width * 0.16), (int) (screenSize.height * 0.05));
@@ -231,9 +237,14 @@ public class ReinsurersPanel extends JPanel {
 
 
         JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        btnSave.setBounds((int) (screenSize.width*0.195), (int) (screenSize.height*0.24), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar");
-        btnCancel.setBounds((int) (screenSize.width*0.095), (int) (screenSize.height*0.24), (int) (screenSize.width*0.07), (int) (screenSize.height*0.05));
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
+            btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+            btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+        }else {
+            btnSave.setBounds((int) (screenSize.width * 0.2), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
+            btnCancel.setBounds((int) (screenSize.width * 0.08), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
+        }
 
         btnSave.addActionListener(e -> {
             try {
