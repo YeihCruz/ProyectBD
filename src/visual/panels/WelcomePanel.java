@@ -1,6 +1,7 @@
 package visual.panels;
 
 import models.User;
+import services.DashboardServices;
 import utils.Options;
 import visual.UIStyles;
 
@@ -123,15 +124,16 @@ public class WelcomePanel extends JPanel {
 
         values = new ArrayList<>();
 
+        DashboardServices dashboardServices = new DashboardServices();
         String[][] metrics = {
-            {"Usuarios activos", "—"},
-            {"P\u00F3lizas vigentes", "—"},
-            {"Reclamos abiertos", "—"},
-            {"Clientes registrados", "—"},
-            {"Siniestros reportados", "—"},
-            {"Agencias activas", "—"},
-            {"Tasa de resoluci\u00F3n", "—"},
-            {"Ingresos del mes", "—"},
+            {"Usuarios activos", String.valueOf(dashboardServices.getActiveUsers())},
+            {"P\u00F3lizas vigentes", String.valueOf(dashboardServices.getActivePolicies())},
+            {"Reclamos abiertos", String.valueOf(dashboardServices.getOpenClaims())},
+            {"Clientes registrados", String.valueOf(dashboardServices.getRegisteredClients())},
+            {"Siniestros reportados", String.valueOf(dashboardServices.getReportedClaims())},
+            {"Agencias activas", String.valueOf(dashboardServices.getActiveAgencies())},
+            {"Tasa de resoluci\u00F3n", dashboardServices.getResolutionRate()},
+            {"Ingresos del mes", dashboardServices.getMonthlyIncome()},
         };
 
         int j=0;int k=0;
@@ -166,8 +168,6 @@ public class WelcomePanel extends JPanel {
         valLabel.setHorizontalAlignment(SwingConstants.CENTER);
         valLabel.setForeground(accent);
         card.add(valLabel);
-
-        values.add(valLabel);
 
         JLabel descLabel = new JLabel(label);
         descLabel.setBounds((int) (screenSize.width*0.065), (int) (screenSize.height*0.08), (int) (screenSize.width*0.0975), (int) (screenSize.height*0.06));
