@@ -42,9 +42,9 @@ public class ReportsPanel extends JPanel {
     private JButton next;
     private JButton previus;
     private int currentPage;
-    private ArrayList<JPanel> panels;
+    private ArrayList<ParentReportPanel> panels;
     private JPanel summaryCard;
-    private JPanel container;
+    private ParentReportPanel container;
     private JComboBox<String> listMovem;
     private JLabel showCurrentPage;
 
@@ -72,7 +72,13 @@ public class ReportsPanel extends JPanel {
         jDesktopPane.setOpaque(false);
         jDesktopPane.setBounds((int) (screenSize.width * 0.04), (int) (screenSize.height * 0.13), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
 
-        container = new JPanel(null);
+        container = new ParentReportPanel() {
+            @Override
+            public void loadData() {
+
+            }
+        };
+        container.setLayout(null);
         container.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
         container.setOpaque(false);
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -118,25 +124,25 @@ public class ReportsPanel extends JPanel {
         container.add(summaryCard);
         panels.add(container);
 
-        JPanel p1 = new ClientsReportPanel();
-        JPanel p2 = new ClientProfileReportPanel();
-        JPanel p3 = new ClaimsReportPanel();
-        JPanel p4 = new ClaimStatusReportPanel();
-        JPanel p5 = new ClaimStatusSummaryReportPanel();
-        JPanel p6 = new ApprovedClaimsReportPanel();
-        JPanel p7 = new RejectedClaimsReportPanel();
-        JPanel p8 = new PendingClaimsReportPanel();
-        JPanel p9 = new PolicyReportPanel();
-        JPanel p10 = new PolicySummaryReportPanel();
-        JPanel p11 = new CancelledPolicyReportPanel();
-        JPanel p12 = new ExpiredPolicyReportPanel();
-        JPanel p13 = new IssuedPolicyReportPanel();
-        JPanel p14 = new ExpiringPolicyReportPanel();
-        JPanel p15 = new ReinsurerReportPanel();
-        JPanel p16 = new ReinsurerProfileReportPanel();
-        JPanel p17 = new AgencyReportPanel();
-        JPanel p18 = new MonthlyIncomeReportPanel();
-        JPanel p19 = new MonthlyPremiumIncomeReportPanel();
+        ParentReportPanel p1 = new ClientsReportPanel();
+        ParentReportPanel p2 = new ClientProfileReportPanel();
+        ParentReportPanel p3 = new ClaimsReportPanel();
+        ParentReportPanel p4 = new ClaimStatusReportPanel();
+        ParentReportPanel p5 = new ClaimStatusSummaryReportPanel();
+        ParentReportPanel p6 = new ApprovedClaimsReportPanel();
+        ParentReportPanel p7 = new RejectedClaimsReportPanel();
+        ParentReportPanel p8 = new PendingClaimsReportPanel();
+        ParentReportPanel p9 = new PolicyReportPanel();
+        ParentReportPanel p10 = new PolicySummaryReportPanel();
+        ParentReportPanel p11 = new CancelledPolicyReportPanel();
+        ParentReportPanel p12 = new ExpiredPolicyReportPanel();
+        ParentReportPanel p13 = new IssuedPolicyReportPanel();
+        ParentReportPanel p14 = new ExpiringPolicyReportPanel();
+        ParentReportPanel p15 = new ReinsurerReportPanel();
+        ParentReportPanel p16 = new ReinsurerProfileReportPanel();
+        ParentReportPanel p17 = new AgencyReportPanel();
+        ParentReportPanel p18 = new MonthlyIncomeReportPanel();
+        ParentReportPanel p19 = new MonthlyPremiumIncomeReportPanel();
 
         panels.add(p1);
         panels.add(p2);
@@ -428,6 +434,16 @@ public class ReportsPanel extends JPanel {
 
         add(listMovem);
     }
+    public void reload(Boolean isCheckAll){
+        for (int i =0; i <panels.size(); i++){
+            if (isCheckAll)
+                ((ParentReportPanel) panels.get(i)).loadData();
+            else if (i!= currentPage)
+                ((ParentReportPanel) panels.get(i)).loadData();
+        }
+        }
+
+    }
 
 
-}
+

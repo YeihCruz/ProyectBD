@@ -11,15 +11,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ClaimStatusSummaryReportPanel extends JPanel {
+public class ClaimStatusSummaryReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ClaimStatusSummaryReport> claimStatusSummaryReports;
+    private List<ClaimStatusSummaryReport> claimStatusSummaryReports;
 
     public ClaimStatusSummaryReportPanel() {
 
-        claimStatusSummaryReports = new ReportsServices().getClaimStatusSummaryReport();
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -46,7 +45,8 @@ public class ClaimStatusSummaryReportPanel extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        claimStatusSummaryReports = new ReportsServices().getClaimStatusSummaryReport();
         tableModel.setRowCount(0);
         for (ClaimStatusSummaryReport c : claimStatusSummaryReports) {
             tableModel.addRow(new Object[]{

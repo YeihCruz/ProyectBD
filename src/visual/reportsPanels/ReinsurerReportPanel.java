@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ReinsurerReportPanel extends JPanel {
+public class ReinsurerReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ReinsurerReport> reinsurerReports;
+    private List<ReinsurerReport> reinsurerReports;
 
     public ReinsurerReportPanel() {
-        reinsurerReports = new ReportsServices().getReinsurersReport();
+
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.765));
@@ -66,7 +66,8 @@ public class ReinsurerReportPanel extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        reinsurerReports = new ReportsServices().getReinsurersReport();
         tableModel.setRowCount(0);
         for (ReinsurerReport c : reinsurerReports) {
             tableModel.addRow(new Object[]{

@@ -12,14 +12,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ExpiredPolicyReportPanel extends JPanel {
+public class ExpiredPolicyReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ExpiredPolicyReport> expiredPolicyReports;
+    private List<ExpiredPolicyReport> expiredPolicyReports;
 
     public ExpiredPolicyReportPanel() {
-        expiredPolicyReports = new ReportsServices().getExpiredPoliciesReport();
+
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -46,7 +46,8 @@ public class ExpiredPolicyReportPanel extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        expiredPolicyReports = new ReportsServices().getExpiredPoliciesReport();
         tableModel.setRowCount(0);
         for (ExpiredPolicyReport c : expiredPolicyReports) {
             tableModel.addRow(new Object[]{

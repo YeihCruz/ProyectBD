@@ -29,6 +29,7 @@ public class ClaimsPanel extends JPanel {
     private final PolicyServices policyServices = new PolicyServices();
     private final ClaimTypeServices claimTypeServices = new ClaimTypeServices();
     private final ClaimStatusServices jDate = new ClaimStatusServices();
+
     private final JTable table;
     private final DefaultTableModel tableModel;
     private Dimension screenSize;

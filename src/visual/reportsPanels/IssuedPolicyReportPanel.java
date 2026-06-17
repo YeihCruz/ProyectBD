@@ -27,11 +27,13 @@ import static java.awt.Font.BOLD;
 import static java.awt.Font.PLAIN;
 import java.sql.Date;
 
-public class IssuedPolicyReportPanel extends JPanel {
+public class IssuedPolicyReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
     private List<IssuedPoliciesReport> issuedPolicyReportPanels;
+    private Date begin;
+    private Date end;
 
     public IssuedPolicyReportPanel() {
 
@@ -72,7 +74,9 @@ public class IssuedPolicyReportPanel extends JPanel {
                 java.sql.Date dateStart= new java.sql.Date(first.getDate().getTime());
                 java.sql.Date dateEnd = new java.sql.Date(last.getDate().getTime());
                 if(dateEnd.after(dateStart)){
-                    loadData(dateStart, dateEnd);
+                    begin = dateStart;
+                    end = dateEnd;
+                    loadData();
                 }else {
                     MessagePanel messagePanel = new MessagePanel(null, true, "La fecha de inicio no puede ser despues de la fecha de culminacion");
                     messagePanel.setVisible(true);
@@ -95,11 +99,13 @@ public class IssuedPolicyReportPanel extends JPanel {
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
         scroll.setBounds(0, (int) (screenSize.height * 0.09), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.675));
         add(scroll);
-        loadData(new java.sql.Date(Date.valueOf(LocalDate.now()).getTime()), new java.sql.Date(Date.valueOf(LocalDate.now().plusMonths(2)).getTime()));
+        begin= new java.sql.Date(Date.valueOf(LocalDate.now()).getTime());
+        end =new java.sql.Date(Date.valueOf(LocalDate.now().plusMonths(2)).getTime());
+        loadData();
 
     }
 
-    private void loadData(Date begin, Date end) {
+    public void loadData() {
         issuedPolicyReportPanels = new ReportsServices().getIssuedPoliciesReport(begin, end);
         tableModel.setRowCount(0);
         for (IssuedPoliciesReport c : issuedPolicyReportPanels) {

@@ -11,14 +11,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class ClientsReportPanel extends JPanel {
+public class ClientsReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<ClientReport> clientsReports;
+    private List<ClientReport> clientsReports;
 
     public ClientsReportPanel() {
-        clientsReports = new ReportsServices().getClientsReport();
+
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -45,7 +45,8 @@ public class ClientsReportPanel extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        clientsReports = new ReportsServices().getClientsReport();
         tableModel.setRowCount(0);
         for (ClientReport c : clientsReports) {
             tableModel.addRow(new Object[]{

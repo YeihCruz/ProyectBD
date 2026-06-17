@@ -12,14 +12,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class RejectedClaimsReportPanel extends JPanel {
+public class RejectedClaimsReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<RejectedClaimsReport> rejectedClaimsReports;
+    private List<RejectedClaimsReport> rejectedClaimsReports;
 
     public RejectedClaimsReportPanel() {
-        rejectedClaimsReports = new ReportsServices().getRejectedClaimsReport();
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -46,7 +45,9 @@ public class RejectedClaimsReportPanel extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        rejectedClaimsReports = new ReportsServices().getRejectedClaimsReport();
+
         tableModel.setRowCount(0);
         for (RejectedClaimsReport c : rejectedClaimsReports) {
             tableModel.addRow(new Object[]{

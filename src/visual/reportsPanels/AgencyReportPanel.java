@@ -11,14 +11,14 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class AgencyReportPanel extends JPanel {
+public class AgencyReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<AgencyReport> agencyReports;
+    private List<AgencyReport> agencyReports;
 
     public AgencyReportPanel() {
-        agencyReports = new ReportsServices().getAgencyReport();
+
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -45,7 +45,8 @@ public class AgencyReportPanel extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        agencyReports = new ReportsServices().getAgencyReport();
         tableModel.setRowCount(0);
         for (AgencyReport c : agencyReports) {
             tableModel.addRow(new Object[]{
@@ -53,6 +54,9 @@ public class AgencyReportPanel extends JPanel {
                     c.getEmail(), c.getGeneralDirector(),
                     c.getInsuranceManager(), c.getClaimsManager()
             });
+            revalidate();
+            repaint();
+
         }
     }
 

@@ -18,7 +18,7 @@ import java.util.List;
 import static java.awt.Font.BOLD;
 import static java.awt.Font.PLAIN;
 
-public class ClientProfileReportPanel extends JPanel {
+ public class ClientProfileReportPanel extends ParentReportPanel {
 
 
     private Dimension screenSize;
@@ -27,6 +27,8 @@ public class ClientProfileReportPanel extends JPanel {
     private List<ClientProfileReport> clientProfileReports;
     private List<Client> clients;
     private JComboBox comboBox;
+    private int number;
+
     public ClientProfileReportPanel() {
         clients = new ClientServices().getAllClients();
         screenSize = Options.getOptions().getScreenSize();
@@ -65,8 +67,8 @@ public class ClientProfileReportPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int selectedClient = comboBox.getSelectedIndex();
                 Client client = clients.get(selectedClient);
-                int clientId = client.getClientId();
-                loadData(clientId);
+                number = client.getClientId();
+                loadData();
             }
         });
         comboBox.addMouseListener(new MouseAdapter() {
@@ -86,12 +88,13 @@ public class ClientProfileReportPanel extends JPanel {
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
         scroll.setBounds(0, (int) (screenSize.height * 0.09), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.675));
         add(scroll);
-        loadData(1);
+        number=1;
+        loadData();
 
     }
 
-    private void loadData(int i) {
-        clientProfileReports = new ReportsServices().getClientProfileReport(i);
+    public void loadData() {
+        clientProfileReports = new ReportsServices().getClientProfileReport(number);
         tableModel.setRowCount(0);
         for (ClientProfileReport c : clientProfileReports) {
             tableModel.addRow(new Object[]{

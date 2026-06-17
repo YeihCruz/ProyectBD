@@ -23,12 +23,13 @@ import java.util.List;
 import static java.awt.Font.BOLD;
 import static java.awt.Font.PLAIN;
 
-public class ReinsurerProfileReportPanel extends JPanel {
+public class ReinsurerProfileReportPanel extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
     private List<ReinsurerProfileReport> reinsurerProfileReports;
     private List<Reinsurer> reinsurers;
+    private int number;
     private JComboBox comboBox;
 
     public ReinsurerProfileReportPanel() {
@@ -70,8 +71,8 @@ public class ReinsurerProfileReportPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 int selectedReins = comboBox.getSelectedIndex();
                 Reinsurer reinsurer = reinsurers.get(selectedReins);
-                int reinsurerId = reinsurer.getReinsurerId();
-                loadData(reinsurerId);
+                number = reinsurer.getReinsurerId();
+                loadData();
             }
         });
         comboBox.addMouseListener(new MouseAdapter() {
@@ -91,12 +92,13 @@ public class ReinsurerProfileReportPanel extends JPanel {
         scroll.getViewport().setBackground(UIStyles.CARD_BG);
         scroll.setBounds(0, (int) (screenSize.height * 0.09), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.675));
         add(scroll);
-        loadData(1);
+        number=1;
+        loadData();
 
     }
 
-    private void loadData(int i) {
-        reinsurerProfileReports = new ReportsServices().getReinsurerProfileReport(i);
+    public void loadData() {
+        reinsurerProfileReports = new ReportsServices().getReinsurerProfileReport(number);
         tableModel.setRowCount(0);
         for (ReinsurerProfileReport c : reinsurerProfileReports) {
             tableModel.addRow(new Object[]{

@@ -31,6 +31,7 @@ public class PoliciesPanel extends JPanel {
     private final ClientServices clientServices = new ClientServices();
     private final InsuranceTypeServices insuranceTypeServices = new InsuranceTypeServices();
     private final PolicyStatusServices policyStatusServices = new PolicyStatusServices();
+
     private final JTable table;
     private final DefaultTableModel tableModel;
     private Dimension screenSize;

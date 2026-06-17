@@ -12,14 +12,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-public class MonthlyPremiumIncomeReportPanel  extends JPanel {
+public class MonthlyPremiumIncomeReportPanel  extends ParentReportPanel {
     private Dimension screenSize;
     private final JTable table;
     private final DefaultTableModel tableModel;
-    private final List<MonthlyPremiumIncomeReport> monthlyPremiumIncomeReports;
+    private List<MonthlyPremiumIncomeReport> monthlyPremiumIncomeReports;
 
     public MonthlyPremiumIncomeReportPanel() {
-        monthlyPremiumIncomeReports = new ReportsServices().getMonthlyPremiumIncomeReport();
         screenSize = Options.getOptions().getScreenSize();
         setVisible(false);
         setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.795));
@@ -46,7 +45,9 @@ public class MonthlyPremiumIncomeReportPanel  extends JPanel {
 
     }
 
-    private void loadData() {
+    public void loadData() {
+        monthlyPremiumIncomeReports = new ReportsServices().getMonthlyPremiumIncomeReport();
+
         tableModel.setRowCount(0);
         for (MonthlyPremiumIncomeReport c : monthlyPremiumIncomeReports) {
             tableModel.addRow(new Object[]{

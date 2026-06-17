@@ -45,7 +45,7 @@ public class WelcomePanel extends JPanel {
     private ArrayList<JButton> createControllers(JPanel modules) {
         ArrayList<JButton> buttons = new ArrayList<>();
 
-        for(int i=0; i< 8; i++){
+        for(int i=0; i< 10; i++){
             JButton btn = new JButton();
 
             btn.setOpaque(false);
@@ -197,8 +197,10 @@ public class WelcomePanel extends JPanel {
             {"\uD83D\uDCE9", "Reclamos", "Gesti\u00F3n de reclamos"},
             {"\u26A0\uFE0F", "Reaseguradoras", "Control de reaseguradoras"},
             {"\uD83C\uDFE2", "Agencias", "Red de agencias"},
-            {"\uD83D\uDCCA", "Reportes", "Informes del sistema"},
-            {"\u2699\uFE0F", "Configuraci\u00F3n", "Ajustes del sistema"},
+            {"\uD83D\uDCCA", "Coberturas", "Gestion de Coberturas"},
+            {"\u2699\uFE0F", "Participacion", "Participacion de las Reaseguradoras"},
+                {"\uD83D\uDCCA", "Reportes", "Informes del sistema"},
+                {"\u2699\uFE0F", "Configuraci\u00F3n", "Ajustes del sistema"}
         };
 
         int i =0, j=0;
@@ -206,14 +208,14 @@ public class WelcomePanel extends JPanel {
             JPanel card = createModuleCard(m[0], m[1], m[2], i, j);
             card.setName(m[1]);
             i++;
-            if(i>3){
+            if(i>4){
                 i=0; j++;}
             grid.add(card);
         }
 
 
         controllers = createControllers(grid);
-        for(int h = 0; h<8; h++){
+        for(int h = 0; h<10; h++){
             grid.add(controllers.get(h));
         }
 
@@ -228,26 +230,26 @@ public class WelcomePanel extends JPanel {
                 BorderFactory.createLineBorder(UIStyles.BORDER, 1),
                 BorderFactory.createEmptyBorder(16, 18, 16, 18)));
 
-        card.setBounds((int) (screenSize.width*0.2375)*largo, (int) (screenSize.height*0.174)*ancho, (int) (screenSize.width*0.2275), (int) (screenSize.height*0.156));
+        card.setBounds((int) (screenSize.width*0.19)*largo, (int) (screenSize.height*0.174)*ancho, (int) (screenSize.width*0.18), (int) (screenSize.height*0.156));
 
 
         JLabel iconLabel = new JLabel(icon);
         iconLabel.setForeground(Color.BLACK);
-        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.0225)));
-        iconLabel.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.04), (int) (screenSize.width*0.05), (int) (screenSize.height*0.09));
+        iconLabel.setFont(new Font("Segoe UI Emoji", Font.PLAIN, (int) (screenSize.width*0.0223)));
+        iconLabel.setBounds((int) (screenSize.width*0.025), (int) (screenSize.height*0.02), (int) (screenSize.width*0.05), (int) (screenSize.height*0.09));
         card.add(iconLabel);
 
         JLabel titleLabel = new JLabel(title);
         titleLabel.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.011)));
         titleLabel.setForeground(UIStyles.TEXT_PRIMARY);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        titleLabel.setBounds((int) (screenSize.width*0.05), (int) (screenSize.height*0.04), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
+        titleLabel.setBounds((int) (screenSize.width*0.02), (int) (screenSize.height*0.04), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
         card.add(titleLabel);
 
         JLabel descLabel = new JLabel(desc);
         descLabel.setFont(new Font("Segoe UI", Font.PLAIN, (int) (screenSize.width*0.01)));
         descLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        descLabel.setBounds((int) (screenSize.width*0.05), (int) (screenSize.height*0.08), (int) (screenSize.width*0.15), (int) (screenSize.height*0.04));
+        descLabel.setBounds((int) (screenSize.width*0.005), (int) (screenSize.height*0.1), (int) (screenSize.width*0.18), (int) (screenSize.height*0.04));
         descLabel.setForeground(UIStyles.TEXT_SECONDARY);
         card.add(descLabel);
 

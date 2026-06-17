@@ -4,6 +4,7 @@ import models.User;
 import utils.Options;
 import visual.components.LoadingScreen;
 import visual.panels.*;
+import visual.reportsPanels.ParentReportPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,9 +28,12 @@ public class HomeView extends JFrame {
     private JButton retWelcom;
     private Timer timer;
     private TimerTask task;
+    private Timer reload;
+    private TimerTask reloadTask;
     private boolean backIsVisible;
     private boolean changeVisible;
     private WelcomePanel welcomePanel;
+    private ReportsPanel reportsPanel;
 
     public HomeView(User user) {
 
@@ -39,7 +43,7 @@ public class HomeView extends JFrame {
         createCodes();
         this.user = user;
         SessionManager.login(user);
-
+        reportsPanel = new ReportsPanel();
         screenSize = Options.getOptions().getScreenSize();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -65,11 +69,10 @@ public class HomeView extends JFrame {
                     screenSize = Options.getOptions().getScreenSize();
                     createNewWindow();
                 }
-
             }
         };
 
-        timer.scheduleAtFixedRate(task, 0, 10);
+
 
         InputMap inputMap = retWelcom.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = retWelcom.getActionMap();
@@ -96,6 +99,22 @@ public class HomeView extends JFrame {
                 btnLogout.doClick();
             }
         });
+
+        timer.scheduleAtFixedRate(task, 0, 10);
+
+        reload = new Timer();
+        reloadTask = new TimerTask() {
+            @Override
+            public void run() {
+                Boolean all= Boolean.TRUE;
+                if (headerTitle.getText().equals("Reportes"))
+                    all= Boolean.FALSE;
+                else
+                    all=Boolean.FALSE;
+                reportsPanel.reload(all);
+            }
+        };
+        timer.scheduleAtFixedRate(reloadTask, 0, 5000);
     }
 
     private void createNewWindow() {
@@ -207,7 +226,9 @@ public class HomeView extends JFrame {
         contentPanel.add(new ClaimsPanel(), "claims");
         contentPanel.add(new ReinsurersPanel(), "incidents");
         contentPanel.add(new AgencyPanel(), "agencys");
-        contentPanel.add(new ReportsPanel(), "reports");
+        contentPanel.add(new CoveragePanel(), "coverage");
+        contentPanel.add(new ReinsurersParticipationsPanel(), "participations");
+        contentPanel.add(reportsPanel, "reports");
         contentPanel.add(new OptionsPanel(), "options");
 
         addMovement(welcomePanel.getControllers());
@@ -220,7 +241,10 @@ public class HomeView extends JFrame {
         for(int i=0; i< controllers.size(); i++ ){
             JButton button = controllers.get(i);
             int finalI = i+1;
-            button.addActionListener(e -> showPanel(codes.get(finalI), button.getName()));
+            if(i!=0){
+                button.addActionListener(e -> showPanel(codes.get(finalI), button.getName()));
+            }else
+                button.addActionListener(e -> showPanelWithRestriction(codes.get(finalI), button.getName()));
         }
     }
 
@@ -232,6 +256,8 @@ public class HomeView extends JFrame {
         codes.add("claims");
         codes.add("incidents");
         codes.add("agencys");
+        codes.add("coverage");
+        codes.add("participations");
         codes.add("reports");
         codes.add("options");
     }
@@ -281,6 +307,17 @@ public class HomeView extends JFrame {
         return header;
     }
 
+    private void showPanelWithRestriction(String panelId, String panelLabel){
+        if (user.getRoleId()==1)
+            showPanel(panelId, panelLabel);
+        else{
+            MessagePanel mp = new MessagePanel(this, true, "No es posible editar la informacion de los usuarios con su rango de usuario");
+            mp.setVisible(true);
+        }
+
+
+
+    }
     private void showPanel(String panelId, String panelLabel) {
         String id = "welcome".equals(panelId) ? "welcome" : panelId;
         cardLayout.show(contentPanel, id);
