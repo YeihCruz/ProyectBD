@@ -1078,23 +1078,6 @@ public class ReportsServices {
                 reports.add(report);
             }
 
-            System.out.println(
-                    "\n========================================");
-
-            System.out.println(
-                    "MONTHLY INCOME REPORT");
-
-            System.out.println(
-                    "Report Date: "
-                            + java.time.LocalDate.now());
-
-            System.out.println(
-                    "Total Annual Income: $"
-                            + totalAnnualIncome);
-
-            System.out.println(
-                    "========================================");
-
         } catch (SQLException e) {
 
             System.out.println(

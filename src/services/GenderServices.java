@@ -49,11 +49,6 @@ import java.util.List;
             }
         }
 
-
-        // =====================================================
-        // GET ALL GENDERS
-        // =====================================================
-
         public List<Gender> getAllGenders() {
 
             List<Gender> genders =
@@ -97,11 +92,6 @@ import java.util.List;
 
             return genders;
         }
-
-
-        // =====================================================
-        // FIND GENDER BY ID
-        // =====================================================
 
         public Gender findGenderById(
                 int genderId) {
