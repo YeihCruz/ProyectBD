@@ -85,7 +85,7 @@ public class CoveragePanel extends JPanel{
         boolean isEdit = existing != null;
 
         JDialog dialog = new JDialog((JFrame) null, true);
-        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.21), (int) (screenSize.width*0.36), (int) (screenSize.height*0.58));
+        dialog.setBounds((int) (screenSize.width*0.32), (int) (screenSize.height*0.21), (int) (screenSize.width*0.36), (int) (screenSize.height*0.34));
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
@@ -95,7 +95,7 @@ public class CoveragePanel extends JPanel{
         header.setHorizontalAlignment(SwingConstants.CENTER);
 
         JPanel form = new JPanel(null);
-        form.setBounds(0, 0  ,(int) (screenSize.width*0.4), (int) (screenSize.height*0.6));
+        form.setBounds(0, 0  ,(int) (screenSize.width*0.36), (int) (screenSize.height*0.34));
         form.setBackground(new Color(200, 200, 200 ));
         form.setBorder(BorderFactory.createEmptyBorder(20, 25, 10, 25));
 
@@ -181,8 +181,8 @@ public class CoveragePanel extends JPanel{
     JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
 
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
-        btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.48), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
-        btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.48), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+        btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
+        btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
     }else {
         btnSave.setBounds((int) (screenSize.width * 0.2), (int) (screenSize.height * 0.48), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));
         btnCancel.setBounds((int) (screenSize.width * 0.08), (int) (screenSize.height * 0.48), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.05));

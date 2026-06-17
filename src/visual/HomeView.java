@@ -106,12 +106,12 @@ public class HomeView extends JFrame {
         reloadTask = new TimerTask() {
             @Override
             public void run() {
-                Boolean all= Boolean.TRUE;
+                welcomePanel.reloadValues();
                 if (headerTitle.getText().equals("Reportes"))
-                    all= Boolean.FALSE;
+                    reportsPanel.reload(true);
                 else
-                    all=Boolean.FALSE;
-                reportsPanel.reload(all);
+                    reportsPanel.reload(false);
+
             }
         };
         timer.scheduleAtFixedRate(reloadTask, 0, 5000);

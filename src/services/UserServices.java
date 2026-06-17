@@ -76,12 +76,10 @@ public class UserServices {
                 String hashedPassword =
                         rs.getString("password");
 
-
-                // 🔐 VALIDAR PASSWORD
                 if (BCrypt.checkpw(password, hashedPassword)) {
 
                     return new User(
-                            rs.getInt("user_id"),
+                            rs.getInt("id"),
                             rs.getInt("role_id"),
                             rs.getString("username"),
                             hashedPassword,
@@ -121,7 +119,7 @@ public class UserServices {
             while (rs.next()) {
 
                 User user = new User(
-                        rs.getInt("user_id"),
+                        rs.getInt("id"),
                         rs.getInt("role_id"),
                         rs.getString("username"),
                         rs.getString("password"),
@@ -140,38 +138,30 @@ public class UserServices {
         return users;
     }
 
-    // =====================================================
-    // UPDATE USER (CON HASH)
-    // =====================================================
-
     public void updateUser(User user) {
 
         String sql =
                 "UPDATE \"user\" SET " +
-                        "role_id = ?, " +
-                        "username = ?, " +
+                        "username = ?," +
                         "password = ?, " +
-                        "full_name = ?, " +
-                        "active = ? " +
-                        "WHERE user_id = ?";
+                        "role_id = ?, " +
+                        "active = ?, " +
+                        "full_name = ? " +
+                        "WHERE id = ?";
 
         try (Connection connection =
                      DataBaseConnection.getConnection();
 
              PreparedStatement statement =
                      connection.prepareStatement(sql)) {
-
-            statement.setInt(1, user.getRoleId());
-            statement.setString(2, user.getUsername());
-
-            // 🔐 HASH PASSWORD
+            statement.setString(1, user.getUsername());
             String hashedPassword =
                     BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 
-            statement.setString(3, hashedPassword);
-
-            statement.setString(4, user.getFullName());
-            statement.setBoolean(5, user.isActive());
+            statement.setString(2, hashedPassword);
+            statement.setInt(3, user.getRoleId());
+            statement.setBoolean(4, user.isActive());
+            statement.setString(5, user.getFullName());
             statement.setInt(6, user.getUserId());
 
             statement.executeUpdate();

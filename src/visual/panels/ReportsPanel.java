@@ -434,7 +434,7 @@ public class ReportsPanel extends JPanel {
 
         add(listMovem);
     }
-    public void reload(Boolean isCheckAll){
+    public void reload(boolean isCheckAll){
         for (int i =0; i <panels.size(); i++){
             if (isCheckAll)
                 ((ParentReportPanel) panels.get(i)).loadData();

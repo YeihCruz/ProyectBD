@@ -369,7 +369,6 @@ public class CreateDataServices {
                 rs = pstmt.executeQuery();
                 boolean existe = rs.next();
                 if (!existe) {
-
                     int i = new RoleServices().getAllRoles().size();
                     Role newType = new Role(i, description);
                     new RoleServices().saveRole(newType);

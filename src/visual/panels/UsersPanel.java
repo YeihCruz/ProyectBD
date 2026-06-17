@@ -140,7 +140,7 @@ public class UsersPanel extends JPanel {
             txtUsername.setText(existing.getUsername());
             txtFullName.setText(existing.getFullName());
             chkActive.setSelected(existing.isActive());
-            txtPassword.setText(existing.getPassword());
+            txtPassword.setText("");
         } else {
             chkActive.setSelected(true);
         }
@@ -213,6 +213,7 @@ public class UsersPanel extends JPanel {
             Role selectedRole = roles.get(cmbRole.getSelectedIndex());
 
             if (isEdit) {
+
                 User updated = new User(existing.getUserId(), selectedRole.getRoleId(),
                         user, pass, full, chkActive.isSelected());
                 userServices.updateUser(updated);

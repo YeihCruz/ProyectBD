@@ -22,6 +22,7 @@ public class ReinsurerReportPanel extends ParentReportPanel {
     private final JTable table;
     private final DefaultTableModel tableModel;
     private List<ReinsurerReport> reinsurerReports;
+    private JPanel bar;
 
     public ReinsurerReportPanel() {
 
@@ -48,21 +49,11 @@ public class ReinsurerReportPanel extends ParentReportPanel {
         scroll.setBounds(0, 0, (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.425));
         add(scroll);
 
-        List<String> names = new ArrayList<>();
-        List<Double> numbers = new ArrayList<>();
-
-        for(Client c: new ClientServices().getAllClients()){
-            names.add(c.getFirstName());
-            double doble = c.getAge();
-            numbers.add(doble);
-
-        }
-
-        JPanel bar = new BarGraphics().creteGrapsFromList(names, numbers);
+        loadData();
         bar.setLayout(null);
         bar.setBounds(0,  (int) (screenSize.height * 0.432), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.334));
         add(bar);
-        loadData();
+
 
     }
 
@@ -75,6 +66,18 @@ public class ReinsurerReportPanel extends ParentReportPanel {
                     c.getInsuranceType(), c.getParticipationPercentage(),
             });
         }
+        List<String> names = new ArrayList<>();
+        List<Double> numbers = new ArrayList<>();
+
+        for(ReinsurerReport c: reinsurerReports){
+            names.add(c.getReinsurerName());
+            double doble = c.getParticipationPercentage();
+            numbers.add(doble);
+
+        }
+        bar = new BarGraphics().creteGrapsFromList(names, numbers);
+        bar.repaint();
+        bar.revalidate();
     }
 
     private void styleTable(JTable t) {
