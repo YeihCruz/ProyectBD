@@ -27,6 +27,7 @@ public class WelcomePanel extends JPanel {
     private Dimension screenSize;
     private ArrayList<JButton> controllers;
     private ArrayList<JLabel> values;
+    private DashboardServices dashboardServices;
 
     public WelcomePanel(User user) {
 
@@ -124,7 +125,7 @@ public class WelcomePanel extends JPanel {
 
         values = new ArrayList<>();
 
-        DashboardServices dashboardServices = new DashboardServices();
+        dashboardServices = new DashboardServices();
         String[][] metrics = {
             {"Usuarios activos", String.valueOf(dashboardServices.getActiveUsers())},
             {"P\u00F3lizas vigentes", String.valueOf(dashboardServices.getActivePolicies())},
@@ -168,6 +169,7 @@ public class WelcomePanel extends JPanel {
         valLabel.setHorizontalAlignment(SwingConstants.CENTER);
         valLabel.setForeground(accent);
         card.add(valLabel);
+        values.add(valLabel);
 
         JLabel descLabel = new JLabel(label);
         descLabel.setBounds((int) (screenSize.width*0.065), (int) (screenSize.height*0.08), (int) (screenSize.width*0.0975), (int) (screenSize.height*0.06));
@@ -267,14 +269,15 @@ public class WelcomePanel extends JPanel {
     }
 
     public void reloadValues(){
-        values.get(0).setText("4");
-        values.get(1).setText("5");
-        values.get(2).setText("6");
-        values.get(3).setText("1");
-        values.get(4).setText("10");
-        values.get(5).setText("9");
-        values.get(6).setText("3");
-        values.get(7).setText("4");
+        dashboardServices = new DashboardServices();
+        values.get(0).setText(String.valueOf(dashboardServices.getActiveUsers()));
+        values.get(1).setText(String.valueOf(dashboardServices.getActivePolicies()));
+        values.get(2).setText(String.valueOf(dashboardServices.getOpenClaims()));
+        values.get(3).setText(String.valueOf(dashboardServices.getRegisteredClients()));
+        values.get(4).setText(String.valueOf(dashboardServices.getReportedClaims()));
+        values.get(5).setText(String.valueOf(dashboardServices.getActiveAgencies()));
+        values.get(6).setText(dashboardServices.getResolutionRate());
+        values.get(7).setText(dashboardServices.getMonthlyIncome());
 
     }
 }
