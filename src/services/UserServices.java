@@ -79,7 +79,7 @@ public class UserServices {
                 if (BCrypt.checkpw(password, hashedPassword)) {
 
                     return new User(
-                            rs.getInt("id"),
+                            rs.getInt("user_id"),
                             rs.getInt("role_id"),
                             rs.getString("username"),
                             hashedPassword,
@@ -119,7 +119,7 @@ public class UserServices {
             while (rs.next()) {
 
                 User user = new User(
-                        rs.getInt("id"),
+                        rs.getInt("user_id"),
                         rs.getInt("role_id"),
                         rs.getString("username"),
                         rs.getString("password"),
@@ -147,7 +147,7 @@ public class UserServices {
                         "role_id = ?, " +
                         "active = ?, " +
                         "full_name = ? " +
-                        "WHERE id = ?";
+                        "WHERE user_id = ?";
 
         try (Connection connection =
                      DataBaseConnection.getConnection();

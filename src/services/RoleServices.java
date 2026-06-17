@@ -60,7 +60,7 @@ public class RoleServices {
             while (resultSet.next()) {
 
                 Role role = new Role(
-                        resultSet.getInt("id"),
+                        resultSet.getInt("role_id"),
                         resultSet.getString("name")
                 );
 

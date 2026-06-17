@@ -10,7 +10,7 @@ import services.ReportsServices;
 
 public class Main {
 
-    //Kevin ya sali de ti
+
     public static void main(String[] args) {
 
         try (Connection connection =
@@ -24,8 +24,6 @@ public class Main {
 
                 createData();
 
-                System.out.println("Connection closed successfully");
-
                 Visual.showLogin();
             }
 
@@ -38,7 +36,7 @@ public class Main {
 
     private static void createData() {
         CreateDataServices createDataServices = new CreateDataServices();
-        createDataServices.checkAll();
+        createDataServices.checkAdmin();
 
     }
 }

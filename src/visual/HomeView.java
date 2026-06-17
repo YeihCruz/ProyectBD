@@ -100,7 +100,7 @@ public class HomeView extends JFrame {
             }
         });
 
-        timer.scheduleAtFixedRate(task, 0, 10);
+        timer.scheduleAtFixedRate(task, 0, 25);
 
         reload = new Timer();
         reloadTask = new TimerTask() {
@@ -114,7 +114,7 @@ public class HomeView extends JFrame {
 
             }
         };
-        timer.scheduleAtFixedRate(reloadTask, 0, 5000);
+        timer.scheduleAtFixedRate(reloadTask, 0, 8000);
     }
 
     private void createNewWindow() {

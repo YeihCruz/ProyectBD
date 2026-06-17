@@ -89,7 +89,7 @@ public class UsersPanel extends JPanel {
             }
             tableModel.addRow(new Object[]{
                 u.getUserId(), u.getUsername(), u.getFullName(),
-                roleName, u.isActive() ? "\u2705" : "\u274C"
+                roleName, u.isActive() ? "Activo" : "Inactivo"
             });
         }
     }
