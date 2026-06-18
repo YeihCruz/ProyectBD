@@ -2390,7 +2390,7 @@ public class ReportsServices {
                         "ON cl.claim_type_id = ct.claim_type_id " +
                         "INNER JOIN claim_status cs " +
                         "ON cl.claim_status_id = cs.claim_status_id " +
-                        "WHERE cs.description = 'In Progress' " +
+                        "WHERE cs.description = 'Pending' " +
                         "ORDER BY cl.incident_date";
 
         try (
