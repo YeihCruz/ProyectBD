@@ -114,14 +114,14 @@ public class HomeView extends JFrame {
 
             }
         };
-        timer.scheduleAtFixedRate(reloadTask, 0, 8000);
+        timer.scheduleAtFixedRate(reloadTask, 0, 1000);
     }
 
     private void createNewWindow() {
         LoadingScreen ls = new LoadingScreen(this);
         ls.showLoading();
         HomeView nuevo = new HomeView(user);
-        nuevo.showPanel(codes.get(8), nuevo.welcomePanel.getControllers().get(7).getName());
+        nuevo.showPanel(codes.get(10), nuevo.welcomePanel.getControllers().get(7).getName());
         nuevo.setVisible(true);
         ls.hideLoading();
         timer.cancel();
