@@ -10,7 +10,6 @@ import services.ReportsServices;
 
 public class Main {
 
-
     public static void main(String[] args) {
 
         try (Connection connection =
@@ -37,6 +36,5 @@ public class Main {
     private static void createData() {
         CreateDataServices createDataServices = new CreateDataServices();
         createDataServices.checkAdmin();
-
     }
 }
