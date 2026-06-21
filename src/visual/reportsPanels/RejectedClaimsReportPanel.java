@@ -26,7 +26,7 @@ public class RejectedClaimsReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre del Cliente", "Identificacion", "Cantidad de Reclamos Rechazados", "Razones de Cancelamiento"}, 0
+                new String[]{"Client Name", "Identification", "Rejected Claims", "Cancellations Reason"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

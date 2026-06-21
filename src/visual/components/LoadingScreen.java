@@ -14,7 +14,7 @@ public class LoadingScreen extends JDialog {
     private JLabel loadingLabel;
 
     public LoadingScreen(JFrame parent) {
-        super(parent, "Cargando", true); // modal
+        super(parent, "Loading", true); // modal
         setUndecorated(true); // sin bordes
         setSize(300, 150);
         setLocationRelativeTo(parent);

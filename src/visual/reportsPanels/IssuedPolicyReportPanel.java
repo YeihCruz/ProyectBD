@@ -43,7 +43,7 @@ public class IssuedPolicyReportPanel extends ParentReportPanel {
         setLayout(null);
         setBackground(UIStyles.BORDER);
 
-        JLabel txtFirst = new JLabel("Fecha de Inicio: ");
+        JLabel txtFirst = new JLabel("Start Date: ");
         txtFirst.setBounds((int) (screenSize.width * 0.055),(int) (screenSize.height * 0.03), (int) (screenSize.width * 0.1), (int) (screenSize.height * 0.04));
         txtFirst.setFont(new Font("Segoe UI", PLAIN, (int) (screenSize.width * 0.011)));
         add(txtFirst);
@@ -53,7 +53,7 @@ public class IssuedPolicyReportPanel extends ParentReportPanel {
         first.setFont(new Font("Segoe UI", PLAIN, (int) (screenSize.width * 0.011)));
         add(first);
 
-        JLabel txtLast = new JLabel("Fecha de Culminacion:");
+        JLabel txtLast = new JLabel("End Date:");
         txtLast.setBounds((int) (screenSize.width * 0.29),(int) (screenSize.height * 0.03), (int) (screenSize.width * 0.15), (int) (screenSize.height * 0.04));
         txtLast.setFont(new Font("Segoe UI", PLAIN, (int) (screenSize.width * 0.011)));
         add(txtLast);
@@ -63,7 +63,7 @@ public class IssuedPolicyReportPanel extends ParentReportPanel {
         last.setFont(new Font("Segoe UI", PLAIN, (int) (screenSize.width * 0.011)));
         add(last);
 
-        JButton search = UIStyles.createPrimaryButton(" Buscar       " +      "\uD83D\uDD0D");
+        JButton search = UIStyles.createPrimaryButton(" Search       " +      "\uD83D\uDD0D");
        search.setVerticalAlignment(SwingConstants.CENTER);
        search.setHorizontalAlignment(SwingConstants.CENTER);
         search.setBounds((int) (screenSize.width * 0.59),(int) (screenSize.height * 0.03), (int) (screenSize.width * 0.1), (int) (screenSize.height * 0.04));
@@ -85,7 +85,7 @@ public class IssuedPolicyReportPanel extends ParentReportPanel {
         });
         add(search);
         tableModel = new DefaultTableModel(
-                new String[]{"Numero de Poliza", "Nombre del Cilente", "Tipo de Seguro", "Fecha de inicio"  ,"Fecha de Culminacion", "Premium Mensual", "Estado de Poliza"}, 0) {
+                new String[]{"Polciy Number", "Client Name", "Insurance Type", "Start Date"  ,"End Date", "Monthly Premium", "Policy Status"}, 0) {
             public boolean isCellEditable(int r, int c) {
                 return false;
             }

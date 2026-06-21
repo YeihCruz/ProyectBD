@@ -27,7 +27,7 @@ public class ClaimStatusReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Numero de Reclamo","Nombre del Cliente", "Numero de Poliza", "Tipo de Seguro", "Tipo de Reclamo", "Dia del incidente", "Estado de la Reclamacacion", "Monto Reclamado", "Monto Compensado"}, 0
+                new String[]{"Claim Number","Client Name", "Policy Number", "Insurance Type", "Claim Type", "Incident date", "Claim Status", "Claimed Amount", "Compensated Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

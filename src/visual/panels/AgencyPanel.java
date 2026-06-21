@@ -31,7 +31,7 @@ public class AgencyPanel extends JPanel {
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de Agencias");
+        JLabel title = new JLabel("Agency Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
@@ -39,15 +39,15 @@ public class AgencyPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nuevo", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -55,7 +55,7 @@ public class AgencyPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-                new String[]{"ID", "Nombre", "Direccion", "Telefono", "Email", "Director general", "Manager de seguros", "Manager de reportes"}, 0
+                new String[]{"Id", "Name", "Address", "Phone", "E-mail", "General Director", "Insurance Manager", "Claims Manager"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -90,7 +90,7 @@ public class AgencyPanel extends JPanel {
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JLabel header = new JLabel(isEdit ? "Editar Agencia " : "Nueva Agencia");
+        JLabel header = new JLabel(isEdit ? "Edit Agency " : "New Agency");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
         header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -102,19 +102,19 @@ public class AgencyPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lName = new JLabel("Nombre");
+        JLabel lName = new JLabel("Name");
         JTextField txtName = new JTextField(15);
-        JLabel lAddress = new JLabel("Direccion");
+        JLabel lAddress = new JLabel("Address");
         JTextField txtAddress = new JTextField(15);
-        JLabel lPhone = new JLabel("Telefono");
+        JLabel lPhone = new JLabel("Phone");
         JTextField txtPhone = new JTextField(15);
-        JLabel lEmail = new JLabel("Email");
+        JLabel lEmail = new JLabel("E-mail");
         JTextField txtEmail = new JTextField(15);
-        JLabel lGenDi = new JLabel("Director General");
+        JLabel lGenDi = new JLabel("General Director");
         JTextField txtGenDir = new JTextField(15);
-        JLabel lInsMa = new JLabel("Manager de Seguros");
+        JLabel lInsMa = new JLabel("Insurance Manager");
         JTextField txtInsuranceMan = new JTextField(15);
-        JLabel lClaimMa = new JLabel("Manager de Reportes");
+        JLabel lClaimMa = new JLabel("Claims Manager");
         JTextField txtClaimsMan = new JTextField(15);
 
 
@@ -262,8 +262,8 @@ public class AgencyPanel extends JPanel {
         form.add(lInsMa);
         form.add(lClaimMa);
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
             btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -274,7 +274,7 @@ public class AgencyPanel extends JPanel {
 
         btnSave.addActionListener(e -> {
             if (txtName.getText().trim().isEmpty() || txtAddress.getText().trim().isEmpty() || txtPhone.getText().trim().isEmpty() || txtEmail.getText().trim().isEmpty() || txtGenDir.getText().trim().isEmpty() || txtInsuranceMan.getText().trim().isEmpty() || txtClaimsMan.getText().trim().isEmpty()) {
-                MessagePanel mp = new MessagePanel( null, true, "Por favor llenar todos los campos antes de continuar");
+                MessagePanel mp = new MessagePanel( null, true, "Please, complete all the entrances");
                 mp.setVisible(true);
                 return;
             }
@@ -316,7 +316,7 @@ public class AgencyPanel extends JPanel {
         int row = table.getSelectedRow();
         if (row < 0) {
             MessagePanel mp = new MessagePanel(null
-                    , true, "Seleccione un cliente de la tabla.");
+                    , true, "Select one client from the table");
             mp.setVisible(true);
             return;
         }
@@ -328,14 +328,14 @@ public class AgencyPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel(null, true, "Seleccione un cliente de la tabla.");
+            MessagePanel mp = new MessagePanel(null, true, "Select one client from the table");
             mp.setVisible(true); return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
         String name = tableModel.getValueAt(row, 1) + " " + tableModel.getValueAt(row, 2);
 
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFEliminar al cliente \"" + name + "\"?", "Confirmar",
+                "\u00BFDelete the client: \"" + name + "\"?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

@@ -21,7 +21,7 @@ public class OptionsPanel extends JPanel {
         setLayout(null);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        JLabel title = new JLabel("Opciones");
+        JLabel title = new JLabel("Options");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         title.setBounds((int) (screenSize.width * 0.02), (int) (screenSize.height * 0.04), (int) (screenSize.width * 0.15), (int) (screenSize.height * 0.06));
@@ -32,7 +32,7 @@ public class OptionsPanel extends JPanel {
         container.setBounds((int) (screenSize.width * 0.04), (int) (screenSize.height * 0.11), (int) (screenSize.width * 0.92), (int) (screenSize.height * 0.79));
         container.setBackground(UIStyles.BORDER);
 
-        JLabel scale = new JLabel("Tamaño de la Pantalla");
+        JLabel scale = new JLabel("Screen Size");
         scale.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.013))));
         scale.setForeground(UIStyles.TEXT_PRIMARY);
         scale.setHorizontalAlignment(SwingConstants.CENTER);

@@ -48,7 +48,7 @@ public class LoginView extends JFrame {
         brandIcon.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.04), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.15));
         card.add(brandIcon);
 
-        JLabel title = new JLabel("Sistema de Seguros");
+        JLabel title = new JLabel("Insurance System");
 
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_TITLE));
         title.setForeground(UIStyles.TEXT_PRIMARY);
@@ -57,7 +57,7 @@ public class LoginView extends JFrame {
 
         card.add(title);
 
-        JLabel subtitle = new JLabel("Ingrese sus credenciales para acceder");
+        JLabel subtitle = new JLabel("Enter your credentials to log in");
         subtitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SUBTITLE));
         subtitle.setForeground(UIStyles.TEXT_SECONDARY);
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -75,25 +75,25 @@ public class LoginView extends JFrame {
         txtPassword.setBounds((int) (screenSize.width * 0.025), (int) (screenSize.height * 0.39), (int) (screenSize.width * 0.23), (int) (screenSize.height * 0.05));
         card.add(txtPassword);
 
-        JLabel lblUser = new JLabel("Usuario");
+        JLabel lblUser = new JLabel("User");
         lblUser.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.012)));
         lblUser.setHorizontalAlignment(SwingConstants.CENTER);
         lblUser.setBounds((int) (screenSize.width * 0.025), (int) (screenSize.height * 0.255), (int) (screenSize.width * 0.23), (int) (screenSize.height * 0.04));
         card.add(lblUser);
 
-        JLabel lblPass = UIStyles.createFieldLabel("Contraseña");
+        JLabel lblPass = UIStyles.createFieldLabel("Password");
         lblPass.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.012)));
         lblPass.setHorizontalAlignment(SwingConstants.CENTER);
         lblPass.setBounds((int) (screenSize.width * 0.025), (int) (screenSize.height * 0.35), (int) (screenSize.width * 0.23), (int) (screenSize.height * 0.04));
         card.add(lblPass);
 
-        JButton btnLogin = UIStyles.createPrimaryButton("Ingresar");
+        JButton btnLogin = UIStyles.createPrimaryButton("Log in");
         btnLogin.addActionListener(e -> performLogin());
         btnLogin.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.46), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.04));
         card.add(btnLogin);
 
 
-        JButton btnClear = UIStyles.createSecondaryButton("Limpiar");
+        JButton btnClear = UIStyles.createSecondaryButton("Clear");
         btnClear.addActionListener(e -> clearFields());
         btnClear.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.51), (int) (screenSize.width * 0.08), (int) (screenSize.height * 0.04));
         card.add(btnClear);
@@ -127,7 +127,6 @@ public class LoginView extends JFrame {
         card.add(close);
 
         JButton reduce = new JButton("-");
-
         reduce.setForeground(Color.black);
         reduce.setHorizontalAlignment(SwingConstants.CENTER);
         reduce.setFocusPainted(false);
@@ -174,7 +173,7 @@ public class LoginView extends JFrame {
         String password = new String(txtPassword.getPassword());
 
         if (username.isEmpty() || password.isEmpty()) {
-            MessagePanel mess = new MessagePanel(this, true, "Complete todos los campos necesarios para iniciar sesion");
+            MessagePanel mess = new MessagePanel(this, true, "Fill all the camps before log in");
             mess.setVisible(true);
             return;
         }
@@ -182,7 +181,7 @@ public class LoginView extends JFrame {
         User user = userServices.login(username, password);
 
         if (user == null) {
-            MessagePanel mess = new MessagePanel(this, true, "Usuario o contraseña incorrectos");
+            MessagePanel mess = new MessagePanel(this, true, "User or password wrong");
             mess.setVisible(true);
             txtPassword.setText("");
             txtPassword.requestFocusInWindow();
@@ -190,7 +189,7 @@ public class LoginView extends JFrame {
         }
 
         HomeView home = new HomeView(user);
-        MessagePanel complete = new MessagePanel(this, true, "Ha iniciado sesion con exito");
+        MessagePanel complete = new MessagePanel(this, true, "You have successfully logged in");
         complete.setVisible(true);
         home.setVisible(true);
         dispose();

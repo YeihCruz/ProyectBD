@@ -35,7 +35,7 @@ public class ReinsurersPanel extends JPanel {
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de Reaseguradoras");
+        JLabel title = new JLabel("Reinsurers Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
@@ -43,15 +43,15 @@ public class ReinsurersPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nueva", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -59,7 +59,7 @@ public class ReinsurersPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Id", "Agencia ", "Tipo de Reaseguramiento", "Pais", "Nombre"}, 0
+                new String[]{"Id", "Agency ", "Reinsurer Type", "Country", "Name"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -150,7 +150,7 @@ public class ReinsurersPanel extends JPanel {
         dialog.setResizable(false);
 
         dialog.setLocationRelativeTo(null);
-        JLabel header = new JLabel(isEdit ? "Editar Reaseguradora " : "Nueva Reaseguradora");
+        JLabel header = new JLabel(isEdit ? "Edit Reinsurer " : "New Reinsurer");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.014)));
         header.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.001), (int) (screenSize.width * 0.16), (int) (screenSize.height * 0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -162,10 +162,10 @@ public class ReinsurersPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lName = new JLabel("Nombre");
-        JLabel lType = new JLabel("Tipo de Reaseguramiento");
-        JLabel lCountry = new JLabel("Pais");
-        JLabel lAgency = new JLabel("Agencia");
+        JLabel lName = new JLabel("Name");
+        JLabel lType = new JLabel("Reinsurer Type");
+        JLabel lCountry = new JLabel("Country");
+        JLabel lAgency = new JLabel("Agency");
 
 
         JComboBox<String> cmbType = new JComboBox<>();
@@ -236,8 +236,8 @@ public class ReinsurersPanel extends JPanel {
         form.add(lAgency);
 
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
             btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -265,7 +265,7 @@ public class ReinsurersPanel extends JPanel {
                 loadData();
 
             } catch (Exception ex) {
-                MessagePanel messagePanel = new MessagePanel(null, true, "Verifique nuevamente los datos ingresados");
+                MessagePanel messagePanel = new MessagePanel(null, true, "Check all the parameters");
                 messagePanel.setVisible(true);
             }
         });
@@ -296,7 +296,7 @@ public class ReinsurersPanel extends JPanel {
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel(null, true ,"Seleccione una reaseguradora de la tabla.");
+            MessagePanel mp = new MessagePanel(null, true ,"Select one Reinsurer from the table");
             mp.setVisible(true);
             return;
         }
@@ -308,14 +308,14 @@ public class ReinsurersPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel(null, true ,"Seleccione una reaseguradora de la tabla.");
+            MessagePanel mp = new MessagePanel(null, true ,"Select one Reinsurer from the table");
             mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
 
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFEliminar la reaseguradora #" + id + "?", "Confirmar",
+                "\u00BFDelete the Reinsurer #" + id + "?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

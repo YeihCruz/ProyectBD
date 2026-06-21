@@ -36,7 +36,7 @@ public class ReinsurersParticipationsPanel extends JPanel {
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de Participacion de Reaseguradoras");
+        JLabel title = new JLabel("Reinsurer Participation Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.NORTH);
@@ -44,15 +44,15 @@ public class ReinsurersParticipationsPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nuevo", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -60,7 +60,7 @@ public class ReinsurersParticipationsPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-                new String[]{"ID", "Reaseguradora", "Tipo de Seguro", "Porcentaje de Participacion"}, 0
+                new String[]{"Id", "Reinsurer", "Insurance Type", "Participation Percentage"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -95,7 +95,7 @@ public class ReinsurersParticipationsPanel extends JPanel {
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JLabel header = new JLabel(isEdit ? "Editar Participacion " : "Nueva Participacion");
+        JLabel header = new JLabel(isEdit ? "Edit Participation " : "New Participation");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.014)));
         header.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.001), (int) (screenSize.width * 0.16), (int) (screenSize.height * 0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -107,9 +107,9 @@ public class ReinsurersParticipationsPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lreinsurer = new JLabel("Reaseguradora");
-        JLabel linsuranceType = new JLabel("Tipo de Seguro");
-        JLabel lAmount = new JLabel("Porcentaje de Participacion");
+        JLabel lreinsurer = new JLabel("Reinsurer");
+        JLabel linsuranceType = new JLabel("Insurance Type");
+        JLabel lAmount = new JLabel("Participation Percentage");
 
 
         JTextField txtAmount = new JTextField(15);
@@ -172,8 +172,8 @@ public class ReinsurersParticipationsPanel extends JPanel {
         form.add(lAmount);
 
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
 
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -186,7 +186,7 @@ public class ReinsurersParticipationsPanel extends JPanel {
         btnSave.addActionListener(e -> {
 
             if (txtAmount.getText().trim().isEmpty()) {
-                MessagePanel mp = new MessagePanel( null, true, "Rellene los campos antes de continuar");
+                MessagePanel mp = new MessagePanel( null, true, "Fill all the camps");
                 mp.setVisible(true);
                 return;
             }
@@ -234,7 +234,7 @@ public class ReinsurersParticipationsPanel extends JPanel {
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione una cobertura de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one participation from the table");
             mp.setVisible(true);
             return;
         }
@@ -246,13 +246,13 @@ public class ReinsurersParticipationsPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione una cobertura de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one participation from the table");
             mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFEliminar a la participacion numero \"" + id + "\"?", "Confirmar",
+                "\u00BFDelete the participacion number:" + id + "\"?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

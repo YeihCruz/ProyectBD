@@ -34,7 +34,7 @@ public class UsersPanel extends JPanel {
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de Usuarios");
+        JLabel title = new JLabel("Users Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
@@ -42,15 +42,15 @@ public class UsersPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nuevo", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -58,7 +58,7 @@ public class UsersPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-            new String[]{"ID", "Usuario", "Nombre Completo", "Rol", "Activo"}, 0
+            new String[]{"Id", "User", "Full name", "Role", "Active"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -89,7 +89,7 @@ public class UsersPanel extends JPanel {
             }
             tableModel.addRow(new Object[]{
                 u.getUserId(), u.getUsername(), u.getFullName(),
-                roleName, u.isActive() ? "Activo" : "Inactivo"
+                roleName, u.isActive() ? "Active" : "Inactive"
             });
         }
     }
@@ -102,7 +102,7 @@ public class UsersPanel extends JPanel {
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JLabel header = new JLabel(isEdit ? "Editar Usuario " : "Nuevo Usuario");
+        JLabel header = new JLabel(isEdit ? " Edit User " : "New User");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
         header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -114,16 +114,16 @@ public class UsersPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lName = new JLabel("Nombre");
+        JLabel lName = new JLabel("Name");
         JTextField txtUsername = new JTextField(15);
-        JLabel lPass = new JLabel("Contrasena");
+        JLabel lPass = new JLabel("Password");
         JPasswordField txtPassword = new JPasswordField(15);
-        JLabel lFullN = new JLabel("Nombre Completo");
+        JLabel lFullN = new JLabel("Full Name");
         JTextField txtFullName = new JTextField(15);
-        JLabel lRole = new JLabel("Rol");
+        JLabel lRole = new JLabel("Role");
         JComboBox<String> cmbRole = new JComboBox<>();
-        JLabel lActive = new JLabel("Activo");
-        JCheckBox chkActive = new JCheckBox("Usuario activo");
+        JLabel lActive = new JLabel("Active");
+        JCheckBox chkActive = new JCheckBox("Active User");
 
 
         List<Role> roles = roleServices.getAllRoles();
@@ -189,8 +189,8 @@ public class UsersPanel extends JPanel {
 
         dialog.setLocationRelativeTo(null);
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.32), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
             btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.32), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -205,7 +205,7 @@ public class UsersPanel extends JPanel {
             String full = txtFullName.getText().trim();
 
             if (user.isEmpty() || pass.isEmpty() || full.isEmpty()) {
-                MessagePanel mp = new MessagePanel( null, true, "Por favor llenar todos los campos antes de continuar");
+                MessagePanel mp = new MessagePanel( null, true, "Please fill all the camps");
                 mp.setVisible(true);
                 return;
             }
@@ -252,7 +252,7 @@ public class UsersPanel extends JPanel {
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione un usuario de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one user from the table");
             mp.setVisible(true);
            return;
         }
@@ -271,7 +271,7 @@ public class UsersPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione un usuario de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one user from the table");
             mp.setVisible(true);
             return;
         }
@@ -279,7 +279,7 @@ public class UsersPanel extends JPanel {
         String username = (String) tableModel.getValueAt(row, 1);
 
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFDesactivar al usuario \"" + username + "\"?", "Confirmar",
+                "\u00BFDeactivate the user \"" + username + "\"?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

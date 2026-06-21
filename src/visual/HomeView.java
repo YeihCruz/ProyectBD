@@ -107,7 +107,7 @@ public class HomeView extends JFrame {
             @Override
             public void run() {
                 welcomePanel.reloadValues();
-                if (headerTitle.getText().equals("Reportes"))
+                if (headerTitle.getText().equals("System Report"))
                     reportsPanel.reload(true);
                 else
                     reportsPanel.reload(false);
@@ -190,7 +190,7 @@ public class HomeView extends JFrame {
 
     private void createLogOut(){
 
-        btnLogout = createSidebarButton("\uD83D\uDEAA  Cerrar Sesi\u00F3n");
+        btnLogout = createSidebarButton("\uD83D\uDEAA  Log Out");
         btnLogout.setFont(new Font("Segoe UI", Font.PLAIN, ((int) (screenSize.width * 0.0096))));
         btnLogout.setForeground(new Color(200, 120, 120));
         btnLogout.addActionListener(e -> logout());
@@ -276,7 +276,7 @@ public class HomeView extends JFrame {
 
         header.setBounds(0, 0, screenSize.width, (int) (screenSize.height*0.06));
 
-        headerTitle = new JLabel("Inicio");
+        headerTitle = new JLabel("Welcome");
         headerTitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         headerTitle.setForeground(UIStyles.TEXT_PRIMARY);
         headerTitle.setHorizontalAlignment(SwingConstants.LEFT);
@@ -311,7 +311,7 @@ public class HomeView extends JFrame {
         if (user.getRoleId()==1)
             showPanel(panelId, panelLabel);
         else{
-            MessagePanel mp = new MessagePanel(this, true, "No es posible editar la informacion de los usuarios con su rango de usuario");
+            MessagePanel mp = new MessagePanel(this, true, "Is not possible edit the users information with your range of Employee");
             mp.setVisible(true);
         }
 

@@ -33,7 +33,7 @@ public class ReinsurerReportPanel extends ParentReportPanel {
         setBackground(  UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre", "Pais", "Tipo de Reaseguradora", "Tipo de Seguro", "Porcentaje de Participacion"}, 0
+                new String[]{"Name", "Country", "Reinsurance Type", "Insurance Type", "Participation Percentage"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

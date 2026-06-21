@@ -38,7 +38,7 @@ import static java.awt.Font.PLAIN;
         setBackground(UIStyles.BORDER);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre del Cliente", "Identificacion", "Telefono", "Direccion", "Email", "Cantidad de Polizas Activas","Total Premiuns Pagados", "Numero de Reclamo", "Dia del incidente", "Monto Reclamado", "Monto Compensado"}, 0
+                new String[]{"Client Name", "Identification", "Phone", "Address", "E-mail", "Active Policies","Total Premium Amount", "Incident date", "Claimed Amount", "Compensated Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

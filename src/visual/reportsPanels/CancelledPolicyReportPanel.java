@@ -27,7 +27,7 @@ public class CancelledPolicyReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre del Cliente","Identificaci\u00F3n", "Cantidad de Polizas Canceladas", "Razones de la cancelacion"}, 0
+                new String[]{"Client Name","Identification", "Amount of Cancelled Policies", "Reasons of Cancellation"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

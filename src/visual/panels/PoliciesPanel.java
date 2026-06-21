@@ -47,7 +47,7 @@ public class PoliciesPanel extends JPanel {
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de P\u00F3lizas");
+        JLabel title = new JLabel("Policies Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
@@ -55,15 +55,15 @@ public class PoliciesPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nueva", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -71,7 +71,7 @@ public class PoliciesPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-            new String[]{"N\u00B0 P\u00F3liza", "Cliente", "Tipo Seguro", "Estado", "Inicio", "Fin", "Prima", "Monto Asegurado"}, 0
+            new String[]{"Policy Number", "Client", "Insurance Type", "Status", "Begin", "Finish", "Prime", "Insured Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -121,7 +121,7 @@ public class PoliciesPanel extends JPanel {
 
         dialog.setLocationRelativeTo(null);
 
-        JLabel header = new JLabel(isEdit ? "Editar Poliza " : "Nueva Poliza");
+        JLabel header = new JLabel(isEdit ? "Edit Policy " : "New Policy");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width * 0.014)));
         header.setBounds((int) (screenSize.width * 0.1), (int) (screenSize.height * 0.001), (int) (screenSize.width * 0.16), (int) (screenSize.height * 0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -133,14 +133,14 @@ public class PoliciesPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lClient = new JLabel("Cliente");
-        JLabel lType = new JLabel("Tipo de Seguro");
-        JLabel lStatus = new JLabel("Estado de la Poliza");
-        JLabel lStart = new JLabel("Fecha de inicio");
-        JLabel lEnd = new JLabel("Fecha de Terminacion");
+        JLabel lClient = new JLabel("Client");
+        JLabel lType = new JLabel("Insurance Type");
+        JLabel lStatus = new JLabel("Policy Status");
+        JLabel lStart = new JLabel("Start Date");
+        JLabel lEnd = new JLabel("End Date");
         JLabel lPremium = new JLabel("Premium");
-        JLabel lInsured = new JLabel("Asegurado");
-        JLabel lCancelReason = new JLabel("Razon de la cancelacion");
+        JLabel lInsured = new JLabel("Insured");
+        JLabel lCancelReason = new JLabel("Reason of the Cancellation");
 
         JComboBox<String> cmbClient = new JComboBox<>();
         JComboBox<String> cmbType = new JComboBox<>();
@@ -280,8 +280,8 @@ public class PoliciesPanel extends JPanel {
         form.add(lInsured);
         form.add(lCancelReason);
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
             btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -316,12 +316,12 @@ public class PoliciesPanel extends JPanel {
                     dialog.dispose();
                     loadData();
                 }else {
-                    MessagePanel messagePanel = new MessagePanel(null, true, "La fecha de culminacion de la poliza no puede ser menor que la fecha de inicio");
+                    MessagePanel messagePanel = new MessagePanel(null, true, "The end date cannot be befor the start date");
                     messagePanel.setVisible(true);
                 }
 
             } catch (Exception ex) {
-               MessagePanel messagePanel = new MessagePanel(null, true, "Verifique nuevamente los datos ingresados");
+               MessagePanel messagePanel = new MessagePanel(null, true, "Check all the camps");
             messagePanel.setVisible(true);
             }
         });
@@ -348,19 +348,10 @@ public class PoliciesPanel extends JPanel {
         dialog.setVisible(true);
     }
 
-    private void addField(JPanel panel, GridBagConstraints c, int row, String label, Object component) {
-        c.gridy = row * 2;
-        c.insets = new Insets(0, 0, 4, 0);
-        panel.add(UIStyles.createFieldLabel(label), c);
-        c.gridy = row * 2 + 1;
-        c.insets = new Insets(0, 0, 8, 0);
-        panel.add((java.awt.Component) component, c);
-    }
-
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione una p\u00F3liza de la tabla.", "Editar", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Select one Policy from the table", "Editar", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
@@ -371,13 +362,13 @@ public class PoliciesPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            JOptionPane.showMessageDialog(this, "Seleccione una p\u00F3liza de la tabla.", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Select one Policy from the table", "Eliminar", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
 
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFEliminar la p\u00F3liza #" + id + "?", "Confirmar",
+                "\u00BFDelete the Policy #" + id + "?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

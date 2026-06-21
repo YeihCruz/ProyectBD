@@ -90,14 +90,14 @@ public class WelcomePanel extends JPanel {
         icon.setBounds((int) (screenSize.width*0.11), (int) (screenSize.height*0.02), (int) (screenSize.width*0.08), (int) (screenSize.height*0.09));
         panel.add(icon);
 
-        JLabel welcome = new JLabel("Bienvenido, " + user.getFullName());
+        JLabel welcome = new JLabel("Welcome, " + user.getFullName());
         welcome.setFont(UIStyles.getCurrentFont(UIStyles.FONT_TITLE));
         welcome.setForeground(UIStyles.TEXT_PRIMARY);
         welcome.setHorizontalAlignment(SwingConstants.CENTER);
         welcome.setBounds((int) (screenSize.width*0.01), (int) (screenSize.height*0.1), (int) (screenSize.width*0.28), (int) (screenSize.height*0.03));
         panel.add(welcome);
 
-        JLabel subtitle = new JLabel("Panel de control del Sistema de Seguros");
+        JLabel subtitle = new JLabel("Insurance system Panel Control");
         subtitle.setFont(UIStyles.getCurrentFont(UIStyles.getCurrentFont(UIStyles.FONT_SUBTITLE)));
         subtitle.setForeground(UIStyles.TEXT_SECONDARY);
         subtitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -112,7 +112,7 @@ public class WelcomePanel extends JPanel {
         section.setOpaque(false);
         section.setBounds((int) (screenSize.width*0.03), (int) (screenSize.height*0.16), (int) (screenSize.width*0.94), (int) (screenSize.height*0.4));
 
-        JLabel sectionTitle = new JLabel("Resumen general");
+        JLabel sectionTitle = new JLabel("General Summary");
         sectionTitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SECTION));
         sectionTitle.setForeground(UIStyles.TEXT_PRIMARY);
         sectionTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -127,14 +127,14 @@ public class WelcomePanel extends JPanel {
 
         dashboardServices = new DashboardServices();
         String[][] metrics = {
-            {"Usuarios activos", String.valueOf(dashboardServices.getActiveUsers())},
-            {"P\u00F3lizas vigentes", String.valueOf(dashboardServices.getActivePolicies())},
-            {"Reclamos abiertos", String.valueOf(dashboardServices.getOpenClaims())},
-            {"Clientes registrados", String.valueOf(dashboardServices.getRegisteredClients())},
-            {"Siniestros reportados", String.valueOf(dashboardServices.getReportedClaims())},
-            {"Agencias activas", String.valueOf(dashboardServices.getActiveAgencies())},
-            {"Tasa de resoluci\u00F3n", dashboardServices.getResolutionRate()},
-            {"Ingresos del mes", dashboardServices.getMonthlyIncome()},
+            {"Active Users", String.valueOf(dashboardServices.getActiveUsers())},
+            {"Current Policies", String.valueOf(dashboardServices.getActivePolicies())},
+            {"Open Claims", String.valueOf(dashboardServices.getOpenClaims())},
+            {"Registered Clients", String.valueOf(dashboardServices.getRegisteredClients())},
+            {"Reported Sinister", String.valueOf(dashboardServices.getReportedClaims())},
+            {"Active Agencies", String.valueOf(dashboardServices.getActiveAgencies())},
+            {"Resolution Panel", dashboardServices.getResolutionRate()},
+            {"Montly Income", dashboardServices.getMonthlyIncome()},
         };
 
         int j=0;int k=0;
@@ -186,7 +186,7 @@ public class WelcomePanel extends JPanel {
         section.setBounds((int) (screenSize.width*0.03), (int) (screenSize.height*0.55), (int) (screenSize.width*0.94), (int) (screenSize.height*0.4));
         section.setOpaque(false);
 
-        JLabel sectionTitle = new JLabel("M\u00F3dulos del sistema");
+        JLabel sectionTitle = new JLabel("System Modules");
         sectionTitle.setFont(UIStyles.getCurrentFont(UIStyles.FONT_SECTION));
         sectionTitle.setForeground(UIStyles.TEXT_PRIMARY);
         sectionTitle.setHorizontalAlignment(SwingConstants.CENTER);
@@ -198,16 +198,16 @@ public class WelcomePanel extends JPanel {
         grid.setOpaque(false);
 
         String[][] modules = {
-            {"\uD83D\uDC65", "Usuarios", "Gesti\u00F3n de usuarios del sistema"},
-            {"\uD83D\uDCCB", "Clientes", "Registro y gesti\u00F3n de clientes"},
-            {"\uD83D\uDCC4", "P\u00F3lizas", "Administraci\u00F3n de p\u00F3lizas"},
-            {"\uD83D\uDCE9", "Reclamos", "Gesti\u00F3n de reclamos"},
-            {"\u26A0\uFE0F", "Reaseguradoras", "Control de reaseguradoras"},
-            {"\uD83C\uDFE2", "Agencias", "Red de agencias"},
-            {"\uD83D\uDEE1", "Coberturas", "Gestion de Coberturas"},
-            {"\uD83D\uDCC8", "Participacion", "Participacion de las Reaseguradoras"},
-                {"\uD83D\uDCCA", "Reportes", "Informes del sistema"},
-                {"\u2699\uFE0F", "Configuraci\u00F3n", "Ajustes del sistema"}
+            {"\uD83D\uDC65", "Users", "Management of system users"},
+            {"\uD83D\uDCCB", "Clients", "Customer registration and management"},
+            {"\uD83D\uDCC4", "Policies", "Policies Administration"},
+            {"\uD83D\uDCE9", "Claims", "Claims Management"},
+            {"\u26A0\uFE0F", "Reinsurers", "Reinsurers Control"},
+            {"\uD83C\uDFE2", "Agencies", "Agencies Network"},
+            {"\uD83D\uDEE1", "Coverages", "Management of Coverages"},
+            {"\uD83D\uDCC8", "Participation", "Reinsurers Participation"},
+                {"\uD83D\uDCCA", "Reports", "System Reports"},
+                {"\u2699\uFE0F", "Configuration", "System Options"}
         };
 
         int i =0, j=0;

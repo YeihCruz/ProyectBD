@@ -26,9 +26,9 @@ public class ConfirmationPanel extends JDialog {
     }
 
     public void initComponents() {
-        yes = new JButton("Si");
+        yes = new JButton("Yes");
         no = new JButton("No");
-        text = new JLabel("<html>" + "¿Esta seguro de querer salir?" + "</html>");
+        text = new JLabel("<html>" + "¿Are you sure you want to exit?" + "</html>");
         label = new JLabel();
 
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);

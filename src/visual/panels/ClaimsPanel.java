@@ -44,8 +44,7 @@ public class ClaimsPanel extends JPanel {
         JPanel header = new JPanel(new BorderLayout());
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-
-        JLabel title = new JLabel("Gesti\u00F3n de Reclamos");
+        JLabel title = new JLabel("Claims Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.WEST);
@@ -53,15 +52,15 @@ public class ClaimsPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nuevo", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -69,7 +68,7 @@ public class ClaimsPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-            new String[]{"N\u00B0 Reclamo", "P\u00F3liza", "Tipo", "Estado", "Fecha", "Monto Reclamado", "Monto Compensado"}, 0
+            new String[]{"Claims Number", "Policy", "Type", "Status", "Date", "Claimed Amount", "Compensated Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -114,7 +113,7 @@ public class ClaimsPanel extends JPanel {
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JLabel header = new JLabel(isEdit ? "Editar Reclamo " : "Nuevo Reclamo");
+        JLabel header = new JLabel(isEdit ? "Edit Claim " : "New Claim");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
         header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -126,13 +125,13 @@ public class ClaimsPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lPolicy = new JLabel("Poliza");
-        JLabel lType = new JLabel("Tipo de Siniestro");
-        JLabel lStatus = new JLabel("Estado de la Reclamacion");
-        JLabel lDate = new JLabel("Fecha");
-        JLabel lClaimed = new JLabel("Reclamado");
-        JLabel lCompensated = new JLabel("Compensado");
-        JLabel lReason = new JLabel("Razon");
+        JLabel lPolicy = new JLabel("Policy");
+        JLabel lType = new JLabel("Type");
+        JLabel lStatus = new JLabel("Status");
+        JLabel lDate = new JLabel("Date");
+        JLabel lClaimed = new JLabel("Claimed");
+        JLabel lCompensated = new JLabel("Compensated");
+        JLabel lReason = new JLabel("Reason");
 
         JComboBox<String> cmbPolicy = new JComboBox<>();
         JComboBox<String> cmbType = new JComboBox<>();
@@ -261,8 +260,8 @@ public class ClaimsPanel extends JPanel {
         form.add(txtReason);
 
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
             btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.4), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -294,7 +293,7 @@ public class ClaimsPanel extends JPanel {
                 dialog.dispose();
                 loadData();
             } catch (Exception ex) {
-                MessagePanel mp = new MessagePanel( null, true, "Error. Verifique nuevamente los campos antes de continuar");
+                MessagePanel mp = new MessagePanel( null, true, "Error. Check all the parameter");
                 mp.setVisible(true);
             }
         });
@@ -328,7 +327,7 @@ public class ClaimsPanel extends JPanel {
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione un reclamo de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one claim from the table");
             mp.setVisible(true);
             return;
         }
@@ -340,14 +339,14 @@ public class ClaimsPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione un reclamo de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one claim from the table");
             mp.setVisible(true);
             return;
         }
         int id = (int) tableModel.getValueAt(row, 0);
 
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFEliminar el reclamo #" + id + "?", "Confirmar",
+                "\u00BFDelete the claim #" + id + "?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

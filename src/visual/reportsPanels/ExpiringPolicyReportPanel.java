@@ -26,7 +26,7 @@ public class ExpiringPolicyReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Numero de Poliza", "Nombre del Cilente", "Tipo de Seguro", "Fecha de Inicio", "Fecha de Culminacion", "Dias Hasta Vencimiento"}, 0
+                new String[]{"Policy Number", "Client Name", "Insurance Type", "Start Date", "End Date", "Remaining Days"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

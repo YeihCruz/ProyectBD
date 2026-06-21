@@ -28,7 +28,7 @@ public class PendingClaimsReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Numero de Reclamacion","Nombre del Cliente", "Numero de Poliza", "Tipo de Reclamacion", "Fecha del incidente", "Monto Reclamado", "Estado de Reclamacion"}, 0
+                new String[]{"Claim Number","Client Name", "Policy Number", "Claim Type", "Incident Date", "Claimed Amount", "Claims Status"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

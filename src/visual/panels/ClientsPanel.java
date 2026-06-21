@@ -42,7 +42,7 @@ public class ClientsPanel extends JPanel {
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de Clientes");
+        JLabel title = new JLabel("Clients Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.NORTH);
@@ -50,15 +50,15 @@ public class ClientsPanel extends JPanel {
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nuevo", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -66,7 +66,7 @@ public class ClientsPanel extends JPanel {
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-            new String[]{"ID", "Nombres", "Apellidos", "Identificaci\u00F3n", "Edad", "Tel\u00E9fono", "Email"}, 0
+            new String[]{"Id", "First Name", "Last Name", "Identification", "Age", "Phone", "E-mail"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -101,7 +101,7 @@ public class ClientsPanel extends JPanel {
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JLabel header = new JLabel(isEdit ? "Editar Cliente " : "Nuevo Cliente");
+        JLabel header = new JLabel(isEdit ? "Edit Client " : "New Client");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
         header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -113,16 +113,16 @@ public class ClientsPanel extends JPanel {
 
         form.add(header);
 
-        JLabel lFirstNAme = new JLabel("Primer Nombre");
-        JLabel lLastName = new JLabel("Apellido");
-        JLabel lIdNumb = new JLabel("Numero de Id");
-        JLabel lAge = new JLabel("Edad");
-        JLabel lAddress = new JLabel("Direcci\u00F3n");
-        JLabel lPhone = new JLabel("Telefono");
-        JLabel lEmail = new JLabel("Email");
-        JLabel lAgency = new JLabel("Agencia");
-        JLabel lGender = new JLabel("Genero");
-        JLabel lCountry = new JLabel("Pais");
+        JLabel lFirstNAme = new JLabel("First Name");
+        JLabel lLastName = new JLabel("Last Name");
+        JLabel lIdNumb = new JLabel("Identification");
+        JLabel lAge = new JLabel("Age");
+        JLabel lAddress = new JLabel("Address");
+        JLabel lPhone = new JLabel("Phone");
+        JLabel lEmail = new JLabel("E-mail");
+        JLabel lAgency = new JLabel("Agency");
+        JLabel lGender = new JLabel("Gender");
+        JLabel lCountry = new JLabel("Country");
 
         JTextField txtFirstName = new JTextField(15);
         JTextField txtLastName = new JTextField(15);
@@ -324,8 +324,8 @@ public class ClientsPanel extends JPanel {
         form.add(lCountry);
 
 
-        JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-        JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+        JButton btnSave = UIStyles.createPrimaryButton("Save");
+        JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
             btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.48), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
             btnCancel.setBounds((int) (screenSize.width * 0.095), (int) (screenSize.height * 0.48), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -336,7 +336,7 @@ public class ClientsPanel extends JPanel {
 
         btnSave.addActionListener(e -> {
             if (txtFirstName.getText().trim().isEmpty() || txtLastName.getText().trim().isEmpty()) {
-                MessagePanel mp = new MessagePanel( null, true, "Nombre y apellido son obligatorios");
+                MessagePanel mp = new MessagePanel( null, true, "Name and Last name are obligated");
                 mp.setVisible(true);
                 return;
             }
@@ -362,7 +362,7 @@ public class ClientsPanel extends JPanel {
                 dialog.dispose();
                 loadData();
             }else{
-                MessagePanel messagePanel = new MessagePanel(null, true, "La edad no puede ser mayor a 120");
+                MessagePanel messagePanel = new MessagePanel(null, true, "Age cannot be above 120");
                 messagePanel.setVisible(true);
             }
         });
@@ -394,7 +394,7 @@ public class ClientsPanel extends JPanel {
     private void editSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione un cliente de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one client from the table");
             mp.setVisible(true);
             return;
         }
@@ -406,7 +406,7 @@ public class ClientsPanel extends JPanel {
     private void deleteSelected() {
         int row = table.getSelectedRow();
         if (row < 0) {
-            MessagePanel mp = new MessagePanel( null, true, "Seleccione un cliente de la tabla");
+            MessagePanel mp = new MessagePanel( null, true, "Select one client from the table");
             mp.setVisible(true);
             return;
         }
@@ -414,7 +414,7 @@ public class ClientsPanel extends JPanel {
         String name = tableModel.getValueAt(row, 1) + " " + tableModel.getValueAt(row, 2);
 
         int confirm = JOptionPane.showConfirmDialog(this,
-                "\u00BFEliminar al cliente \"" + name + "\"?", "Confirmar",
+                "\u00BFDelete the client: \"" + name + "\"?", "Confirm",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
         if (confirm == JOptionPane.YES_OPTION) {

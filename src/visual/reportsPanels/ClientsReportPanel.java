@@ -26,7 +26,7 @@ public class ClientsReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Pais", "Nombre del Cilente", "Identificaci\u00F3n", "Cantidad de Polizas", "Monto Pagado"}, 0
+                new String[]{"Country", "Client Name", "Identification", "Total Policies", "Insured Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

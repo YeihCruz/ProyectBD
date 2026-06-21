@@ -31,7 +31,7 @@ public class CoveragePanel extends JPanel{
         header.setOpaque(false);
         header.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
-        JLabel title = new JLabel("Gesti\u00F3n de Coberturas");
+        JLabel title = new JLabel("Coverage Manager");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         header.add(title, BorderLayout.NORTH);
@@ -39,15 +39,15 @@ public class CoveragePanel extends JPanel{
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
         toolbar.setOpaque(false);
 
-        JButton btnNew = createToolbarButton("\u2795  Nuevo", UIStyles.PRIMARY, Color.WHITE);
+        JButton btnNew = createToolbarButton("\u2795  New", UIStyles.PRIMARY, Color.WHITE);
         btnNew.addActionListener(e -> showForm(null));
         toolbar.add(btnNew);
 
-        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Editar", new Color(100, 110, 125), Color.WHITE);
+        JButton btnEdit = createToolbarButton("\u270F\uFE0F  Edit", new Color(100, 110, 125), Color.WHITE);
         btnEdit.addActionListener(e -> editSelected());
         toolbar.add(btnEdit);
 
-        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Eliminar", new Color(200, 70, 70), Color.WHITE);
+        JButton btnDelete = createToolbarButton("\uD83D\uDDD1\uFE0F  Delete", new Color(200, 70, 70), Color.WHITE);
         btnDelete.addActionListener(e -> deleteSelected());
         toolbar.add(btnDelete);
 
@@ -55,7 +55,7 @@ public class CoveragePanel extends JPanel{
         add(header, BorderLayout.NORTH);
 
         tableModel = new DefaultTableModel(
-                new String[]{"ID", "Numero de Poliza", "Descripcion", "Monto Cubierto"}, 0
+                new String[]{"Id", "Policy Number", "Description", "Covered Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) { return false; }
         };
@@ -89,7 +89,7 @@ public class CoveragePanel extends JPanel{
         dialog.setUndecorated(true);
         dialog.setResizable(false);
 
-        JLabel header = new JLabel(isEdit ? "Editar Cobertura " : "Nueva Cobertura");
+        JLabel header = new JLabel(isEdit ? "Edit Coverage " : "New Coverage");
         header.setFont(new Font("Segoe UI", Font.BOLD, (int) (screenSize.width*0.014)));
         header.setBounds((int) (screenSize.width*0.1), (int) (screenSize.height*0.001), (int) (screenSize.width*0.16), (int) (screenSize.height*0.05));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,9 +101,9 @@ public class CoveragePanel extends JPanel{
 
         form.add(header);
 
-        JLabel lpolicyNumber = new JLabel("Numero de Polzia");
-        JLabel ldescription = new JLabel("Descripcion");
-        JLabel lMount = new JLabel("Monto Cubierto");
+        JLabel lpolicyNumber = new JLabel("Policy Number");
+        JLabel ldescription = new JLabel("Description");
+        JLabel lMount = new JLabel("Covered Amount");
 
 
         JTextField txtDescription = new JTextField(15);
@@ -177,8 +177,8 @@ public class CoveragePanel extends JPanel{
         form.add(lMount);
 
 
-    JButton btnSave = UIStyles.createPrimaryButton("Guardar");
-    JButton btnCancel = UIStyles.createSecondaryButton("Cancelar") ;
+    JButton btnSave = UIStyles.createPrimaryButton("Save");
+    JButton btnCancel = UIStyles.createSecondaryButton("Cancel") ;
 
         if(screenSize.width== Toolkit.getDefaultToolkit().getScreenSize().width) {
         btnSave.setBounds((int) (screenSize.width * 0.195), (int) (screenSize.height * 0.24), (int) (screenSize.width * 0.07), (int) (screenSize.height * 0.05));
@@ -191,7 +191,7 @@ public class CoveragePanel extends JPanel{
         btnSave.addActionListener(e -> {
 
             if (txtDescription.getText().trim().isEmpty() || txtAmount.getText().trim().isEmpty()) {
-            MessagePanel mp = new MessagePanel( null, true, "Rellene los campos antes de continuar");
+            MessagePanel mp = new MessagePanel( null, true, "Fill all the options");
             mp.setVisible(true);
             return;
             }
@@ -237,7 +237,7 @@ public class CoveragePanel extends JPanel{
 private void editSelected() {
     int row = table.getSelectedRow();
     if (row < 0) {
-        MessagePanel mp = new MessagePanel( null, true, "Seleccione una cobertura de la tabla");
+        MessagePanel mp = new MessagePanel( null, true, "Select one coverage from the table");
         mp.setVisible(true);
         return;
     }
@@ -249,7 +249,7 @@ private void editSelected() {
 private void deleteSelected() {
     int row = table.getSelectedRow();
     if (row < 0) {
-        MessagePanel mp = new MessagePanel( null, true, "Seleccione una cobertura de la tabla");
+        MessagePanel mp = new MessagePanel( null, true, "Select one coverage from the table");
         mp.setVisible(true);
         return;
     }

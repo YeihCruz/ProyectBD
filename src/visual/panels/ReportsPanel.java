@@ -83,7 +83,7 @@ public class ReportsPanel extends JPanel {
         container.setOpaque(false);
         container.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        JLabel title = new JLabel("Reportes del Sistema");
+        JLabel title = new JLabel("System Report");
         title.setFont(UIStyles.getCurrentFont(UIStyles.FONT_HEADER));
         title.setForeground(UIStyles.TEXT_PRIMARY);
         title.setBounds((int) (screenSize.width * 0.02), (int) (screenSize.height * 0.04), (int) (screenSize.width * 0.15), (int) (screenSize.height * 0.06));
@@ -96,12 +96,12 @@ public class ReportsPanel extends JPanel {
 
         createMetrics();
 
-        metricsGrid.add(createMetricCard("Total Clientes", String.valueOf(clients.size()), UIStyles.CARD_BLUE, 0, 0));
-        metricsGrid.add(createMetricCard("Total P\u00F3lizas", String.valueOf(policies.size()), UIStyles.CARD_GREEN, 1, 0));
-        metricsGrid.add(createMetricCard("Total Reclamos", String.valueOf(claims.size()), UIStyles.CARD_ORANGE, 2, 0));
-        metricsGrid.add(createMetricCard("P\u00F3lizas Vigentes", String.valueOf(activePolicies), UIStyles.CARD_TEAL, 0, 1));
-        metricsGrid.add(createMetricCard("Reclamos Abiertos", String.valueOf(openClaims), UIStyles.CARD_RED, 1, 1));
-        metricsGrid.add(createMetricCard("Monto Total Compensado", String.format("$%.2f", totalCompensated), UIStyles.CARD_PURPLE, 2, 1));
+        metricsGrid.add(createMetricCard("Total Clients", String.valueOf(clients.size()), UIStyles.CARD_BLUE, 0, 0));
+        metricsGrid.add(createMetricCard("Total Policies", String.valueOf(policies.size()), UIStyles.CARD_GREEN, 1, 0));
+        metricsGrid.add(createMetricCard("Total Claims", String.valueOf(claims.size()), UIStyles.CARD_ORANGE, 2, 0));
+        metricsGrid.add(createMetricCard("Actives Policies", String.valueOf(activePolicies), UIStyles.CARD_TEAL, 0, 1));
+        metricsGrid.add(createMetricCard("Open Claims", String.valueOf(openClaims), UIStyles.CARD_RED, 1, 1));
+        metricsGrid.add(createMetricCard("Claimed Amount", String.format("$%.2f", totalCompensated), UIStyles.CARD_PURPLE, 2, 1));
 
         summaryCard = UIStyles.createCard();
         summaryCard.setBounds(0, (int) (screenSize.height * 0.37), (int) (screenSize.width * 0.95), (int) (screenSize.height * 0.425));
@@ -110,16 +110,16 @@ public class ReportsPanel extends JPanel {
                 BorderFactory.createLineBorder(UIStyles.BORDER, 1),
                 BorderFactory.createEmptyBorder(20, 24, 20, 24)));
 
-        JLabel summaryTitle = new JLabel("Resumen General");
+        JLabel summaryTitle = new JLabel("General Summary");
         summaryTitle.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.0135)));
         summaryTitle.setHorizontalAlignment(SwingConstants.CENTER);
         summaryTitle.setBounds((int) (screenSize.width * 0.35), (int) (screenSize.height * 0.05), (int) (screenSize.width * 0.19), (int) (screenSize.height * 0.05));
         summaryTitle.setForeground(UIStyles.TEXT_PRIMARY);
         summaryCard.add(summaryTitle);
 
-        summaryCard.add(createSummaryLine("Total reclamado:    ", String.format("$%.2f", totalClaimed), 0));
-        summaryCard.add(createSummaryLine("Total compensado:   ", String.format("$%.2f", totalCompensated), 1));
-        summaryCard.add(createSummaryLine("Diferencia:            ", String.format("$%.2f", totalClaimed - totalCompensated), 2));
+        summaryCard.add(createSummaryLine("Total claimed:    ", String.format("$%.2f", totalClaimed), 0));
+        summaryCard.add(createSummaryLine("Total compensated:   ", String.format("$%.2f", totalCompensated), 1));
+        summaryCard.add(createSummaryLine("Difference:            ", String.format("$%.2f", totalClaimed - totalCompensated), 2));
 
         container.add(summaryCard);
         panels.add(container);
@@ -293,9 +293,9 @@ public class ReportsPanel extends JPanel {
         metrics.get(4).setText(String.valueOf(openClaims));
         metrics.get(5).setText(String.valueOf(totalClaimed));
 
-        calculations.get(0).setText("<html><b>" + "Total reclamado:    " + "</b>" + String.format("$%.2f", totalClaimed) + "</html>");
-        calculations.get(1).setText("<html><b>" + "Total compensado:   " + "</b>" + String.format("$%.2f", totalCompensated) + "</html>");
-        calculations.get(2).setText("<html><b>" + "Diferencia:            " + "</b>" + String.format("$%.2f", totalClaimed - totalCompensated) + "</html>");
+        calculations.get(0).setText("<html><b>" + "Total claimed:    " + "</b>" + String.format("$%.2f", totalClaimed) + "</html>");
+        calculations.get(1).setText("<html><b>" + "Total compensated:   " + "</b>" + String.format("$%.2f", totalCompensated) + "</html>");
+        calculations.get(2).setText("<html><b>" + "Difference:            " + "</b>" + String.format("$%.2f", totalClaimed - totalCompensated) + "</html>");
     }
 
 
@@ -403,26 +403,26 @@ public class ReportsPanel extends JPanel {
         listMovem = new CustomComboBox().customComboBox();
         listMovem.setBounds((int) (screenSize.width * 0.38), (int) (screenSize.height * 0.085), (int) (screenSize.width * 0.24), (int) (screenSize.height * 0.04));
         listMovem.setFont(new Font("Segoe UI", BOLD, (int) (screenSize.width * 0.013)));
-        listMovem.addItem("Datos generales");
-        listMovem.addItem("Datos de Clientes");
-        listMovem.addItem("Perfiles de los Clientes");
-        listMovem.addItem("Datos de Reclamaciones");
-        listMovem.addItem("Datos de Estado de Reclamaciones");
-        listMovem.addItem("Resumen de Reclamaciones");
-        listMovem.addItem("Reclamos Aprobados");
-        listMovem.addItem("Reclamos Rechazados");
-        listMovem.addItem("Reclamos Pendientes");
-        listMovem.addItem("Datos de Polizas");
-        listMovem.addItem("Resumen de Polizas");
-        listMovem.addItem("Polizas Canceladas");
-        listMovem.addItem("Polizas Caducadas");
-        listMovem.addItem("Buscar Polizas entre Fechas");
-        listMovem.addItem("Polizas A Expirar");
-        listMovem.addItem("Datos Reaseguradoras");
-        listMovem.addItem("Perfil de Reaseguradoras");
-        listMovem.addItem("Datos de Agencias");
-        listMovem.addItem("Ingresos Mensual");
-        listMovem.addItem("Ingresos Mensual Premium");
+        listMovem.addItem("General Report");
+        listMovem.addItem("Client Status Report");
+        listMovem.addItem("Clients Profile Status");
+        listMovem.addItem("Claims Report");
+        listMovem.addItem("Claim Status Report");
+        listMovem.addItem("Claims Status Summary Report");
+        listMovem.addItem("Appoved Claims");
+        listMovem.addItem("Rejected Claims");
+        listMovem.addItem("Pending Claims");
+        listMovem.addItem("Policies Report");
+        listMovem.addItem("Policy Summary Report");
+        listMovem.addItem("Cancelled Policies");
+        listMovem.addItem("Expired Policies");
+        listMovem.addItem("Issued Policies");
+        listMovem.addItem("Expiring Policies");
+        listMovem.addItem("Reinsurers Reports");
+        listMovem.addItem("Reinsurers Profile");
+        listMovem.addItem("Agency Report");
+        listMovem.addItem("Monthly Income");
+        listMovem.addItem("Monthly Premium Income ");
 
         listMovem.addActionListener(new ActionListener() {
             @Override

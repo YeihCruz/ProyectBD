@@ -27,7 +27,7 @@ public class PolicyReportPanel extends ParentReportPanel {
 
 
         tableModel = new DefaultTableModel(
-                new String[]{"Tipo de Seguro", "Numero de Poliza", "Nombre del Cliente", "Fecha de Inicio", "Fecha de Culminacion", "Premium Mensual",  "Estado de la Poliza", "Monto Asegurado"}, 0
+                new String[]{"Insurance Type", "Policy Number", "Client Name", "Start Date", "End Date", "Monthly Premium",  "Policy Status", "Insured Amount"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

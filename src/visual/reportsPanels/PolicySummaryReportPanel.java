@@ -26,7 +26,7 @@ public class PolicySummaryReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Tipo de seguro", "Cantidad de Polizas Activas", "Premium Mensual Total", "Total Mensual Asegurado"}, 0
+                new String[]{"Insurance Type", "Active Policies", "Total Monthly Premium", "Total Monthly Insured"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

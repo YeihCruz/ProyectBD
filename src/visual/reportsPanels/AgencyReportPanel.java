@@ -26,7 +26,7 @@ public class AgencyReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre", "Direccion", "Telefono", "Email", "Director General", "Manager de Seguros", "Manager de Reclamos"}, 0
+                new String[]{"Name", "Address", "Phone", "E-mail", "General Director", " Insurance Manager", "Claims Manager"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

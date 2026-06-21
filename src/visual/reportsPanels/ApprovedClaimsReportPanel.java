@@ -28,7 +28,7 @@ public class ApprovedClaimsReportPanel extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Nombre del Cliente","Identificaci\u00F3n", "Cantidad de Reclamos Aprobados", "Total Compensado"}, 0
+                new String[]{"Client Name","Identification", "Amount of Aproved Claims", "Total Compensated"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;

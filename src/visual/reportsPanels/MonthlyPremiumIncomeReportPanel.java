@@ -26,7 +26,7 @@ public class MonthlyPremiumIncomeReportPanel  extends ParentReportPanel {
         setBackground(UIStyles.BG_LIGHT);
 
         tableModel = new DefaultTableModel(
-                new String[]{"Año", "Mes", "Ingreso"}, 0
+                new String[]{"Year", "Month", "Income"}, 0
         ) {
             public boolean isCellEditable(int r, int c) {
                 return false;
