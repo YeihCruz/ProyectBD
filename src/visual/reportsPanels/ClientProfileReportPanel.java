@@ -97,11 +97,13 @@ import static java.awt.Font.PLAIN;
         clientProfileReports = new ReportsServices().getClientProfileReport(number);
         tableModel.setRowCount(0);
         for (ClientProfileReport c : clientProfileReports) {
-            tableModel.addRow(new Object[]{
-                    c.getClientName(), c.getIdentificationNumber(), c.getPhone(),
-                    c.getAddress(), c.getEmail(), c.getActivePolicies(), c.getTotalPremiumsPaid(),
-                    c.getIncidentDate(),c.getClaimedAmount(), c.getCompensatedAmount()
-            });
+            if(c.getClaimedAmount()!=0 && c.getCompensatedAmount()!= 0) {
+                tableModel.addRow(new Object[]{
+                        c.getClientName(), c.getIdentificationNumber(), c.getPhone(),
+                        c.getAddress(), c.getEmail(), c.getActivePolicies(), c.getTotalPremiumsPaid(),
+                        c.getIncidentDate(), c.getClaimedAmount(), c.getCompensatedAmount()
+                });
+            }
         }
     }
 
